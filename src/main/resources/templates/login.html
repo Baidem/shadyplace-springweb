@@ -2,38 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login customer</title>
 </head>
 <body>
 <h1>
-    Connectez-vous
+    Log on to
 </h1>
 
 <div th:if="${param.error}">
-    Identifiants ou mot de passe invalide
+    Invalid login or password
 </div>
 <div th:if="${param.logout}">
-    Vous êtes déconnecté
+    You are disconnected
 </div>
 <div th:if="${param.registersuccess}">
-    Votre compte est créé veuillez vous connecter
+    Your account is created please login
 </div>
 
 <form th:action="@{/login}" method="post">
     <div>
-        <label for="email">Adresse email</label>
-        <input id="email" type="text" name="username" placeholder="Adresse email">
+        <label for="email">Email address</label>
+        <input id="email" type="text" name="username" placeholder="Email address">
     </div>
     <div>
-        <label for="password">Mot de passe</label>
-        <input id="password" type="password" name="password" placeholder="Mot de passe">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" placeholder="Password">
     </div>
     <input type="submit">
 </form>
 
-<h2>Je n'ai pas encore de compte</h2>
+<h2>I don't have an account yet</h2>
 
-<a href="http://localhost:8043/jee/register">Créer un compte</a>
+<a href="http://localhost:8043/jee/register-customer">Create an account</a>
+
+<form method="post" th:action="@{/logout}">
+    <button type="submit">Logout</button>
+</form>
+
 
 </body>
 </html>

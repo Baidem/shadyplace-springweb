@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SecurityController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
-        ModelAndView mv = new ModelAndView("login-customer");
+        ModelAndView mv = new ModelAndView("login");
 
         return mv;
     }

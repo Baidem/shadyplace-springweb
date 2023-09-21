@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.services;
 
 import com.shadyplace.springweb.models.Customer;
-import com.shadyplace.springweb.models.Role;
 import com.shadyplace.springweb.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
