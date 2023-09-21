@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>
+    Connectez-vous
+</h1>
+
+<div th:if="${param.error}">
+    Identifiants ou mot de passe invalide
+</div>
+<div th:if="${param.logout}">
+    Vous êtes déconnecté
+</div>
+<div th:if="${param.registersuccess}">
+    Votre compte est créé veuillez vous connecter
+</div>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="email">Adresse email</label>
+        <input id="email" type="text" name="username" placeholder="Adresse email">
+    </div>
+    <div>
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" name="password" placeholder="Mot de passe">
+    </div>
+    <input type="submit">
+</form>
+
+<h2>Je n'ai pas encore de compte</h2>
+
+<a href="http://localhost:8043/jee/register">Créer un compte</a>
+
+</body>
+</html>
