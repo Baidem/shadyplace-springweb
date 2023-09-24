@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+
+  ...
+</head>
+<body>
+<!--<header class="border border-secondary border-1 rounded-bottom mb-3 shadow-sm"  th:fragment="header">-->
+<header class=" "  th:fragment="header">
+  <div class="container-fluid m-0 p-0">
+  <img width="100%" th:src="@{/images/logo-banner.jpg}">
+  </div>
+
+  <div class="container" sec:authorize="isAuthenticated()">Connected : <th:block th:text="${#authentication.getPrincipal().username}"></th:block></div>
+
+</header>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
+</head>
+<body>
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main class="container">
+
+    <h1>Create a new booking</h1>
+
+    <form th:object="${bookingForm}" method="post">
+        <div>
+            <label>Start date</label>
+            <input type="date" th:field="*{dateStart}"/> <br>
+            <span th:if="${#fields.hasErrors('dateStart')}" th:errors="*{dateStart}"></span>
+        </div>
+        <div>
+            <label>End date</label>
+            <input type="date" th:field="*{dateEnd}"/> <br>
+            <span th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}"></span>
+        </div>
+
+        <div id="collectionEquipment">
+            <div class="collectionForm" th:each="plage, state : ${bookingForm.locations}">
+                <div style="border: 1px solid black">
+                    <label th:text="'Parasol '+${state.index+1}"></label>
+
+                    <div>
+                        <label>Line</label><br>
+                        <select th:name="'items_'+${state.index}+'_line'">
+                            <option th:each="i: ${#numbers.sequence(1, 8)}" th:value="${i}" th:text="${i}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Equipment</label><br>
+                        <select th:name="'items_'+${state.index}+'_equipment'">
+                            <option th:value="'nothing'"> </option>
+                            <option th:value="'1-bed'">A bed</option>
+                            <option th:value="'2-beds'">Two beds</option>
+                            <option th:value="'1-seat'">A seat</option>
+                            <option th:value="'2-seats'">Two seats</option>
+                            <option th:value="'1-bed-1-seat'">A bed and a seat</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+            <a id="addEmplacement">
+                Add a parasol location
+            </a>
+
+        <div>
+            <label>Comment</label>
+            <input type="textarea" th:field="*{comment}"/> <br>
+            <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></span>
+        </div>
+
+        <button>Submit</button>
+    </form>
+
+</main>
+
+    <footer th:replace="fragments/footer.html :: footer">...</footer>
+
+    <div th:replace="fragments/scripts-js.html">...</div>
+
+<script>
+    $("#addEmplacement").click(function (){
+        let index =  $('.collectionForm').length - 1;
+        divToCopy = $('.collectionForm').last();
+
+        newDiv = divToCopy.html().replace('name="items_'+index+'_line"', 'name="items_'+parseInt(index+1)+'_line"');
+        newDiv = newDiv.replace('name="items_'+index+'equipment"', 'name="items_'+parseInt(index+1)+'_equipment"');
+        newDiv = newDiv.replace('Parasol '+parseInt(index+1), 'Parasol '+parseInt(index+2));
+
+        newDiv = '<div class="collectionForm">'+newDiv+'</div>';
+        $('#collectionEquipment').append(newDiv);
+
+    })
+
+</script>
+</body>
+</html>
