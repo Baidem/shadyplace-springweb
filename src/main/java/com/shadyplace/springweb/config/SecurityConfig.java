@@ -27,7 +27,7 @@ public class SecurityConfig {
                                 .requestMatchers("/bookings").hasAuthority("USER")
                                 .anyRequest().authenticated()
         ).formLogin((login) ->
-                login.loginPage("/login").defaultSuccessUrl("/home").permitAll())
+                login.loginPage("/login").defaultSuccessUrl("/").permitAll())
                 .logout((logout) -> logout.logoutUrl("/logout"));
 
         return httpSecurity.build();
