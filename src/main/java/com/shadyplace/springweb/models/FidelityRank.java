@@ -13,11 +13,11 @@ public class FidelityRank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true, length = 1, nullable = false)
-    @NotBlank(message = "Fidelity rank label cannot be blank.")
+    @NotBlank(message = "Fidelity rank's label cannot be blank.")
     private String label;
     @Column(columnDefinition = "float(5,2)", name = "discount_price", nullable = false)
     @PositiveOrZero(message = "Fidelity rank discount price cannot be negative")
-    @NotNull(message = "Fidelity rank discount price cannot be null.")
+    @NotNull(message = "Fidelity rank's discount price cannot be null.")
     private double discountPrice;
 
     public FidelityRank() {

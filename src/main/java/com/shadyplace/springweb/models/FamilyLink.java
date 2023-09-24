@@ -14,11 +14,11 @@ public class FamilyLink {
     private long id;
     @Column(unique = true, length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Family link label cannot be null.")
+    @NotNull(message = "Family link's label cannot be null.")
     private FamilyLinkLabel label;
     @Column(name = "discount_rate", columnDefinition = "float(2,2)",nullable = false)
-    @PositiveOrZero(message = "Family link discount rate cannot be negative.")
-    @NotNull(message = "Family link discount rate cannot be null.")
+    @PositiveOrZero(message = "Family link's discount rate cannot be negative.")
+    @NotNull(message = "Family link's discount rate cannot be null.")
     private double discountRate;
 
     public FamilyLink() {

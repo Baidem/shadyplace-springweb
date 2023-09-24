@@ -22,10 +22,12 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(
                 (request) ->
                         request
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/login", "/").permitAll()
+                                .requestMatchers("/admin").hasAuthority("ADMIN")
+                                .requestMatchers("/bookings").hasAuthority("USER")
                                 .anyRequest().authenticated()
         ).formLogin((login) ->
-                login.loginPage("/login").permitAll())
+                login.loginPage("/login").defaultSuccessUrl("/home").permitAll())
                 .logout((logout) -> logout.logoutUrl("/logout"));
 
         return httpSecurity.build();

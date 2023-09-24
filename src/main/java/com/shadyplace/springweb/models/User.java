@@ -7,34 +7,36 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "_user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Customer's email cannot be blank.")
-    @Email(message = "Customer's email format is invalid.")
+    @NotBlank(message = "User's email cannot be blank.")
+    @Email(message = "User's email format is invalid.")
     private String email;
     @Column(name = "password", nullable = false)
-    @NotBlank(message = "Customer's password cannot be blank.")
+    @NotBlank(message = "User's password cannot be blank.")
     private String password; // TODO REGEX PASSWORD
 
     @Column(length = 50, nullable = false)
     @Length(max = 50, message = "The user's first name must be no more than 50 characters long.")
-    @NotBlank(message = "Customer's firstname cannot be blank.")
+    @NotBlank(message = "User's firstname cannot be blank.")
     private  String firstname;
     @Column(length = 50, nullable = false)
     @Length(max = 50, message = "The user's last name must be no more than 50 characters long.")
-    @NotBlank(message = "Customer's lastname cannot be blank.")
+    @NotBlank(message = "User's lastname cannot be blank.")
     private String lastname;
 
     @Transient
-    @NotBlank(message = "Customer's password confirm cannot be blank")
+    @NotBlank(message = "User's password confirm cannot be blank")
     private String confirmPassword;
 
     @Column(name = "registration_date",nullable = false)
@@ -43,7 +45,7 @@ public class Customer {
 
     @Column(name = "residence_country", length = 20)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Customer's country cannot be null.")
+    @NotNull(message = "User's country cannot be null.")
     private Country residenceCountry;
 
     @ManyToOne()
@@ -52,14 +54,38 @@ public class Customer {
 
     @ManyToOne()
     @JoinColumn(name = "current_fidelity_rank_id", referencedColumnName = "id")
-    @NotNull(message = "Customer.currentFidelityRank cannot be null.")
+    @NotNull(message = "User's currentFidelityRank cannot be null.")
     private FidelityRank currentFidelityRank;
 
 
-    public Customer() {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "utilisateur_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
+    public User() {
+        this.roles = new ArrayList<Role>();
     }
-    public Customer(String lastname, String firstname, String email, String password, String confirmPassword, Country residenceCountry) {
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
+
+    public void removeRole(Role role){
+        this.roles.remove(role);
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public User(String lastname, String firstname, String email, String password, String confirmPassword, Country residenceCountry) {
         this();
         this.lastname = lastname;
         this.firstname = firstname;

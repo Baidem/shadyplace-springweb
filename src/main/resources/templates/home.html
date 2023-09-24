@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
 </head>
 <body>
-<h1>Welcome, you're connected.</h1>
+<header th:replace="fragments/header.html :: header">...</header>
 
-<div th:text="${#authentication.principal}"></div>
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
 
-<form method="post" th:action="@{/logout}">
-    <button type="submit">Logout</button>
-</form>
+<main class="container">
+    <h1>Welcome, you're connected.</h1>
 
+    <div th:text="${#authentication.principal}"></div>
+
+    <a th:href="@{/bookings/new}" sec:authorize="isAuthenticated()">Make a reservation</a>
+
+    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+
+    <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
+        <button type="submit">Logout</button>
+    </form>
+</main>
+
+    <footer th:replace="fragments/footer.html :: footer">...</footer>
+
+    <div th:replace="fragments/scripts-js.html">...</div>
 </body>
 </html>

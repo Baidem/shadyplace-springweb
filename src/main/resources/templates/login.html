@@ -2,43 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Login customer</title>
+    <title>Login user</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
 </head>
 <body>
+<header th:replace="fragments/header.html :: header">...</header>
+
+<div class="container" >
 <h1>
-    Log on to
+    Log on to SHADYPLACE
 </h1>
-
-<div th:if="${param.error}">
-    Invalid login or password
-</div>
-<div th:if="${param.logout}">
-    You are disconnected
-</div>
-<div th:if="${param.registersuccess}">
-    Your account is created please login
-</div>
-
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="email">Email address</label>
-        <input id="email" type="text" name="username" placeholder="Email address">
+    <div th:if="${param.error}">
+        Invalid login or password
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" placeholder="Password">
+    <div th:if="${param.logout}">
+        You are disconnected
     </div>
-    <input type="submit">
-</form>
+    <div th:if="${param.registersuccess}">
+        Your account is created please login
+    </div>
 
-<h2>I don't have an account yet</h2>
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label for="email">Email address</label>
+            <input id="email" type="text" name="username" placeholder="Email address">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" placeholder="Password">
+        </div>
+        <input type="submit">
+    </form>
 
-<a href="http://localhost:8043/jee/register-customer">Create an account</a>
+    <h2>I don't have an account yet</h2>
 
-<form method="post" th:action="@{/logout}">
-    <button type="submit">Logout</button>
-</form>
+    <a href="http://localhost:8043/jee/user-register">Create an account</a>
+
+</div>
 
 
+<div th:replace="fragments/scripts-js.html">...</div>
 </body>
 </html>
