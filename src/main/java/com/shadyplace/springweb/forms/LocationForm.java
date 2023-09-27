@@ -19,11 +19,11 @@ public class LocationForm {
         this.line = line;
     }
 
-    public String getEquipement() {
+    public String getEquipment() {
         return equipment;
     }
 
-    public void setEquipement(String equipement) {
-        this.equipment = equipement;
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
     }
 }

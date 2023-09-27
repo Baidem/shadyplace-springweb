@@ -16,6 +16,8 @@ public class Command {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = true)
+    private String comment;
     @Column(name = "total_price",columnDefinition = "float(10,2)")
     @PositiveOrZero(message = "Command's totalPrice cannot be negative.")
     private double totalPrice;
@@ -112,5 +114,12 @@ public class Command {
         this.updatedAt = updatedAt;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
 }

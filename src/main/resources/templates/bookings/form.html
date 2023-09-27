@@ -19,6 +19,9 @@
     <h1>Create a new booking</h1>
 
     <form th:object="${bookingForm}" method="post">
+
+        <input type="hiden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
         <div>
             <label>Start date</label>
             <input type="date" th:field="*{dateStart}"/> <br>
