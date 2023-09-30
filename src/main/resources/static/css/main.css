@@ -1,5 +1,7 @@
 body {
-    background: #f5e9c5;
+    background: linear-gradient(to bottom, #f5e9c5, #d4a55f);
+
+    /*background: #f5e9c5;*/
     color : #201800;
 }
 
@@ -19,8 +21,15 @@ a {
     color : #201800;
 }
 
-.carte{
-    background-color: #F2DCA2 !important;
+.bg-carte{
+    /*background-color: #F2DCA2 !important;*/
+    background: linear-gradient(to bottom, #F2DCA2, #eabe6d) !important;
+
+}
+
+.bg-carte-light{
+    background: linear-gradient(to bottom, #f5e9c5, #d7b98b);
+    /*background: #f5e9c5 !important;*/
 }
 
 button {

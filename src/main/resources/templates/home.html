@@ -1,35 +1,129 @@
 <!DOCTYPE html>
-<html lang="fr"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org"
 >
+
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <div th:replace="fragments/link-favicon.html">...</div>
     <div th:replace="fragments/links-css.html">...</div>
 </head>
-<body>
+
+<body class="bg-carte-light">
+
 <header th:replace="fragments/header.html :: header">...</header>
 
 <nav th:replace="fragments/navbar.html :: navbar">...</nav>
 
-<main class="container">
-    <h1>Welcome, you're connected.</h1>
+<main>
 
-    <div th:text="${#authentication.principal}"></div>
+    <!--/* Welcome and info com */-->
+    <section class="mb-3">
+        <div class="container">
+            <div class="row text-center"><h2 class="my-2">Welcome to ShadyPlace!</h2></div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="">
+                        <div class="card shadow bg-carte px-0" >
+                            <img src="/images/logo-banner.jpg" alt="Image example" class="card-img-top">
+                            <div class="card-body ">
+                                <h5 class="card-title">Ici présentation du site</h5>
+                                <p class="card-text">Ici texte marketing + explication des actions pour les clients</p>
+                                <a href="#" class="nav-link">Ici lien vers action client</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <a th:href="@{/bookings/new}" sec:authorize="isAuthenticated()">Make a reservation</a>
+    <!--/* Search Engine */-->
+    <section id="search-engine" class="mt-5 py-2 bg-carte shadow">
+        <div class="container">
+            <div class="row text-end">
 
-    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+                <form th:object="${form}" method="post" class="">
 
-    <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
-        <button type="submit">Logout</button>
-    </form>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    <div class="row g-3 align-items-center justify-content-end">
+                        <div th:if="${articles.getTotalPages() == 0}" class="text-danger col-auto">No results</div>
+                        <div class="col-auto">
+                            <input type="text" th:field="*{searchBar}" placeholder="Search for news" class="form-control shadow-sm">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!--/* News feed */-->
+    <section id="news-feed" class="mb-3">
+        <div class="container">
+            <div class="row text-center"><h2 class="my-2">News from ShadyPlace!</h2></div>
+            <div class="row justify-content-center">
+                <div th:each="article : ${articles.content}" class="col-lg-6 mb-3">
+                    <div class="">
+                        <div class="card shadow bg-carte px-0" >
+
+                            <img th:src="${article.image != null ? article.image.location : '/images/logo-banner.jpg'}"
+                                 th:alt="${article.image != null ? article.image.title : 'ShadyPlace banner'}"
+                                 class="card-img-top">
+
+                            <div class="card-body ">
+                                <h5 th:text="${article.title}" class="card-title"></h5>
+
+                                <p th:text="${article.content}" class="card-text"></p>
+
+                                <p th:text="'Posted on : ' + ${#dates.format(article.publicationDate, 'dd-MM-yyyy')}"></p>
+
+                                <a th:if="${article.addLink != null}" th:href="@{${article.addLink}}" target="_blank" class="nav-link">More information</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Pagination */-->
+    <section class="mb-3" th:if="${articles.getTotalPages() > 1}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="">
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li th:if="${articles.hasPrevious()}" class="page-item">
+                                        <a th:href="@{/?page=__${articles.getNumber()}__#search-engine}" class="page-link bg-carte">Previous</a>
+                                    </li>
+                                    <li th:each="pageNumber : ${#numbers.sequence(1, articles.getTotalPages())}" th:classappend="${pageNumber == articles.getNumber() + 1} ? 'page-item active' : 'page-item'">
+                                        <a th:href="@{/?page=__${pageNumber}__#search-engine}" th:text="${pageNumber}" class="page-link bg-carte"></a>
+                                    </li>
+                                    <li th:if="${articles.hasNext()}" class="page-item">
+                                        <a th:href="@{/?page=__${articles.getNumber() + 2}__#search-engine}" class="page-link bg-carte">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
-    <footer th:replace="fragments/footer.html :: footer">...</footer>
+<footer th:replace="fragments/footer.html :: footer">...</footer>
 
-    <div th:replace="fragments/scripts-js.html">...</div>
+<div th:replace="fragments/scripts-js.html">...</div>
 </body>
 </html>

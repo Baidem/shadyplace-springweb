@@ -1,0 +1,23 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Log out to SHADYPLACE</title>
+    <div th:replace="fragments/link-favicon">...</div>
+    <div th:replace="fragments/links-css :: links-css">...</div>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center p-5">
+        <div class="col-xl-6">
+            <form class="bg-primary-subtle border rounded-3 p-3 shadow" method="post" th:action="@{/logout-processing}">
+                <input class="btn btn-danger shadow-sm" type="submit" value="Confirm logout">
+                <a class="btn btn-link" th:href="@{/}">Back to the site</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>
