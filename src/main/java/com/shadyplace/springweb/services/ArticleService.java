@@ -25,7 +25,7 @@ public class ArticleService {
         return this.articleRepository.findAll();
     }
 
-    public void add(Article plage){
+    public void save(Article plage){
         this.articleRepository.save(plage);
     }
 

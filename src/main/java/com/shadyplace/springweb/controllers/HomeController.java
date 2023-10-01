@@ -23,28 +23,6 @@ public class HomeController {
     @Autowired
     private UploadImageService uploadImageService;
 
-
-
-//    @RequestMapping( "")
-//    public ModelAndView home(@RequestParam(required = false) String page){
-//
-//        if(page == null){
-//            page = "1";
-//        }
-//        int pageNumber = Integer.valueOf(page);
-//
-//        ModelAndView mv = new ModelAndView("home");
-//
-//        Page<Article> articles = this.articleService.paginatePage(4, pageNumber-1);
-//
-//        mv.addObject("articles", articles);
-//        mv.addObject("pageNumber", (String) page );
-//        mv.addObject("form", new SearchForm());
-//
-//        return mv;
-//    }
-//
-
     @RequestMapping("")
     public ModelAndView home(@RequestParam(required = false) String page, @RequestParam(required = false) String searchBar) {
         if (page == null) {
@@ -54,8 +32,6 @@ public class HomeController {
 
         ModelAndView mv = new ModelAndView("home");
 
-        // Si searchBar est null, vous pouvez définir une valeur par défaut ou la laisser vide selon vos besoins.
-        // Par exemple, vous pouvez définir une valeur par défaut comme suit :
         if (searchBar == null) {
             searchBar = "";
         }
@@ -69,8 +45,10 @@ public class HomeController {
         return mv;
     }
 
-        @RequestMapping(value = "", method = RequestMethod.POST)
-    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page, @Valid SearchForm searchForm, BindingResult bindingResult){
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
+                                         @Valid SearchForm searchForm,
+                                         BindingResult bindingResult){
 
         if(page == null){
             page = "1";
@@ -79,7 +57,8 @@ public class HomeController {
 
         ModelAndView mv = new ModelAndView("home");
 
-        Page<Article> articles = this.articleService.getArticlePageBySearchForm(searchForm, 4, pageNumber-1);
+        Page<Article> articles = this.articleService
+                .getArticlePageBySearchForm(searchForm, 4, pageNumber-1);
 
         mv.addObject("articles", articles);
         mv.addObject("pageNumber", (String) page );

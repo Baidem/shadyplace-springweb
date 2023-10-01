@@ -27,12 +27,16 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("error/**","/css/**", "/js/**", "/images/**").permitAll()
                                 .requestMatchers("/").permitAll()
+                                .requestMatchers("/upload/**").permitAll()
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/bookings:**").hasAuthority("USER")
                                 .anyRequest().authenticated()
         ).formLogin((login) ->
                 login.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
-                .logout((logout) -> logout.logoutUrl("/logout"));
+                .logout((logout) -> logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
 
         return httpSecurity.build();
     }

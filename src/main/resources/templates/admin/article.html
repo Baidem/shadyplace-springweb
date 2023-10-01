@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
+</head>
+
+<body class="bg-carte-light">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+
+    <!--/* News feed */-->
+    <section id="news-feed" class="mb-3">
+        <div class="container">
+            <div class="row text-center"><h2 class="my-2">Article preview</h2></div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 mb-3">
+                    <div class=""><!--/* Here content */-->
+                        <div class="card shadow bg-carte px-0" >
+
+                            <img th:src="${article.image != null ? article.image.location : '/images/logo-banner.jpg'}"
+                                 th:alt="${article.image != null ? article.image.title : 'ShadyPlace banner'}"
+                                 class="card-img-top">
+
+                            <div class="card-body ">
+                                <h5 th:text="${article.title}" class="card-title"></h5>
+
+                                <p th:text="${article.content}" class="card-text"></p>
+
+                                <p th:text="'Posted on : ' + ${#dates.format(article.publicationDate, 'dd-MM-yyyy')}"></p>
+
+                                <a th:if="${article.addLink != null}" th:href="@{${article.addLink}}" target="_blank" class="nav-link">More information</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--/* Buttons */-->
+                    <div class="d-flex justify-content-end gap-2 p-2">
+                        <div class="">
+                            <a class="btn btn-secondary shadow-sm" th:href="@{/admin/article/list#navbar}" >Back</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+</body>
+</html>
