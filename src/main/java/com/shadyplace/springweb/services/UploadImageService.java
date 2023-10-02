@@ -21,7 +21,7 @@ public class UploadImageService {
     private List<String> allowedImageExtension;
 
     public UploadImageService(UploadImageConfig properties) {
-        this.rootLocation = Paths.get("src/main/resources/static/"+properties.getLocation());
+        this.rootLocation = Paths.get(properties.getLocation());
         this.uploadFolder = properties.getLocation();
         this.allowedImageExtension = properties.getAllowedFormat();
     }
