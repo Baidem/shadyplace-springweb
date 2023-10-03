@@ -54,5 +54,4 @@ public class ImageService {
         return config.getLocation() + "/" + filePath;
     }
 
-
 }
