@@ -34,6 +34,7 @@ public class UploadImageConfig implements WebMvcConfigurer {
     public void addResourceHandlers(final ResourceHandlerRegistry registry){
         String location = environment.getProperty("upload_dir");
         registry.addResourceHandler("/upload/**").addResourceLocations(location);
+        registry.addResourceHandler("/admin/article/upload/**").addResourceLocations(location);
     }
 
 }
