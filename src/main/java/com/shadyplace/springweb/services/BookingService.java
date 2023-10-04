@@ -1,13 +1,11 @@
 package com.shadyplace.springweb.services;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.LocationForm;
+import com.shadyplace.springweb.forms.PlaceOptionForm;
 import com.shadyplace.springweb.models.Booking;
 import com.shadyplace.springweb.models.Command;
 import com.shadyplace.springweb.models.User;
-import com.shadyplace.springweb.repository.BookingRepository;
-import com.shadyplace.springweb.repository.CommandRepository;
-import com.shadyplace.springweb.repository.UserRepository;
+import com.shadyplace.springweb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,12 @@ public class BookingService {
     private BookingRepository bookingRepository;
 
     @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private LineRepository lineRepository;
+
+    @Autowired
     DaoAuthenticationProvider daoAuthenticationProvider;
 
     @Autowired
@@ -34,9 +38,9 @@ public class BookingService {
 
     private User user;
 
-    public List<LocationForm> payloadToResas(String requestBody) {
+    public List<PlaceOptionForm> payloadToResas(String requestBody) {
 
-        List<LocationForm> reservationForm = new ArrayList<>();
+        List<PlaceOptionForm> reservationForm = new ArrayList<>();
 
         // On sépare chacun de nos éléments en faisant un split sur le &
         // On met tout ça en list pour simplifier l'utilisation
@@ -72,15 +76,16 @@ public class BookingService {
                 List<String> splitNameList = Arrays.stream(splitItemName).toList();
                 String index = splitNameList.get(1);
 
-                // Je cré mon emplacement
-                LocationForm emplacementForm = new LocationForm();
-                // Je récupére mon la file dans hmap qui représente ma requête
-                emplacementForm.setLine(Integer.valueOf(mapParam.get("items_" + index + "_file")));
+                // Collect options of the place
+                PlaceOptionForm placeOptionForm = new PlaceOptionForm();
+                Long linedId = Long.parseLong(mapParam.get(mapParam.get("items_" + index + "_file")));
+                placeOptionForm.setLine(lineRepository.getById(linedId));
                 // Je réccupére mon equipement dans le hashmap qui représente ma requête
-                emplacementForm.setEquipement(mapParam.get("items_" + index + "_equipement"));
+                Long equipmentId = Long.parseLong(mapParam.get("items_" + index + "_equipement"));
+                placeOptionForm.setEquipment(equipmentRepository.getById(equipmentId));
 
                 // J'ajoute mon emplacement dans mon formulaire
-                reservationForm.add(emplacementForm);
+                reservationForm.add(placeOptionForm);
             }
 
         }
@@ -95,12 +100,12 @@ public class BookingService {
 
         this.commandRepository.save(command);
 
-        for (LocationForm locationForm: bookingForm.getLocations()){
+        for (PlaceOptionForm placeOptionForm : bookingForm.getLocations()){
 
             Booking booking = new Booking();
             booking.setBookingDate(new GregorianCalendar());
-            booking.setLine(lineService.getLineByString(locationForm.getLine().toString()));
-            booking.setEquipment(locationForm.getEquipment());
+            booking.setLine(lineService.getLineByString(placeOptionForm.getLine().toString()));
+            booking.setEquipment(placeOptionForm.getEquipment());
             booking.setCommand(command);
 
             this.bookingRepository.save(booking);

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 
 @Entity
-@Table(name = "fidelity_ranks")
+@Table(name = "fidelity_rank")
 public class FidelityRank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

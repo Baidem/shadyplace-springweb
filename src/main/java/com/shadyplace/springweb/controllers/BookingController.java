@@ -1,13 +1,14 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.LocationForm;
-import com.shadyplace.springweb.repository.CommandRepository;
-import com.shadyplace.springweb.repository.UserRepository;
+import com.shadyplace.springweb.forms.PlaceOptionForm;
+import com.shadyplace.springweb.models.Equipment;
+import com.shadyplace.springweb.models.Line;
 import com.shadyplace.springweb.services.BookingService;
+import com.shadyplace.springweb.services.EquipmentService;
+import com.shadyplace.springweb.services.LineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,10 @@ public class BookingController {
 
     @Autowired
     BookingService bookingService;
+    @Autowired
+    EquipmentService equipmentService;
+    @Autowired
+    LineService lineService;
 
     @Autowired
     Validator validator;
@@ -35,10 +40,15 @@ public class BookingController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView addBooking(){
 
+        List<Equipment> equipmentList = this.equipmentService.getAll();
+        List<Line> lineList = this.lineService.getAll();
+
         ModelAndView mv = new ModelAndView("booking/form");
 
         BookingForm bookingForm = new BookingForm();
         mv.addObject("bookingForm", bookingForm);
+        mv.addObject("equipmentList", equipmentList);
+        mv.addObject("lineList", lineList);
 
         return mv;
     }
@@ -52,10 +62,10 @@ public class BookingController {
 
         // J'appel mon service de reservation pour lui demander de transformer le body
         // de ma requête HTTP en objet en list d'emplacement
-        List<LocationForm> listLocationForm = this.bookingService.payloadToResas(postPayload);
+        List<PlaceOptionForm> listPlaceOptionForm = this.bookingService.payloadToResas(postPayload);
 
         // La liste d'emplacement réccupérée depuis mon service je l'ajoute à l'objet commande de mon formulaire
-        bookingForm.setLocations(listLocationForm);
+        bookingForm.setLocations(listPlaceOptionForm);
 
         // Permet de revalider notre champs reservation Form
         // Nous l'avons modifié donc il faut revalider.

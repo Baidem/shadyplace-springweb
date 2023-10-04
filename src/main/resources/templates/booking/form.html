@@ -41,18 +41,13 @@
                     <div>
                         <label>Line</label><br>
                         <select th:name="'items_'+${state.index}+'_line'">
-                            <option th:each="i: ${#numbers.sequence(1, 8)}" th:value="${i}" th:text="${i}"></option>
+                            <option th:each="line : ${lineList}" th:text="${line.label.label}" th:value="${line.id}"></option>
                         </select>
                     </div>
                     <div>
                         <label>Equipment</label><br>
                         <select th:name="'items_'+${state.index}+'_equipment'">
-                            <option th:value="'nothing'"> </option>
-                            <option th:value="'1-bed'">A bed</option>
-                            <option th:value="'2-beds'">Two beds</option>
-                            <option th:value="'1-seat'">A seat</option>
-                            <option th:value="'2-seats'">Two seats</option>
-                            <option th:value="'1-bed-1-seat'">A bed and a seat</option>
+                            <option th:each="equipment : ${equipmentList}" th:text="${equipment.option.label}" th:value="${equipment.id}"></option>
                         </select>
                     </div>
 

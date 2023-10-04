@@ -6,6 +6,8 @@ import com.shadyplace.springweb.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LineService {
 
@@ -21,5 +23,7 @@ public class LineService {
         return null;
     }
 
-
+    public List<Line> getAll(){
+        return this.getAll();
+    }
 }

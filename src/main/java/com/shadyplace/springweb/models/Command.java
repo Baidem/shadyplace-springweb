@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Entity
-@Table(name = "commands")
+@Table(name = "command")
 public class Command {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

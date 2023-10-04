@@ -10,4 +10,6 @@ public interface LineRepository extends CrudRepository<Line, Long> {
 
     Line findByLabel(LineLabel lineLabel);
 
+    Line getById(Long id);
+
 }

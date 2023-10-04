@@ -6,6 +6,8 @@ import com.shadyplace.springweb.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EquipmentService {
 
@@ -18,6 +20,10 @@ public class EquipmentService {
 
     public void save(Equipment equipment){
         this.equipmentRepository.save(equipment);
+    }
+
+    public List<Equipment> getAll(){
+        return this.equipmentRepository.getAll();
     }
 
 }

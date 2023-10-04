@@ -13,17 +13,17 @@ public class BookingForm {
     @NotBlank(message = "Please enter an end date")
     private GregorianCalendar dateEnd;
     private String Comment;
-    private List<LocationForm> locations;
+    private List<PlaceOptionForm> locations;
 
     public BookingForm() {
         this.locations = new ArrayList<>();
-        this.locations.add(new LocationForm());
+        this.locations.add(new PlaceOptionForm());
     }
-    public void addLocation(LocationForm locationForm){
-        this.locations.add(locationForm);
+    public void addLocation(PlaceOptionForm placeOptionForm){
+        this.locations.add(placeOptionForm);
     }
-    public void removeLocation(LocationForm locationForm){
-        this.locations.remove(locationForm);
+    public void removeLocation(PlaceOptionForm placeOptionForm){
+        this.locations.remove(placeOptionForm);
     }
 
     public GregorianCalendar getDateStart() {
@@ -50,11 +50,11 @@ public class BookingForm {
         Comment = comment;
     }
 
-    public List<LocationForm> getLocations() {
+    public List<PlaceOptionForm> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<LocationForm> locations) {
+    public void setLocations(List<PlaceOptionForm> locations) {
         this.locations = locations;
     }
 }

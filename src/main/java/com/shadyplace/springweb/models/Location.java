@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name = "locations")
+@Table(name = "location")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
