@@ -49,7 +49,7 @@
                     <div class="d-flex justify-content-end gap-2 p-2">
                         <div class="">
                             <a th:href="@{/admin/article/list#navbar}" class="btn btn-success shadow-sm">
-                                Article manager
+                                Article list
                             </a>
                         </div>
                         <div class="">
@@ -57,17 +57,11 @@
                                 Edit article
                             </a>
                         </div>
-                        <!--  TODO cacher si pas image par défaut-->
                         <div class="">
-                            <a th:href="@{'/admin/image/add/' + ${article.id} +'#navbar'}" class="btn btn-success shadow-sm">
-                                Add image
+                            <a th:href="@{'/admin/image/change/' + ${article.id} +'#navbar'}" class="btn btn-success shadow-sm">
+                                Change image
                             </a>
                         </div>
-                        <!-- TODO cacher si image par défaut-->
-                        <div class="">
-                            <a th:href="@{'/admin/image/edit/' + ${article.id} +'#navbar'}" class="btn btn-success shadow-sm">
-                                Edit image
-                            </a>
                         </div>
                     </div>
 

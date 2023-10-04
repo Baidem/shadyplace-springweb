@@ -27,8 +27,8 @@ public class DataCreatorApplication {
             if (imageService.findByLocation("upload/default-image.jpg")==null) {
                 logger.info("Creation : image 'default-image'");
                 Image image = new Image();
-                image.setImageTitle("default-image");
-                image.setDescription("default-image");
+                image.setImageTitle("Shady Place");
+                image.setDescription("Shady Place");
                 image.setOriginalName("default-image");
                 image.setLocation("upload/default-image.jpg");
                 image.setMimeType("image/jpeg");

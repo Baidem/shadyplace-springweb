@@ -22,12 +22,6 @@
 
             <h1 class="mb-4">Download an image</h1>
 
-            <div class="d-flex justify-content-start gap-2 p-2">
-                <div class="">
-                    <a class="btn btn-secondary shadow-sm" th:href="@{/admin/article/list#navbar}" >Back</a>
-                </div>
-            </div>
-
             <form th:object="${image}" method="post" enctype="multipart/form-data">
 
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

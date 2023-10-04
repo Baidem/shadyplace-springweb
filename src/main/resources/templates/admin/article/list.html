@@ -79,8 +79,8 @@
                                 <td th:if="${article.image == null}"></td>
 
                                 <td th:text="${article.title}"></td>
-                                <td ><a class="nav-link" th:href="@{'/admin/article/preview/' + ${article.id} +'#navbar'}">View article</a></td>
-                                <td ><a class="nav-link" th:href="@{'/admin/article/uploadimage/' + ${article.id} +'#navbar'}">Add image</a></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/article/preview/' + ${article.id} +'#navbar'}">Preview article</a></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/image/change/' + ${article.id} +'#navbar'}">Change image</a></td>
                                 <td ><a class="nav-link" th:href="@{'/admin/article/edit/' + ${article.id} +'#navbar'}">Edit article</a></td>
                                 <td ><a class="nav-link" th:href="@{'/admin/article/delete/' + ${article.id}}">Delete article</a></td>
                             </tr>

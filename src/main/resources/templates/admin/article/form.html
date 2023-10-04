@@ -25,12 +25,6 @@
                         <h1 th:if="${article.id == 0}" class="mb-4">Add an article</h1>
                         <h1 th:if="${article.id != 0}" class="mb-4">Edit an article</h1>
 
-                        <div class="d-flex justify-content-start gap-2 p-2">
-                            <div class="">
-                                <a class="btn btn-secondary shadow-sm" th:href="@{/admin/article-list#navbar}" >Back</a>
-                            </div>
-                        </div>
-
                         <form th:object="${article}" method="post">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
@@ -50,7 +44,7 @@
 
                             <div class="mb-3 ">
                                 <label for="add-link" class="form-label">Add link</label>
-                                <textarea id="add-link" th:field="*{addLink}" class="form-control shadow-sm"></textarea>
+                                <input type="text" id="add-link" th:field="*{addLink}" class="form-control shadow-sm" />
                                 <span th:if="${#fields.hasErrors('addLink')}" th:errors="*{addLink}" class="text-danger"></span>
                                 <div class="form-text">Optional</div>
                             </div>
@@ -61,7 +55,7 @@
                                 </div>
 
                                 <div class="">
-                                    <a class="btn btn-secondary shadow-sm" th:href="@{/admin/article-list#navbar}" >Cancel</a>
+                                    <a class="btn btn-secondary shadow-sm" th:href="@{/admin/article/list#navbar}" >Cancel</a>
                                 </div>
                             </div>
                         </form>
