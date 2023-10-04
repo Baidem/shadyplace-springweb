@@ -31,7 +31,8 @@
                             <img th:src="${article.image != null ? article.image.location : '/images/default-image.jpg'}"
                                  th:alt="${article.image != null ? article.image.description : 'image'}"
                                  class="card-img-top">
-                            <div th:text="${article.image != null ? article.image.title : ''}" class="form-text text-center"></div>
+                            <div th:text="${article.image != null ? article.image.imageTitle : ''}" class="form-text text-center"></div>
+
                             <div class="card-body ">
                                 <h5 th:text="${article.title}" class="card-title"></h5>
 
@@ -39,7 +40,7 @@
 
                                 <p th:text="'Posted on : ' + ${#dates.format(article.publicationDate, 'dd-MM-yyyy')}"></p>
 
-                                <a th:if="${article.addLink != null}" th:href="@{${article.addLink}}" target="_blank" class="nav-link">More information</a>
+                                <a th:if="${article.addLink != null}" th:href="@{${article.addLink}}" target="_blank" class="stretched-link">More information</a>
                             </div>
                         </div>
                     </div>

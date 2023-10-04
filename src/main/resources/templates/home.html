@@ -74,8 +74,9 @@
                         <div class="card shadow bg-carte px-0" >
 
                             <img th:src="${article.image != null ? article.image.location : '/images/logo-banner.jpg'}"
-                                 th:alt="${article.image != null ? article.image.title : 'ShadyPlace banner'}"
+                                 th:alt="${article.image != null ? article.image.imageTitle : 'ShadyPlace banner'}"
                                  class="card-img-top">
+                            <div th:text="${article.image != null ? article.image.imageTitle : ''}" class="form-text text-center"></div>
 
                             <div class="card-body ">
                                 <h5 th:text="${article.title}" class="card-title"></h5>

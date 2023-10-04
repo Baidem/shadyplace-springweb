@@ -21,8 +21,8 @@ public class Image {
     @Column
     private String description;
     @Column(nullable = false)
-    @NotBlank(message = "Please enter a title")
-    private String title;
+    @NotBlank(message = "Please enter an image title")
+    private String imageTitle;
 
     @Temporal(TemporalType.DATE)
     private GregorianCalendar addedAt;
@@ -67,12 +67,12 @@ public class Image {
         this.description = description;
     }
 
-    public String getTitle() {
-        return title;
+    public String getImageTitle() {
+        return imageTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setImageTitle(String title) {
+        this.imageTitle = title;
     }
 
     public GregorianCalendar getAddedAt() {

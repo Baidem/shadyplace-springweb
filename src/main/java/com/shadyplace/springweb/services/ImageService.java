@@ -29,9 +29,6 @@ public class ImageService {
         this.config = config;
     }
 
-    public Image findByTitre(String title){
-        return this.imageRepository.findFirstByTitle(title);
-    }
     public Image findByLocation(String location){
         return this.imageRepository.findFirstByLocation(location);
     }
@@ -53,5 +50,18 @@ public class ImageService {
 
         return config.getLocation() + "/" + filePath;
     }
+
+    public void remove(Image image) {
+        this.imageRepository.delete(image);
+    }
+
+    public void deleteImageFile(String location) throws IOException {
+
+        Path locationPath = Paths.get(location);
+
+        Files.delete(locationPath);
+
+    }
+
 
 }

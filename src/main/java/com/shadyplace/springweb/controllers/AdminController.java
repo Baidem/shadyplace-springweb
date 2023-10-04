@@ -178,14 +178,23 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/article/delete/{article}", method = RequestMethod.GET)
-    public String delete(@Valid Article article){
+    public String delete(@Valid Article article) throws IOException {
 
         if (article == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Article not found"
             );
         }
-        this.articleService.remove(article);
+        if (!article.getImage().getLocation().equals("upload/default-image.jpg")) {
+            Image imageToDelete = article.getImage();
+            String imageFileToDeleteLocation = imageToDelete.getLocation();
+            this.articleService.remove(article);
+            this.imageService.remove(imageToDelete);
+            this.imageService.deleteImageFile(imageFileToDeleteLocation);
+
+        } else {
+            this.articleService.remove(article);
+        }
 
         return "redirect:/admin/article/list#navbar";
     }
@@ -343,7 +352,6 @@ public class AdminController {
             @RequestParam("uploadImage") MultipartFile uploadImage,
             Model model
     ) {
-        System.out.println("Hello");
         if(bindingResult.hasErrors()){
             model.addAttribute("image", image);
             return "admin/image/form";
@@ -357,6 +365,7 @@ public class AdminController {
                     image.setMimeType(uploadImage.getContentType());
                     imageService.save(image);
                 }
+        System.out.println("Hello");
                 // save file
                 article.setImage(image);
                 articleService.save(article);

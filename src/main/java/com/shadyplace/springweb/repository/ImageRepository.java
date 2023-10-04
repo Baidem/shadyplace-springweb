@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
 
-    Image findFirstByTitle(String title);
     Image findFirstByLocation(String location);
 
 }
