@@ -19,16 +19,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests(
+        httpSecurity
+//                .csrf().disable()
+                .authorizeHttpRequests(
                 (request) ->
                         request
-                                .requestMatchers("/login", "/", "/css/**", "/js/**").permitAll()
-                                .requestMatchers("/admin", "/").hasAuthority("ADMIN")
-                                .requestMatchers("/bookings", "/").hasAuthority("USER")
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("error/**","/css/**", "/js/**", "/images/**").permitAll()
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/upload/**").permitAll()
+                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/bookings:**").hasAuthority("USER")
                                 .anyRequest().authenticated()
         ).formLogin((login) ->
                 login.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
-                .logout((logout) -> logout.logoutUrl("/logout"));
+                .logout((logout) -> logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
 
         return httpSecurity.build();
     }

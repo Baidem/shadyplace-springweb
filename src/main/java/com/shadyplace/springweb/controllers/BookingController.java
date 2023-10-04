@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/bookings")
+@RequestMapping("/booking")
 public class BookingController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class BookingController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView addBooking(){
 
-        ModelAndView mv = new ModelAndView("bookings/form");
+        ModelAndView mv = new ModelAndView("booking/form");
 
         BookingForm bookingForm = new BookingForm();
         mv.addObject("bookingForm", bookingForm);

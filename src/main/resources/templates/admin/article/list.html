@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Manage articles</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
+
+</head>
+
+<body class="bg-carte-light">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<header th:replace="fragments/navbar.html :: navbar">...</header>
+
+<main>
+
+    <!--/* Search Engine */-->
+    <section id="search-engine" class="mt-0 py-2 bg-carte shadow">
+        <div class="container">
+            <div class="row text-end">
+
+                <form th:object="${form}" method="post" class="">
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    <div class="row g-3 align-items-center justify-content-end">
+                        <div th:if="${articles.getTotalPages() == 0}"
+                             class="text-danger col-auto">No results</div>
+                        <div class="col-auto">
+                            <input type="text" th:field="*{searchBar}" placeholder="Search for news"
+                                   class="form-control shadow-sm">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Admin article list */-->
+    <section id="admin-list" class="mb-3">
+        <div class="container">
+            <h1>Manage articles</h1>
+
+            <div class="d-flex justify-content-start gap-2 p-2">
+                <div class="">
+                    <a class="btn btn-success shadow-sm" th:href="@{/admin/article/add#navbar}" >Add an article</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="">
+                        <table class="table table-striped shadow m-0">
+                            <thead>
+                            <tr>
+                                <th>Miniature</th>
+                                <th>Title</th>
+                                <th>Link</th>
+                                <th>Image</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="article : ${articles}">
+
+                                <td th:if="${article.image != null}">
+                                    <img th:src="${article.image.location}" style="max-height:100px; max-width:100px;" class="" />
+                                </td>
+                                <td th:if="${article.image == null}"></td>
+
+                                <td th:text="${article.title}"></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/article/preview/' + ${article.id} +'#navbar'}">Preview article</a></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/image/change/' + ${article.id} +'#navbar'}">Change image</a></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/article/edit/' + ${article.id} +'#navbar'}">Edit article</a></td>
+                                <td ><a class="nav-link" th:href="@{'/admin/article/delete/' + ${article.id}}">Delete article</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-start gap-2 p-2">
+                <div class="">
+                    <a class="btn btn-success shadow-sm" th:href="@{/admin/article/add#navbar}" >Add an article</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Pagination */-->
+    <section class="mb-3" th:if="${articles.getTotalPages() > 1}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="">
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li th:if="${articles.hasPrevious()}" class="page-item">
+                                        <a th:href="@{/admin/article-list?page=__${articles.getNumber()}__#navbar}" class="page-link bg-carte">Previous</a>
+                                    </li>
+                                    <li th:each="pageNumber : ${#numbers.sequence(1, articles.getTotalPages())}" th:classappend="${pageNumber == articles.getNumber() + 1} ? 'page-item active' : 'page-item'">
+                                        <a th:href="@{/admin/article-list?page=__${pageNumber}__#navbar}" th:text="${pageNumber}" class="page-link bg-carte"></a>
+                                    </li>
+                                    <li th:if="${articles.hasNext()}" class="page-item">
+                                        <a th:href="@{/admin/article-list?page=__${articles.getNumber() + 2}__#navbar}" class="page-link bg-carte">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>
