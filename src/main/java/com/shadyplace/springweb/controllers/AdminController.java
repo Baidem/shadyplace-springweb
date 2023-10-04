@@ -6,8 +6,6 @@ import com.shadyplace.springweb.models.Article;
 import com.shadyplace.springweb.models.Image;
 import com.shadyplace.springweb.services.ArticleService;
 import com.shadyplace.springweb.services.ImageService;
-import jakarta.persistence.Query;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -82,60 +80,6 @@ public class AdminController {
         return mv;
     }
 
-//    @RequestMapping(value = "/article/add", method = RequestMethod.GET)
-//    public ModelAndView add(){
-//
-//        ModelAndView mv = new ModelAndView("admin/form-art-img");
-//        Article article = new Article();
-//        Image image = new Image();
-//        article.setImage(image);
-//
-//        mv.addObject("article", article);
-//
-//
-//        return mv;
-//    }
-//
-//    @RequestMapping(value = "/article/add", method = RequestMethod.POST)
-//    public String addSubmit(
-//            @Validated Article article,
-//            BindingResult bindingResult,
-//            @RequestParam("uploadImage") MultipartFile uploadImage ,
-//            Model model) {
-//
-//        if (article == null) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "article not found");
-//        }
-//        if(bindingResult.hasErrors()){
-//            return "admin/form-art-img";
-//        } else {
-//            try {
-//                String fileName = this.imageService.upload(uploadImage);
-//                article.getImage().setLocation(fileName);
-//                article.getImage().setAddedAt(new GregorianCalendar());
-//                article.getImage().setOriginalName(uploadImage.getOriginalFilename());
-//                article.getImage().setMimeType(uploadImage.getContentType());
-//
-//                // save file
-//                imageService.save(article.getImage());
-//                article.setPublicationDate(new GregorianCalendar());
-//                article.setImage(article.getImage());
-//                articleService.save(article);
-//
-//                // redirection
-//                return "redirect:/admin/article/list#navbar";
-//
-//            } catch (FileTypeException e) {
-//                model.addAttribute("uploadError", "We only accept JPG and PNG files");
-//                return "admin/form-art-img";
-//            } catch (IOException e) {
-//                model.addAttribute("uploadError", "Unable to load, please contact an administrator");
-//                return "admin/form-art-img";
-//            }
-//        }
-//    }
-
     @RequestMapping(value = "/article/add", method = RequestMethod.GET)
     public ModelAndView add(){
 
@@ -168,7 +112,6 @@ public class AdminController {
             return "redirect:/admin/article/preview/" + article.getId();
         }
     }
-
 
     @RequestMapping("article/preview/{article}")
     public ModelAndView article(@PathVariable(required = false) Article article){
@@ -233,160 +176,6 @@ public class AdminController {
         }
     }
 
-
-//    @RequestMapping(value ="/article/edit/{article}", method = RequestMethod.GET)
-//    public ModelAndView edit(@PathVariable(required = false) Article article){
-//
-//        if (article == null) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Article not found");
-//        }
-//
-//        ModelAndView mv = new ModelAndView("admin/form");
-//        mv.addObject("article", article);
-//
-//        return  mv;
-//    }
-//
-//    @RequestMapping(value = "/article/edit/{article}", method = RequestMethod.POST)
-//    public String editSubmit(@Valid Article article, BindingResult bindingResult,Model model){
-//
-//
-//        if (article == null) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Article introuvable"
-//            );
-//        }
-//        if(bindingResult.hasErrors()) {
-//            return "admin/form";
-//        } else {
-//            this.articleService.save(article);
-//            return "redirect:/admin/article/list#navbar";
-//        }
-//    }
-
-    @RequestMapping(value = "/image/add/{article}", method = RequestMethod.GET)
-    public ModelAndView addArticleImage(@PathVariable(required = false) Article article){
-
-        if (article == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Article not found"
-            );
-        }
-
-        Image image = new Image();
-
-        ModelAndView mv = new ModelAndView("admin/image/form");
-        mv.addObject("image", image);
-        mv.addObject("article", article);
-
-        return mv;
-    }
-
-    @RequestMapping(value = "/image/add/{article}", method = RequestMethod.POST)
-    public String addArticleImageSubmit(
-            @Validated Image image,
-            BindingResult bindingResult,
-            Article article,
-            @RequestParam("uploadImage") MultipartFile uploadImage,
-            Model model
-    ) {
-
-        if(bindingResult.hasErrors()){
-            return "admin/image/form";
-        } else {
-            try {
-                String fileName = this.imageService.upload(uploadImage);
-                image.setLocation(fileName);
-                image.setAddedAt(new GregorianCalendar());
-                image.setOriginalName(uploadImage.getOriginalFilename());
-                image.setMimeType(uploadImage.getContentType());
-
-                // save file
-                imageService.save(image);
-                article.setImage(image);
-                articleService.save(article);
-
-                // redirection
-                return "redirect:/admin/article/preview/" + article.getId();
-
-            } catch (FileTypeException e) {
-                model.addAttribute("uploadError", "We only accept JPG and PNG files");
-                return "admin/image/form";
-            } catch (IOException e) {
-                model.addAttribute("uploadError", "Unable to load, please contact an administrator");
-                return "admin/image/form";
-            }
-        }
-    }
-    @RequestMapping(value = "/image/edit/{article}", method = RequestMethod.GET)
-    public ModelAndView editArticleImage(@PathVariable(required = false) Article article){
-
-        Image image;
-        if (article == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Article not found"
-            );
-        }
-
-        ModelAndView mv = new ModelAndView("admin/image/form");
-
-        image = article.getImage();
-
-        if (article.getImage().getLocation().equals("upload/default-image.jpg")) {
-
-        }
-
-        mv.addObject("image", image);
-        mv.addObject("article", article);
-
-        return mv;
-    }
-
-    @RequestMapping(value = "/image/edit/{article}", method = RequestMethod.POST)
-    public String editArticleImageSubmit(
-            @Validated Image image,
-            BindingResult bindingResult,
-            Article article,
-            @RequestParam("uploadImage") MultipartFile uploadImage,
-            Model model
-    ) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("image", image);
-            return "admin/image/form";
-        } else {
-            try {
-                if (!uploadImage.getOriginalFilename().equals("")) {
-                    // supprimer l'image original dans upload
-                    if (!article.getImage().getLocation().equals("upload/default-image.jpg")) {
-                        Image imageToDelete = article.getImage();
-                        String imageFileToDeleteLocation = imageToDelete.getLocation();
-                        this.imageService.deleteImageFile(imageFileToDeleteLocation);
-                    }
-                    String fileName = this.imageService.upload(uploadImage);
-                    image.setLocation(fileName);
-                    image.setAddedAt(new GregorianCalendar());
-                    image.setOriginalName(uploadImage.getOriginalFilename());
-                    image.setMimeType(uploadImage.getContentType());
-                    imageService.save(image);
-                    articleService.save(article);
-                } else {
-                    imageService.save(image);
-                    articleService.save(article);
-                }
-
-                // redirection
-                return "redirect:/admin/article/preview/" + article.getId();
-
-            } catch (FileTypeException e) {
-                model.addAttribute("uploadError", "We only accept JPG and PNG files");
-                return "admin/image/form";
-            } catch (IOException e) {
-                model.addAttribute("uploadError", "Unable to load, please contact an administrator");
-                return "admin/image/form";
-            }
-        }
-    }
     // TODO image CHANGE (pour remplacer add image et edit image
     @RequestMapping(value = "/image/change/{article}", method = RequestMethod.GET)
     public ModelAndView changeArticleImage(@PathVariable(required = false) Article article){
