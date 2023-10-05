@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.models;
 
-import com.shadyplace.springweb.models.enums.LineLabel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
@@ -12,9 +12,9 @@ public class Line {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true, length = 20, nullable = false)
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Line's label cannot be null.")
-    private LineLabel label;
+    @NotBlank(message = "Line's label cannot be blank.")
+    private String label;
     @Column(columnDefinition = "float(5,2)", nullable = false)
     @PositiveOrZero(message = "Line's price cannot be negative.")
     @NotNull(message = "Line's price cannot be null.")
@@ -31,11 +31,11 @@ public class Line {
         this.price = price;
     }
 
-    public void setLabel(LineLabel label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 
-    public LineLabel getLabel() {
+    public String getLabel() {
         return label;
     }
 

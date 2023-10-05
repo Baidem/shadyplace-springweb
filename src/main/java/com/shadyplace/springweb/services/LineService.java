@@ -16,7 +16,7 @@ public class LineService {
 
     public Line getLineByString(String lineString){
         for (LineLabel lineLabel : LineLabel.values()) {
-            if (lineLabel.getLabel().equalsIgnoreCase(lineString) || lineLabel.getAbbreviation().equalsIgnoreCase(lineString)) {
+            if (lineLabel.getLabel().equalsIgnoreCase(lineString)) {
                 return lineRepository.findByLabel(lineLabel);
             }
         }

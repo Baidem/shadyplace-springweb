@@ -1,15 +1,13 @@
 package com.shadyplace.springweb.models.enums;
 
 public enum LineLabel {
-    PREMIUM("premium", "P"),
-    BACK("back", "B");
+    PREMIUM("premium"),
+    BACK("back");
 
     private String label;
-    private String abbreviation;
 
-    LineLabel(String label, String abbreviation) {
+    LineLabel(String label) {
         this.label = label;
-        this.abbreviation = abbreviation;
     }
 
     public String getLabel() {
@@ -19,15 +17,4 @@ public enum LineLabel {
     public void setLabel(String label) {
         this.label = label;
     }
-
-    public String getAbbreviation() {
-        return abbreviation;
-    }
-
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
-    }
-
-
-
 }

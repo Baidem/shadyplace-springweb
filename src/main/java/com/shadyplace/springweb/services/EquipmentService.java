@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.services;
 
 import com.shadyplace.springweb.models.Equipment;
-import com.shadyplace.springweb.models.enums.EquipmentOption;
 import com.shadyplace.springweb.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +13,16 @@ public class EquipmentService {
     @Autowired
     EquipmentRepository equipmentRepository;
 
-    public Equipment findByEquipmentOption(EquipmentOption option){
-        return this.equipmentRepository.findFirstByEquipmentOption(option);
+    public Equipment findByOption(String option){
+        return this.equipmentRepository.findFirstByOption(option);
     }
 
     public void save(Equipment equipment){
         this.equipmentRepository.save(equipment);
     }
 
-    public List<Equipment> getAll(){
-        return this.equipmentRepository.getAll();
+    public List<Equipment> findAll(){
+        return this.equipmentRepository.findAll();
     }
 
 }
