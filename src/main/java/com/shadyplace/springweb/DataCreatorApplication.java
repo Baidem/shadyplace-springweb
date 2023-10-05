@@ -2,7 +2,6 @@ package com.shadyplace.springweb;
 
 import com.shadyplace.springweb.models.*;
 import com.shadyplace.springweb.models.enums.Country;
-import com.shadyplace.springweb.models.enums.EquipmentOption;
 import com.shadyplace.springweb.models.enums.FamilyLinkLabel;
 import com.shadyplace.springweb.services.*;
 import org.slf4j.Logger;
@@ -31,6 +30,7 @@ public class DataCreatorApplication {
             FamilyLinkService familyLinkService,
             FidelityRankService fidelityRankService,
             UserService userService,
+            LineService lineService,
             RoleService roleService
     ){
         return args -> {
@@ -256,6 +256,38 @@ public class DataCreatorApplication {
 
                 logger.info("Equipment 'nothing' added");
             }
+// lines
+            if (lineService.findLineByLabel("first line facing the sea")==null){
+                logger.info("Creation : Line 'first line facing the sea'");
+                Line l = new Line();
+                l.setLabel("first line facing the sea");
+                l.setPrice(35.99);
+
+                lineService.save(l);
+
+                logger.info("Line 'first line facing the sea' added");
+            }
+            if (lineService.findLineByLabel("second line facing the sea")==null){
+                logger.info("Creation : Line 'second line facing the sea'");
+                Line l = new Line();
+                l.setLabel("second line facing the sea");
+                l.setPrice(32.99);
+
+                lineService.save(l);
+
+                logger.info("Line 'second line facing the sea' added");
+            }
+            if (lineService.findLineByLabel("other line")==null){
+                logger.info("Creation : Line 'other line'");
+                Line l = new Line();
+                l.setLabel("other line");
+                l.setPrice(29.99);
+
+                lineService.save(l);
+
+                logger.info("Line 'other line");
+            }
+
 // Users
             if (userService.findByEmail("baidem@gmail.com")==null){
                 logger.info("Creation : User 'Vincent'");
