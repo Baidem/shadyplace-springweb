@@ -11,7 +11,7 @@ public class Line {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true, length = 20, nullable = false)
+    @Column(unique = true, nullable = false)
     @NotNull(message = "Line's label cannot be null.")
     @NotBlank(message = "Line's label cannot be blank.")
     private String label;

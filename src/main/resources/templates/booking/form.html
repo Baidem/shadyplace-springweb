@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org"
 >
@@ -14,65 +14,75 @@
 
 <nav th:replace="fragments/navbar.html :: navbar">...</nav>
 
-<main class="container">
+<main>
 
-    <h1>Create a new booking</h1>
+    <!--/* Reservation form */-->
+    <section>
+        <div class="container">
+            <h1 class="my-4">Create a new booking</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert bg-carte"><!--/* Content */-->
+                        <form th:object="${bookingForm}" method="post" class="p-4">
 
-    <form th:object="${bookingForm}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-        <input type="hiden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <div class="mb-3">
+                                <label for="dateStart" class="form-label">Start date</label>
+                                <input type="date" th:field="*{dateStart}" class="form-control" id="dateStart"/>
+                                <span th:if="${#fields.hasErrors('dateStart')}" th:errors="*{dateStart}" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateEnd" class="form-label">End date</label>
+                                <input type="date" th:field="*{dateEnd}" class="form-control" id="dateEnd"/>
+                                <span th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}" class="text-danger"></span>
+                            </div>
 
-        <div>
-            <label>Start date</label>
-            <input type="date" th:field="*{dateStart}"/> <br>
-            <span th:if="${#fields.hasErrors('dateStart')}" th:errors="*{dateStart}"></span>
-        </div>
-        <div>
-            <label>End date</label>
-            <input type="date" th:field="*{dateEnd}"/> <br>
-            <span th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}"></span>
-        </div>
+                            <div id="collectionEquipment">
+                                <div class="collectionForm" th:each="plage, state : ${bookingForm.locations}">
+                                    <div class="border p-3 mb-3">
+                                        <label th:text="'Parasol '+${state.index+1}" class="form-label"></label>
 
-        <div id="collectionEquipment">
-            <div class="collectionForm" th:each="plage, state : ${bookingForm.locations}">
-                <div style="border: 1px solid black">
-                    <label th:text="'Parasol '+${state.index+1}"></label>
+                                        <div class="mb-3">
+                                            <label for="line" class="form-label">Line</label>
+                                            <select th:name="'items_'+${state.index}+'_line'" class="form-select" id="line">
+                                                <option th:each="line : ${lineList}" th:text="${line.label}" th:value="${line.id}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="equipment" class="form-label">Equipment</label>
+                                            <select th:name="'items_'+${state.index}+'_equipment'" class="form-select" id="equipment">
+                                                <option th:each="equipment : ${equipmentList}" th:text="${equipment.option}" th:value="${equipment.id}"></option>
+                                            </select>
+                                        </div>
 
-                    <div>
-                        <label>Line</label><br>
-                        <select th:name="'items_'+${state.index}+'_line'">
-                            <option th:each="line : ${lineList}" th:text="${line.label.label}" th:value="${line.id}"></option>
-                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a id="addEmplacement" class="btn btn-primary">
+                                Add a parasol location
+                            </a>
+
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <input type="text" th:field="*{comment}" class="form-control" id="comment"/>
+                                <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
                     </div>
-                    <div>
-                        <label>Equipment</label><br>
-                        <select th:name="'items_'+${state.index}+'_equipment'">
-                            <option th:each="equipment : ${equipmentList}" th:text="${equipment.option.label}" th:value="${equipment.id}"></option>
-                        </select>
-                    </div>
-
                 </div>
             </div>
         </div>
-
-            <a id="addEmplacement">
-                Add a parasol location
-            </a>
-
-        <div>
-            <label>Comment</label>
-            <input type="textarea" th:field="*{comment}"/> <br>
-            <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></span>
-        </div>
-
-        <button>Submit</button>
-    </form>
+    </section>
 
 </main>
 
-    <footer th:replace="fragments/footer.html :: footer">...</footer>
+<footer th:replace="fragments/footer.html :: footer">...</footer>
 
-    <div th:replace="fragments/scripts-js.html">...</div>
+<div th:replace="fragments/scripts-js.html">...</div>
 
 <script>
     $("#addEmplacement").click(function (){
