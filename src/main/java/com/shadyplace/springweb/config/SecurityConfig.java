@@ -29,6 +29,7 @@ public class SecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/upload/**").permitAll()
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/api/**").hasAuthority("ADMIN")
                                 .requestMatchers("/bookings:**").hasAuthority("USER")
                                 .anyRequest().authenticated()
         ).formLogin((login) ->

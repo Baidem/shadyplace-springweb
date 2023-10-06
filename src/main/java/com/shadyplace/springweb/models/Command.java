@@ -1,5 +1,6 @@
 package com.shadyplace.springweb.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shadyplace.springweb.models.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,7 @@ public class Command {
     @PastOrPresent(message = "Command's updatedAt cannot be in the future.")
     private Calendar updatedAt;
     @ManyToOne(optional = false)
+    @JsonIgnore
     @NotNull(message = "Command's user cannot be null.")
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
