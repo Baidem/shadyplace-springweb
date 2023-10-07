@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.services;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.PlaceOptionForm;
+import com.shadyplace.springweb.forms.EquipmentAndLineForm;
 import com.shadyplace.springweb.models.Booking;
 import com.shadyplace.springweb.models.Command;
 import com.shadyplace.springweb.models.User;
@@ -38,74 +38,82 @@ public class BookingService {
 
     private User user;
 
-    public List<PlaceOptionForm> payloadToResas(String requestBody) {
+//      Body request schema :
 
-        List<PlaceOptionForm> reservationForm = new ArrayList<>();
+//    Requête avec des champs vierges
+// _csrf=gUCKm2t7DVSx4UxiUOQdR9Wkczle9Bp6mjcjysyGIYBxzqo0sHfp-A9IaGKc039QMskpJuGSXgFnxH9XqQNG_vjjQOZI-Z5Q&
+// dateStart=&dateEnd=&
+// items_0_line=&items_0_equipment=&
+// comment=
 
-        // On sépare chacun de nos éléments en faisant un split sur le &
-        // On met tout ça en list pour simplifier l'utilisation
-        String[] params = requestBody.split("&");
-        List<String> listParam = Arrays.stream(params).toList();
+    //  Grosse requête
+//    _csrf=834cG-MyK4Vgucnvpdw__e9cMlx4QNmuISHPUvgo0ND0Uw_Qy0h6LdUEGeFNjfrew_ELyIxqHz5AIemDFEP4M8lL5OmVYj6y&
+//    dateStart=2023-10-07&dateEnd=2023-10-07&
+//    items_0_line=6&items_0_equipment=2&
+//    items_1_line=5&items_1_equipment=5&
+//    items_2_line=5&items_2_equipment=4&
+//    items_3_line=7&items_3_equipment=2&
+//    comment=long+commentaire+long+commentaire+long+commentaire+long+commentaire+long+commentaire+long+commentaire+
+//
+    public List<EquipmentAndLineForm> payloadToBookingList(String requestBody) {
 
-        // Je cré un Hashmap (clé => valeur) cela nous permettra de rechercher facilement
-        // des éléments de notre requêtes en fonction du champs souhaité
-        Map<String, String> mapParam = new HashMap<>();
+        List<EquipmentAndLineForm> equipmentAndLineFormArrayList = new ArrayList<>();
 
-        // Je par cours ma liste de paramètre
-        // Un paramètre sera donc par exemple items_3_equipement=lit
-        for (String paramString : listParam) {
-            // Je fais un split sur le "=" pour séparer la clé de la valeur
+        // Split rows
+        List<String> paramList = Arrays.stream(requestBody.split("&")).toList();
+
+        // For each row split key value and add to map
+        Map<String, String> paramMap = new HashMap<>();
+        for (String paramString : paramList) {
             String[] strParam = paramString.split("=");
-
-            List<String> paramList = Arrays.stream(strParam).toList();
-            if (paramList.size() == 2) {
-                // J'ajoute dans mon hashmap la clé et la valeur
-                mapParam.put(paramList.get(0), paramList.get(1));
+            List<String> strParamList = Arrays.stream(strParam).toList();
+            if (strParamList.size() == 2) {
+                paramMap.put(strParamList.get(0), strParamList.get(1));
             }
         }
 
-        // Je parcours la map que j'ai créé précédement
-        for (Map.Entry<String, String> entry : mapParam.entrySet()) {
+        // For each key get index and build
+        for (Map.Entry<String, String> entry : paramMap.entrySet()) {
+            if (
+                    entry.getKey().startsWith("items_")
+                            &&
+                            entry.getKey().endsWith("_line")
+            ) {
+                String index = Arrays.stream(entry.getKey().split("_")).toList().get(1);
 
-            // Si la clé de ma map commence par items_ et fini par _file
-            // Je vais devoir créer un nouvel emplacement
-            if (entry.getKey().startsWith("items_") && entry.getKey().endsWith("_file")) {
-                // Je réccupére l'index de mon emplacement
-                // Ceci me permettra de retrouver les autres champs en relation avec mon emplacement
-                String[] splitItemName = entry.getKey().split("_");
-                List<String> splitNameList = Arrays.stream(splitItemName).toList();
-                String index = splitNameList.get(1);
+                // Get Line and Equipment id for this index
+                String lineIdstr = paramMap.get("items_" + index + "_line");
+                String equipmentIdstr = paramMap.get("items_" + index + "_equipment");
 
-                // Collect options of the place
-                PlaceOptionForm placeOptionForm = new PlaceOptionForm();
-                Long linedId = Long.parseLong(mapParam.get(mapParam.get("items_" + index + "_file")));
-                placeOptionForm.setLine(lineRepository.getById(linedId));
-                // Je réccupére mon equipement dans le hashmap qui représente ma requête
-                Long equipmentId = Long.parseLong(mapParam.get("items_" + index + "_equipement"));
-                placeOptionForm.setEquipment(equipmentRepository.getById(equipmentId));
+                Long linedId = Long.parseLong(lineIdstr);
+                Long equipmentId = Long.parseLong(equipmentIdstr);
+                System.out.println(linedId);
+                // Set a new EquipmentAndLineForm with line and equipment id
+                EquipmentAndLineForm e = new EquipmentAndLineForm();
+                e.setLine(lineRepository.getById(linedId));
+                e.setEquipment(equipmentRepository.getById(equipmentId));
 
-                // J'ajoute mon emplacement dans mon formulaire
-                reservationForm.add(placeOptionForm);
+                // Add to the result list
+                equipmentAndLineFormArrayList.add(e);
             }
-
         }
-        // Je retourne ma liste d'emplacement
-        return reservationForm;
+        return equipmentAndLineFormArrayList;
     }
 
-    public void persistReservationFromForm(BookingForm bookingForm, String email){
+
+    public void persistReservationFromForm (BookingForm bookingForm, String email){
         Command command = new Command();
         command.setUser(this.userRepository.findByEmail(email));
         command.setComment(bookingForm.getComment());
 
         this.commandRepository.save(command);
 
-        for (PlaceOptionForm placeOptionForm : bookingForm.getLocations()){
+        for (EquipmentAndLineForm equipmentAndLineForm : bookingForm.getLocations()) {
 
             Booking booking = new Booking();
             booking.setBookingDate(new GregorianCalendar());
-            booking.setLine(placeOptionForm.getLine());
-            booking.setEquipment(placeOptionForm.getEquipment());
+            booking.setLine(equipmentAndLineForm.getLine());
+            booking.setEquipment(equipmentAndLineForm.getEquipment());
             booking.setCommand(command);
 
             this.bookingRepository.save(booking);
@@ -113,5 +121,5 @@ public class BookingService {
 
     }
 
-
 }
+

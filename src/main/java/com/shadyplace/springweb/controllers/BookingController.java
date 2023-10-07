@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.PlaceOptionForm;
+import com.shadyplace.springweb.forms.EquipmentAndLineForm;
 import com.shadyplace.springweb.models.Equipment;
 import com.shadyplace.springweb.models.Line;
 import com.shadyplace.springweb.services.BookingService;
@@ -58,37 +58,36 @@ public class BookingController {
                                  BindingResult bindingResult,
                                  @RequestBody String postPayload, Model model){
 
+        // Selects options
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
 
 
         // J'appel mon service de reservation pour lui demander de transformer le body
-        // de ma requête HTTP en objet en list d'emplacement
-        List<PlaceOptionForm> listPlaceOptionForm = this.bookingService.payloadToResas(postPayload);
+        // Convert postPayload to
+        List<EquipmentAndLineForm> equipmentAndLineFormList = this.bookingService.payloadToBookingList(postPayload);
 
         // La liste d'emplacement réccupérée depuis mon service je l'ajoute à l'objet commande de mon formulaire
-        bookingForm.setLocations(listPlaceOptionForm);
+        bookingForm.setLocations(equipmentAndLineFormList);
 
         // Permet de revalider notre champs reservation Form
         // Nous l'avons modifié donc il faut revalider.
         DataBinder binder = new DataBinder(bookingForm);
         binder.setValidator(validator);
-        binder.validate(bookingForm, "reservationForm");
+        binder.validate(bookingForm, "bookingForm");
         bindingResult = binder.getBindingResult();
 
         if (bindingResult.hasErrors()) {
 
-
             model.addAttribute("fields", bindingResult);
             // On ajoute notre objet de reservation
-            model.addAttribute("reservationForm", bookingForm);
+            model.addAttribute("bookingForm", bookingForm);
 
             // select
             model.addAttribute("equipmentList", equipmentList);
             model.addAttribute("lineList", lineList);
 
-
-            return "reservations/form";
+            return "booking/form";
         } else {
             // Envoyer les données en BDD
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

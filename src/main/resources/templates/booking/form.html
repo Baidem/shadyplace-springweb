@@ -38,6 +38,7 @@
                                 <span th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}" class="text-danger"></span>
                             </div>
 
+                            <!--/* add parasol place */-->
                             <div id="collectionEquipment">
                                 <div class="collectionForm" th:each="plage, state : ${bookingForm.locations}">
                                     <div class="border p-3 mb-3">
@@ -46,14 +47,16 @@
                                         <div class="mb-3">
                                             <label for="line" class="form-label">Line</label>
                                             <select th:name="'items_'+${state.index}+'_line'" class="form-select" id="line">
+                                                <option value=""></option>
                                                 <option th:each="line : ${lineList}" th:text="${line.label}" th:value="${line.id}"></option>
-                                            </select>
+                                            </select><!--/* items_0_line=0 */-->
                                         </div>
                                         <div class="mb-3">
                                             <label for="equipment" class="form-label">Equipment</label>
                                             <select th:name="'items_'+${state.index}+'_equipment'" class="form-select" id="equipment">
+                                                <option value=""></option>
                                                 <option th:each="equipment : ${equipmentList}" th:text="${equipment.option}" th:value="${equipment.id}"></option>
-                                            </select>
+                                            </select><!--/* items_0_equipment=0 */-->
                                         </div>
 
                                     </div>
@@ -70,7 +73,8 @@
                                 <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="text-danger"></span>
                             </div>
 
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <a th:if="${#fields.hasErrors()}" th:href="@{/booking/new}" type="text" class="btn btn-success">Retry</a>
+                            <button th:unless="${#fields.hasErrors()}" type="submit" class="btn btn-success">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -89,15 +93,19 @@
         let index =  $('.collectionForm').length - 1;
         divToCopy = $('.collectionForm').last();
 
-        newDiv = divToCopy.html().replace('name="items_'+index+'_line"', 'name="items_'+parseInt(index+1)+'_line"');
-        newDiv = newDiv.replace('name="items_'+index+'equipment"', 'name="items_'+parseInt(index+1)+'_equipment"');
+        newDiv = divToCopy.html();
         newDiv = newDiv.replace('Parasol '+parseInt(index+1), 'Parasol '+parseInt(index+2));
+        newDiv = newDiv.replace('name="items_'+parseInt(index)+'_line"', 'name="items_'+parseInt(index+1)+'_line"');
+        newDiv = newDiv.replace('name="items_'+parseInt(index)+'_equipment"', 'name="items_'+parseInt(index+1)+'_equipment"');
 
         newDiv = '<div class="collectionForm">'+newDiv+'</div>';
         $('#collectionEquipment').append(newDiv);
 
+        $('#collectionEquipement').append(newDiv);
     })
 
 </script>
 </body>
 </html>
+
+

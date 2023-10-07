@@ -1,44 +1,56 @@
 package com.shadyplace.springweb.forms;
 
-import jakarta.validation.constraints.NotBlank;
+import com.shadyplace.springweb.constraints.DateOrderConstraint;
+import com.shadyplace.springweb.constraints.OpeningDatesConstraint;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
+
+@DateOrderConstraint(fieldStart = "dateStart", fieldEnd = "dateEnd")
 public class BookingForm {
 
-    @NotBlank(message = "Please enter a start date")
-    private GregorianCalendar dateStart;
-    @NotBlank(message = "Please enter an end date")
-    private GregorianCalendar dateEnd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Start date cannot be null")
+    @Future(message = "This date has already passed")
+    @OpeningDatesConstraint()
+    private Date dateStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "End date cannot be null")
+    @Future(message = "This date has already passed")
+    @OpeningDatesConstraint()
+    private Date dateEnd;
     private String Comment;
-    private List<PlaceOptionForm> locations;
+    private List<EquipmentAndLineForm> locations;
 
     public BookingForm() {
         this.locations = new ArrayList<>();
-        this.locations.add(new PlaceOptionForm());
+        this.locations.add(new EquipmentAndLineForm());
     }
-    public void addLocation(PlaceOptionForm placeOptionForm){
-        this.locations.add(placeOptionForm);
+    public void addLocation(EquipmentAndLineForm equipmentAndLineForm){
+        this.locations.add(equipmentAndLineForm);
     }
-    public void removeLocation(PlaceOptionForm placeOptionForm){
-        this.locations.remove(placeOptionForm);
+    public void removeLocation(EquipmentAndLineForm equipmentAndLineForm){
+        this.locations.remove(equipmentAndLineForm);
     }
 
-    public GregorianCalendar getDateStart() {
+    public Date getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(GregorianCalendar dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public GregorianCalendar getDateEnd() {
+    public Date getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(GregorianCalendar dateEnd) {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
@@ -50,11 +62,11 @@ public class BookingForm {
         Comment = comment;
     }
 
-    public List<PlaceOptionForm> getLocations() {
+    public List<EquipmentAndLineForm> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<PlaceOptionForm> locations) {
+    public void setLocations(List<EquipmentAndLineForm> locations) {
         this.locations = locations;
     }
 }
