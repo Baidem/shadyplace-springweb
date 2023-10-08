@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+
+<body>
+
+<h1 th:utext="'Command #'+${command.id}"></h1>
+<div th:utext="'Command #'+${command.user.firstname}"></div>
+<div th:utext="'Command #'+${command.user.lastname}"></div>
+<div th:utext="'Command #'+${command.totalPrice}"></div>
+
+
+</body>
+</html>
