@@ -25,17 +25,17 @@ public class BookingForm {
     @OpeningDatesConstraint()
     private Date dateEnd;
     private String Comment;
-    private List<EquipmentAndLineForm> locations;
+    private List<ParasolForm> parasols;
 
     public BookingForm() {
-        this.locations = new ArrayList<>();
-        this.locations.add(new EquipmentAndLineForm());
+        this.parasols = new ArrayList<>();
+        this.parasols.add(new ParasolForm());
     }
-    public void addLocation(EquipmentAndLineForm equipmentAndLineForm){
-        this.locations.add(equipmentAndLineForm);
+    public void addLocation(ParasolForm parasolForm){
+        this.parasols.add(parasolForm);
     }
-    public void removeLocation(EquipmentAndLineForm equipmentAndLineForm){
-        this.locations.remove(equipmentAndLineForm);
+    public void removeLocation(ParasolForm parasolForm){
+        this.parasols.remove(parasolForm);
     }
 
     public Date getDateStart() {
@@ -62,11 +62,11 @@ public class BookingForm {
         Comment = comment;
     }
 
-    public List<EquipmentAndLineForm> getLocations() {
-        return locations;
+    public List<ParasolForm> getParasols() {
+        return parasols;
     }
 
-    public void setLocations(List<EquipmentAndLineForm> locations) {
-        this.locations = locations;
+    public void setParasols(List<ParasolForm> parasols) {
+        this.parasols = parasols;
     }
 }

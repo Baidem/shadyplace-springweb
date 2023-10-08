@@ -1,12 +1,9 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.EquipmentAndLineForm;
-import com.shadyplace.springweb.models.Equipment;
-import com.shadyplace.springweb.models.Line;
-import com.shadyplace.springweb.services.BookingService;
-import com.shadyplace.springweb.services.EquipmentService;
-import com.shadyplace.springweb.services.LineService;
+import com.shadyplace.springweb.forms.ParasolForm;
+import com.shadyplace.springweb.models.*;
+import com.shadyplace.springweb.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,12 +27,17 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
     @Autowired
+    ParasolFormService parasolFormService;
+    @Autowired
     EquipmentService equipmentService;
     @Autowired
     LineService lineService;
-
     @Autowired
     Validator validator;
+    @Autowired
+    private CommandService commandService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView addBooking(){
@@ -54,7 +56,7 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String addReservation(@Valid BookingForm bookingForm,
+    public String addBookingSubmit(@Valid BookingForm bookingForm,
                                  BindingResult bindingResult,
                                  @RequestBody String postPayload, Model model){
 
@@ -62,25 +64,23 @@ public class BookingController {
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
 
-
-        // J'appel mon service de reservation pour lui demander de transformer le body
-        // Convert postPayload to
-        List<EquipmentAndLineForm> equipmentAndLineFormList = this.bookingService.payloadToBookingList(postPayload);
+        // Convert postPayload to parasolFormList and set to bookingform
+        List<ParasolForm> parasolFormList =
+                this.parasolFormService.convertPayloadToParasolFormList(postPayload);
 
         // La liste d'emplacement réccupérée depuis mon service je l'ajoute à l'objet commande de mon formulaire
-        bookingForm.setLocations(equipmentAndLineFormList);
+        bookingForm.setParasols(parasolFormList);
 
-        // Permet de revalider notre champs reservation Form
-        // Nous l'avons modifié donc il faut revalider.
+        // Revalidate bookingForm
         DataBinder binder = new DataBinder(bookingForm);
         binder.setValidator(validator);
         binder.validate(bookingForm, "bookingForm");
         bindingResult = binder.getBindingResult();
 
+        // hasErrors
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("fields", bindingResult);
-            // On ajoute notre objet de reservation
             model.addAttribute("bookingForm", bookingForm);
 
             // select
@@ -88,12 +88,17 @@ public class BookingController {
             model.addAttribute("lineList", lineList);
 
             return "booking/form";
-        } else {
-            // Envoyer les données en BDD
+        } else { // Saving the Command with its Bookings
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentPrincipalName = authentication.getName();
+            User user = userService.findByEmail(authentication.getName()) ;
 
-            this.bookingService.persistReservationFromForm(bookingForm, currentPrincipalName);
+            List<Booking> bookings =
+                    this.bookingService.BookingFormToBookingList(bookingForm, user);
+
+            Command command = new Command(bookings, user);
+            command.setComment(bookingForm.getComment());
+
+            this.commandService.saveWithBookingList(command);
 
             return "redirect:/";
         }

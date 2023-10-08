@@ -3,7 +3,7 @@ package com.shadyplace.springweb.forms;
 import com.shadyplace.springweb.models.Equipment;
 import com.shadyplace.springweb.models.Line;
 
-public class EquipmentAndLineForm {
+public class ParasolForm {
 
     private Line line;
 

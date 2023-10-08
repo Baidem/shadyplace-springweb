@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.shadyplace.springweb.models.enums.OrderStatus;
+import com.shadyplace.springweb.models.enums.CommandStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -27,7 +27,7 @@ public class Command {
     @Column(length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Command's status cannot be null.")
-    private OrderStatus status;
+    private CommandStatus status;
     @Column(name = "created_at",nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @PastOrPresent(message = "Command's createdAt cannot be in the future.")
@@ -48,8 +48,15 @@ public class Command {
     public Command(){
         this.bookings = new ArrayList<>();
         this.createdAt = Calendar.getInstance();
-        this.status = OrderStatus.AWAITING_PAYMENT;
+        this.status = CommandStatus.AWAITING_PAYMENT;
     }
+
+    public Command(List<Booking> bookings, User user){
+        this();
+        this.bookings = bookings;
+        this.user = user;
+    }
+
     public void addBooking(Booking booking){
         this.bookings.add(booking);
     }
@@ -80,11 +87,11 @@ public class Command {
         this.bill = bill;
     }
 
-    public OrderStatus getStatus() {
+    public CommandStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(CommandStatus status) {
         this.status = status;
     }
 

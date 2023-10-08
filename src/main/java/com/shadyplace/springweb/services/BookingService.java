@@ -1,10 +1,9 @@
 package com.shadyplace.springweb.services;
 
 import com.shadyplace.springweb.forms.BookingForm;
-import com.shadyplace.springweb.forms.EquipmentAndLineForm;
-import com.shadyplace.springweb.models.Booking;
-import com.shadyplace.springweb.models.Command;
-import com.shadyplace.springweb.models.User;
+import com.shadyplace.springweb.forms.ParasolForm;
+import com.shadyplace.springweb.models.*;
+import com.shadyplace.springweb.models.enums.BookingStatus;
 import com.shadyplace.springweb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,106 +18,63 @@ public class BookingService {
     UserRepository userRepository;
 
     @Autowired
-    private CommandRepository commandRepository;
-
-    @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
-    private EquipmentRepository equipmentRepository;
-
-    @Autowired
-    private LineRepository lineRepository;
-
-    @Autowired
     DaoAuthenticationProvider daoAuthenticationProvider;
 
     @Autowired
     LineService lineService;
 
-    private User user;
 
-//      Body request schema :
+    public List<Booking> BookingFormToBookingList(BookingForm bookingForm, User user) {
+        List<Calendar> datesInRange = new ArrayList<>();
+        List<Booking> bookings = new ArrayList<>();
 
-//    Requête avec des champs vierges
-// _csrf=gUCKm2t7DVSx4UxiUOQdR9Wkczle9Bp6mjcjysyGIYBxzqo0sHfp-A9IaGKc039QMskpJuGSXgFnxH9XqQNG_vjjQOZI-Z5Q&
-// dateStart=&dateEnd=&
-// items_0_line=&items_0_equipment=&
-// comment=
+        Calendar currentDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
 
-    //  Grosse requête
-//    _csrf=834cG-MyK4Vgucnvpdw__e9cMlx4QNmuISHPUvgo0ND0Uw_Qy0h6LdUEGeFNjfrew_ELyIxqHz5AIemDFEP4M8lL5OmVYj6y&
-//    dateStart=2023-10-07&dateEnd=2023-10-07&
-//    items_0_line=6&items_0_equipment=2&
-//    items_1_line=5&items_1_equipment=5&
-//    items_2_line=5&items_2_equipment=4&
-//    items_3_line=7&items_3_equipment=2&
-//    comment=long+commentaire+long+commentaire+long+commentaire+long+commentaire+long+commentaire+long+commentaire+
-//
-    public List<EquipmentAndLineForm> payloadToBookingList(String requestBody) {
+        currentDate.setTime(bookingForm.getDateStart());
+        endDate.setTime(bookingForm.getDateEnd());
 
-        List<EquipmentAndLineForm> equipmentAndLineFormArrayList = new ArrayList<>();
+        // List all dates in the range
+        while (!currentDate.after(endDate)) {
+            datesInRange.add((Calendar) currentDate.clone());
+            currentDate.add(Calendar.DATE, 1);
+        }
 
-        // Split rows
-        List<String> paramList = Arrays.stream(requestBody.split("&")).toList();
+        // Pour chaque date de la liste une réservation est construite et ajoutée au résultat
+        for (Calendar calendar : datesInRange){
+            for (ParasolForm parasolForm : bookingForm.getParasols()) {
+                Booking booking = new Booking();
 
-        // For each row split key value and add to map
-        Map<String, String> paramMap = new HashMap<>();
-        for (String paramString : paramList) {
-            String[] strParam = paramString.split("=");
-            List<String> strParamList = Arrays.stream(strParam).toList();
-            if (strParamList.size() == 2) {
-                paramMap.put(strParamList.get(0), strParamList.get(1));
+                booking.setBookingDate(calendar);
+                booking.setBookingStatus(BookingStatus.PENDING);
+                booking.setComment(bookingForm.getComment());
+                booking.setEquipment(parasolForm.getEquipment());
+                booking.setFidelityRank(user.getCurrentFidelityRank());
+                booking.setLine(parasolForm.getLine());
+                Double price = computePrice(user.getFamilyLink(), booking);
+                booking.setBookingPrice(price);
+
+                bookings.add(booking);
             }
         }
 
-        // For each key get index and build
-        for (Map.Entry<String, String> entry : paramMap.entrySet()) {
-            if (
-                    entry.getKey().startsWith("items_")
-                            &&
-                            entry.getKey().endsWith("_line")
-            ) {
-                String index = Arrays.stream(entry.getKey().split("_")).toList().get(1);
-
-                // Get Line and Equipment id for this index
-                String lineIdstr = paramMap.get("items_" + index + "_line");
-                String equipmentIdstr = paramMap.get("items_" + index + "_equipment");
-
-                Long linedId = Long.parseLong(lineIdstr);
-                Long equipmentId = Long.parseLong(equipmentIdstr);
-                System.out.println(linedId);
-                // Set a new EquipmentAndLineForm with line and equipment id
-                EquipmentAndLineForm e = new EquipmentAndLineForm();
-                e.setLine(lineRepository.getById(linedId));
-                e.setEquipment(equipmentRepository.getById(equipmentId));
-
-                // Add to the result list
-                equipmentAndLineFormArrayList.add(e);
-            }
-        }
-        return equipmentAndLineFormArrayList;
+        return bookings;
     }
 
+    private double computePrice(FamilyLink familyLink, Booking booking){
 
-    public void persistReservationFromForm (BookingForm bookingForm, String email){
-        Command command = new Command();
-        command.setUser(this.userRepository.findByEmail(email));
-        command.setComment(bookingForm.getComment());
+        double linePrice = booking.getLine().getPrice();
+        double equipmentPrice = booking.getEquipment().getPrice();
+        double fidelityRankDiscountPrice = booking.getFidelityRank().getDiscountPrice();
+        double familyLinkRate = familyLink.getDiscountRate();
 
-        this.commandRepository.save(command);
+        double price = (linePrice + equipmentPrice - fidelityRankDiscountPrice) * (1-familyLinkRate);
 
-        for (EquipmentAndLineForm equipmentAndLineForm : bookingForm.getLocations()) {
+        // Price rounded to two decimal places
+        double factor = Math.pow(10, 2);
+        price = Math.round(price * factor) / factor;
 
-            Booking booking = new Booking();
-            booking.setBookingDate(new GregorianCalendar());
-            booking.setLine(equipmentAndLineForm.getLine());
-            booking.setEquipment(equipmentAndLineForm.getEquipment());
-            booking.setCommand(command);
-
-            this.bookingRepository.save(booking);
-        }
-
+        return price;
     }
 
 }

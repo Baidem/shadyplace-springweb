@@ -16,7 +16,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "booking_date", nullable = false)
-    @Future(message = "Booking's start date must be in the future.")
+    @Future(message = "Booking date must be in the future.")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull(message = "Start date cannot be null.")
     private Calendar bookingDate;
