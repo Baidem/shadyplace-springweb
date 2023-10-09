@@ -25,7 +25,7 @@ public class PDFService {
         Context context = new Context();
         context.setVariable("command", command);
 
-        return templateEngine.process("pdf/bill", context);
+        return templateEngine.process("pdf/order", context);
     }
 
     public void generatePdf(Command command) throws IOException, DocumentException {

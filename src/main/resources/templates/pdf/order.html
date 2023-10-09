@@ -1,0 +1,130 @@
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order PDF</title>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: hotpink;
+        }
+
+        .container {
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        .w-70 {
+            width: 70%;
+        }
+
+        table{
+            width: 100%;
+        }
+        section {
+            margin-bottom: 16px;
+        }
+        .div-order-lines {
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!--<h1 th:utext="'Command #'+${command.id}"></h1>-->
+<!--<div th:utext="'Command #'+${command.user.firstname}"></div>-->
+<!--<div th:utext="'Command #'+${command.user.lastname}"></div>-->
+<!--<div th:utext="'Command #'+${command.totalPrice}"></div>-->
+<div class="container">
+    <!--/* div-header */-->
+    <section>
+        <div class="div-header">
+            <h1 th:utext="'Order #'+${command.id}">ORDER #</h1>
+            <table>
+                <tr>
+                    <td class="w-70"><h2>ShadyPlace</h2></td>
+                    <td th:utext="'DATE : '+ ${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}"></td>
+                </tr>
+                <tr>
+                    <td><h4>Here we are on vacation</h4></td>
+                    <td th:utext="'INVOICE N° '+${command.id}"></td>
+                </tr>
+                <tr>
+                    <td>Spiaggia Privata Bella Vista</td>
+                    <td>BILL TO :</td>
+                </tr>
+                <tr>
+                    <td>Via del Mare, 123</td>
+                    <td th:utext="${command.user.firstname}+' '+${command.user.lastname}"></td>
+                </tr>
+                <tr>
+                    <td>Spiaggia Paradiso</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Città di Sabbia, 54321</td>
+                    <td>null++</td>
+                </tr>
+                <tr>
+                    <td>Italia</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Description du projet ou service</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!--/* div-order-lines */-->
+    <section>
+        <div class="div-order-lines">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ><!--/* for each booking line */-->
+                    <td>000</td>
+                    <td>ligne à dupliquer</td>
+                    <td>000 €</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>SOUS-TOTAL</td>
+                    <td> -   €  </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>TAUX TVA</td>
+                    <td>0,00% </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>TVA</td>
+                    <td> -   €  </td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>TOTAL</td>
+                    <td> -   € </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </section>
+
+
+</div>
+</body>
+</html>
+
