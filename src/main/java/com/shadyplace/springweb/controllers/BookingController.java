@@ -10,9 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
-import org.springframework.validation.Validator;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,6 +74,7 @@ public class BookingController {
         binder.setValidator(validator);
         binder.validate(bookingForm, "bookingForm");
         bindingResult = binder.getBindingResult();
+        List<ObjectError> globalErrors = bindingResult.getGlobalErrors();
 
         // hasErrors
         if (bindingResult.hasErrors()) {
@@ -86,6 +85,7 @@ public class BookingController {
             // select
             model.addAttribute("equipmentList", equipmentList);
             model.addAttribute("lineList", lineList);
+            model.addAttribute("globalErrors", globalErrors);
 
             return "booking/form";
         } else { // Saving the Command with its Bookings

@@ -27,6 +27,12 @@
 
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
+                            <div th:if="${#fields.hasErrors()}">
+                                <div th:each="error : ${globalErrors}">
+                                    <p th:text="${error.defaultMessage}" class="text-danger"></p>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="dateStart" class="form-label">Start date</label>
                                 <input type="date" th:field="*{dateStart}" class="form-control" id="dateStart"/>
@@ -73,8 +79,8 @@
                                 <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="text-danger"></span>
                             </div>
 
-                            <a th:if="${#fields.hasErrors()}" th:href="@{/booking/new}" type="text" class="btn btn-success">Retry</a>
-                            <button th:unless="${#fields.hasErrors()}" type="submit" class="btn btn-success">Submit</button>
+                            <a th:if="${#fields.hasErrors()}" th:href="@{/booking/new}" type="text" class="btn btn-success">Refresh</a>
+                            <button type="submit" class="btn btn-success">Submit</button>
                         </form>
                     </div>
                 </div>

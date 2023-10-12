@@ -17,9 +17,11 @@ public class DateOrderConstraintValidator implements ConstraintValidator<DateOrd
         boolean isValid = false;
 
         if (bookingForm.getDateStart() != null && bookingForm.getDateEnd() != null){
-            return bookingForm.getDateStart().getTime() <= bookingForm.getDateStart().getTime();
+            boolean b = bookingForm.getDateStart().getTime() <= bookingForm.getDateEnd().getTime();
+            System.out.println(b);
+            return bookingForm.getDateStart().getTime() <= bookingForm.getDateEnd().getTime();
         } else {
-            return true;
+            return false;
         }
     }
 }
