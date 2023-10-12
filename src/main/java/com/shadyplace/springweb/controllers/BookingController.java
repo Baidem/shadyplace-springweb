@@ -65,8 +65,6 @@ public class BookingController {
         // Convert postPayload to parasolFormList and set to bookingform
         List<ParasolForm> parasolFormList =
                 this.parasolFormService.convertPayloadToParasolFormList(postPayload);
-
-        // La liste d'emplacement réccupérée depuis mon service je l'ajoute à l'objet commande de mon formulaire
         bookingForm.setParasols(parasolFormList);
 
         // Revalidate bookingForm
@@ -74,7 +72,7 @@ public class BookingController {
         binder.setValidator(validator);
         binder.validate(bookingForm, "bookingForm");
         bindingResult = binder.getBindingResult();
-        List<ObjectError> globalErrors = bindingResult.getGlobalErrors();
+        List<ObjectError> globalErrors = bindingResult.getGlobalErrors(); // catch DateOrderConstraint error
 
         // hasErrors
         if (bindingResult.hasErrors()) {
@@ -100,7 +98,10 @@ public class BookingController {
 
             this.commandService.saveWithBookingList(command);
 
-            return "redirect:/";
+            model.addAttribute("user", user);
+            model.addAttribute("command", command);
+
+            return "booking/confirm";
         }
 
     }
