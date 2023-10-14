@@ -10,53 +10,59 @@
 <div class="container-md pt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:action="@{/login}" method="post" class="bg-primary-subtle border rounded-3 p-3 shadow">
-                <h1><img style="max-height:60px" th:src="@{/images/logo-sunny-parasol-60px.png}">Log on to Shadyplace</h1>
+            <form th:action="@{/login}" method="post" class="bg-bluesky rounded-3 p-3 shadow">
+                <h1 class="card-title text-center mb-3">
+                    <img style="max-height:60px" th:src="@{/images/logo-sunny-parasol-60px.png}">
+                    Log on to Shadyplace
+                </h1>
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input id="email" name="username" type="text" class="form-control shadow-sm">
-                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input id="email" name="username" type="text" class="form-control shadow-sm">
+                            </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" type="password" class="form-control shadow-sm">
-                </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input id="password" name="password" type="password" class="form-control shadow-sm">
+                            </div>
 
-                <div class="alert-warning" th:if="${param.error}">
-                    Invalid login or password
-                </div>
+                            <div class="alert-warning" th:if="${param.error}">
+                                Invalid login or password
+                            </div>
 
-                <div class="alert-warning" th:if="${param.registersuccess}">
-                    Your account is created please login
-                </div>
+                            <div class="alert-warning" th:if="${param.registersuccess}">
+                                Your account is created please login
+                            </div>
+                            <div class="alert-warning" th:if="${param.logout}">
+                                You are disconnected
+                            </div>
 
-                <div class="alert-warning" th:if="${param.logout}">
-                    You are disconnected
-                </div>
+                            <div class="d-flex justify-content-end gap-2 p-2">
+                                <div class="">
+                                    <a th:href="@{/}" class="btn btn-link">Visit without logging in</a>
+                                </div>
 
-                <div class="d-flex justify-content-end gap-2 p-2">
-                    <div class="">
-                        <a th:href="@{/}" class="btn btn-link">Visit without logging in</a>
+                                <div class="">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <p>I don't have an account yet !<a href="http://localhost:8043/jee/user-register" class="btn card-link">Create an account</a></p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </div>
                 </div>
-
-                <div class="row text-center">
-                    <p>I don't have an account yet !<a href="http://localhost:8043/jee/user-register" class="btn btn-link">Create an account</a></p>
-                </div>
-
             </form>
-
-
             <div th:replace="fragments/scripts-js.html">...</div>
-
         </div>
     </div>
 </div>
+
+<div th:replace="fragments/scripts-js.html">...</div>
 
 </body>
 </html>
