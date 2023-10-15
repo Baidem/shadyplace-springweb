@@ -47,8 +47,6 @@ public class Command {
     private List<Booking> bookings;
     public Command(){
         this.bookings = new ArrayList<>();
-        this.createdAt = Calendar.getInstance();
-        this.status = CommandStatus.AWAITING_PAYMENT;
     }
 
     public Command(List<Booking> bookings, User user){

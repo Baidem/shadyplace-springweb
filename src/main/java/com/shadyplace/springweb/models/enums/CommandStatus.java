@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.models.enums;
 
 public enum CommandStatus {
-    CARD("card"),
+    CART("cart"),
     ABANDONED("abandoned"),
     AWAITING_PAYMENT("awaiting payment"),
     PAYMENT_MADE("payment made"),

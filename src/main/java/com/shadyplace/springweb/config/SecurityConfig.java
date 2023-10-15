@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 .requestMatchers("error/**","/css/**", "/js/**", "/images/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/upload/**").permitAll()
+                                .requestMatchers("/paypal/**").authenticated()
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/bookings:**").hasAuthority("USER")
                                 .anyRequest().authenticated()

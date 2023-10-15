@@ -15,14 +15,17 @@
 <nav th:replace="fragments/navbar.html :: navbar">...</nav>
 
 <main>
-    <h1 class="my-4">Confirm booking</h1>
+    <div class="container">
+        <h1 class="my-4">Confirm booking</h1>
+    </div>
+
 
     <!--/* Command header */-->
-    <section>
+    <section class="my-0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class=""><!--/* Content */-->
+                    <div class="bg-light-subtle p-3"><!--/* Content */-->
                         <table class="table">
                             <tbody>
                             <tr>
@@ -31,11 +34,11 @@
                                          th:src="@{/images/logo-sunny-parasol-60px.png}">
                                     <h2>ShadyPlace</h2>
                                 </td>
-                                <td class="p-0 border-0 bg-transparent col-2">
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
                                     DATE:
                                 </td>
                                 <td class="p-0 border-0 bg-transparent col-2"
-                                    th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}">
+                                    th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}">
                                     <!--/* "la date de la commande" */-->
                                 </td>
                             </tr>
@@ -43,7 +46,7 @@
                                 <td class="p-0 border-0 bg-transparent col-6">
                                     <!--/*"slogan ou rien"*/-->
                                 </td>
-                                <td class="p-0 border-0 bg-transparent col-2">
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
                                     ORDER N°
                                 </td>
                                 <td class="p-0 border-0 bg-transparent col-2"
@@ -55,7 +58,7 @@
                                 <td class="p-0 border-0 bg-transparent col-6">
                                     <!--/* "nothing under the slogan" */-->
                                 </td>
-                                <td class="p-0 border-0 bg-transparent col-2">
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
                                     ORDER OF :
                                 </td>
                                 <td class="p-0 border-0 bg-transparent col-2"
@@ -72,7 +75,7 @@
                                     <!--/*"empty cell"*/-->
                                 </td>
                                 <td class="p-0 border-0 bg-transparent col-2"
-                                    th:text="${user.lastname}">
+                                    th:text="${user.firstname}">
                                     <!--/*"Customer first name"*/-->
                                 </td>
                             </tr>
@@ -134,11 +137,11 @@
     </section>
 
     <!--/* Command Table */-->
-    <section>
+    <section class="my-0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class=""><!--/* Content */-->
+                    <div class="bg-light-subtle p-3"><!--/* Content */-->
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -150,22 +153,57 @@
                             <tbody>
                             <tr th:each="booking : ${command.bookings}">
                                 <td th:text="${booking.id}"></td>
-                                <td th:text="${booking.line.label + ' ' + booking.equipment.option + ' ' + #dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${booking.line.label + ' - ' + booking.equipment.option + ' - ' + #dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
                                 <td th:text="${booking.bookingPrice +  ' €'}"></td>
                             </tr>
                             <tr>
                                 <td></td>
-                                <td>Total</td>
-                                <td th:text="${command.totalPrice +  ' €'}"></td>
+                                <td class="text-end "><strong>Total</strong></td>
+                                <td class="border" th:text="${command.totalPrice +  ' €'}"></td>
                             </tr>
                             </tbody>
                         </table>
-                        <div th:text="${command.comment}" class="border"></div>
+                        <div class="border p-3 shadow">
+                            <h5>Customer comments</h5>
+                            <p th:text="${command.comment}" class=""></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!--/* Buttons */-->
+    <section class="my-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class=""><!--/* Content */-->
+
+                        <div class="d-flex justify-content-end gap-2 p-2">
+                            <div class="">
+                                <a th:href="@{'/paypal/payment/'+${command.id}}" class="btn btn-success shadow-sm">
+                                    Pay order
+                                </a>
+                            </div>
+                            <div class="">
+                                <a th:href="@{'/booking/cancel/'+${command.id}}" class="btn btn-danger shadow-sm">
+                                    Cancel order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:if="${#fields.hasErrors()}">
+        <div th:each="error : ${fields}">
+            <p th:text="${error.defaultMessage}" class="text-danger"></p>
+        </div>
+    </div>
+
 
 </main>
 

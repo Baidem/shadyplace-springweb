@@ -23,6 +23,9 @@ public class BookingService {
     @Autowired
     LineService lineService;
 
+    @Autowired
+    BookingRepository bookingRepository;
+
 
     public List<Booking> BookingFormToBookingList(BookingForm bookingForm, User user) {
         List<Calendar> datesInRange = new ArrayList<>();
@@ -75,6 +78,10 @@ public class BookingService {
         price = Math.round(price * factor) / factor;
 
         return price;
+    }
+
+    public List<Booking> getByCommandId(Long id){
+        return this.bookingRepository.getByCommandId(id);
     }
 
 }

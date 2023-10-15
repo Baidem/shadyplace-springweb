@@ -3,6 +3,7 @@ package com.shadyplace.springweb.controllers;
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
 import com.shadyplace.springweb.models.*;
+import com.shadyplace.springweb.models.enums.CommandStatus;
 import com.shadyplace.springweb.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -98,6 +100,7 @@ public class BookingController {
 
             this.commandService.saveWithBookingList(command);
 
+            model.addAttribute("fields", bindingResult);
             model.addAttribute("user", user);
             model.addAttribute("command", command);
 
@@ -105,5 +108,25 @@ public class BookingController {
         }
 
     }
+
+    @RequestMapping(value = "/cancel/{command}", method = RequestMethod.GET)
+    public String commandCancel(@PathVariable Command command) {
+        if (shouldCancelCommand(command)) {
+            commandService.delete(command);
+        }
+        return "redirect:/booking/new";
+    }
+
+    private boolean shouldCancelCommand(Command command) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.CART) {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }
