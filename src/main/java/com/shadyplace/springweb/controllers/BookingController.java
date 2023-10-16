@@ -92,19 +92,15 @@ public class BookingController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.findByEmail(authentication.getName()) ;
 
-            List<Booking> bookings =
+            List<Booking> bookingList =
                     this.bookingService.BookingFormToBookingList(bookingForm, user);
 
-            Command command = new Command(bookings, user);
+            Command command = new Command(bookingList, user);
             command.setComment(bookingForm.getComment());
 
             this.commandService.saveWithBookingList(command);
 
-            model.addAttribute("fields", bindingResult);
-            model.addAttribute("user", user);
-            model.addAttribute("command", command);
-
-            return "booking/confirm";
+            return "redirect:/paypal/cart/" + command.getId();
         }
 
     }

@@ -1,4 +1,4 @@
-package com.shadyplace.springweb.services;
+package com.shadyplace.springweb.services.paypal;
 
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
@@ -37,8 +37,8 @@ public class PaypalService {
         orderRequest.purchaseUnits(List.of(purchaseUnitRequest));
 
         ApplicationContext applicationContext = new ApplicationContext()
-                .returnUrl("http://localhost:8090/paypal/capture")
-                .cancelUrl("http://localhost:8090/paypal/cancel");
+                .returnUrl("http://localhost:8083/paypal/capture")
+                .cancelUrl("http://localhost:8083/paypal/cancel");
         orderRequest.applicationContext(applicationContext);
 
         OrdersCreateRequest ordersCreateRequest = new OrdersCreateRequest().requestBody(orderRequest);

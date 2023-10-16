@@ -1,17 +1,22 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.models.Command;
+import com.shadyplace.springweb.models.User;
 import com.shadyplace.springweb.models.enums.CommandStatus;
 import com.shadyplace.springweb.models.paypal.CompletedOrder;
 import com.shadyplace.springweb.services.CommandService;
-import com.shadyplace.springweb.services.PaypalService;
+import com.shadyplace.springweb.services.UserService;
+import com.shadyplace.springweb.services.paypal.PaypalService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,13 +34,30 @@ public class PaypalController {
     private PaypalService paypalService;
     @Autowired
     CommandService commandService;
+    @Autowired
+    UserService userService;
 
-    // obsolète
-    @RequestMapping(value = "/panier", method = RequestMethod.GET)
-    public ModelAndView panier() {
-        ModelAndView mv = new ModelAndView("panier");
+    @RequestMapping(value = "/cart/{command}", method = RequestMethod.GET)
+    public ModelAndView myCart(@PathVariable Command command) {
+        ModelAndView mv = new ModelAndView("paypal/cart");
+        User user = command.getUser();
+        mv.addObject("command", command);
+        mv.addObject("user", user);
+
         return mv;
     }
+
+    private boolean shouldDisplayCart(Command command) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.CART) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     @RequestMapping(value = "/capture", method = RequestMethod.GET)
     public String capturePayment(@RequestParam("token") String token) {
