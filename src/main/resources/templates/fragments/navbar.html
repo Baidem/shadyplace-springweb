@@ -42,12 +42,12 @@
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
                         <li class="nav-item">
-                            <a th:href="@{/booking/new}" class="nav-link">Reserve a shady place !</a>
+                            <a th:href="@{/booking/new#navbar}" class="nav-link">Reserve a shady place !</a>
                         </li>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
                         <li class="nav-item">
-                            <a th:href="@{/booking/list}" class="nav-link">See my bookings</a>
+                            <a th:href="@{/booking/list#navbar}" class="nav-link">See my bookings</a>
                         </li>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">

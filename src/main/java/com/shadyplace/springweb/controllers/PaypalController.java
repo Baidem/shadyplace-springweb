@@ -16,10 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +42,17 @@ public class PaypalController {
         mv.addObject("user", user);
 
         return mv;
+    }
+
+    @PostMapping(value = "/cart/{command}")
+    public String myCartSubmit(@PathVariable Command command, @RequestParam("conditionsOfSale") boolean conditionsOfSale) {
+        if (conditionsOfSale = true){
+            command.setStatus(CommandStatus.AWAITING_PAYMENT);
+            commandService.save(command);
+
+            return "redirect:/paypal/payment/" + command.getId();
+        }
+        return "redirect:/cart/"+command.getId();
     }
 
     private boolean shouldDisplayCart(Command command) {
@@ -87,7 +95,7 @@ public class PaypalController {
                     HttpStatus.BAD_REQUEST, "Invalid command"
             );
         }
-        if (!(command.getStatus() == CommandStatus.CART)){
+        if (!(command.getStatus() == CommandStatus.AWAITING_PAYMENT)){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Error in command status"
             );
@@ -95,7 +103,7 @@ public class PaypalController {
         } else {
             // send request to Paypal
             response.sendRedirect(
-                    paypalService.createPayment(BigDecimal.valueOf(command.getTotalPrice()))
+                    paypalService.createPayment(BigDecimal.valueOf(command.getTotalPrice()), command.getId())
                             .getRedirectUrl()
             );
             // update order status to AWAITING_PAYMENT
@@ -107,7 +115,33 @@ public class PaypalController {
 
     @RequestMapping("/cancel")
     public ModelAndView cancel(){
-        ModelAndView mv = new ModelAndView("booking/cancel");
+        ModelAndView mv = new ModelAndView("paypal/cancel");
+        return mv;
+    }
+
+    @RequestMapping(value = "/cancel/{command}", method = RequestMethod.GET)
+    public ModelAndView paymentCancel(@PathVariable Command command) {
+        if (shouldCancelCommand(command)) {
+            commandService.delete(command);
+        }
+        ModelAndView mv = new ModelAndView("paypal/cancel");
+        return mv;
+    }
+
+    private boolean shouldCancelCommand(Command command) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.AWAITING_PAYMENT) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @RequestMapping("/success")
+    public ModelAndView success(){
+        ModelAndView mv = new ModelAndView("paypal/success");
         return mv;
     }
 }

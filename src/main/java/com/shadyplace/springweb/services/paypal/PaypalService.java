@@ -27,7 +27,7 @@ public class PaypalService {
     @Autowired
     private PaymentOrderRepository paymentOrderRepository;
 
-    public PaymentOrder createPayment(BigDecimal montant) {
+    public PaymentOrder createPayment(BigDecimal montant, long commandId) {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.checkoutPaymentIntent("CAPTURE");
 
@@ -38,7 +38,7 @@ public class PaypalService {
 
         ApplicationContext applicationContext = new ApplicationContext()
                 .returnUrl("http://localhost:8083/paypal/capture")
-                .cancelUrl("http://localhost:8083/paypal/cancel");
+                .cancelUrl("http://localhost:8083/paypal/cancel/" + commandId);
         orderRequest.applicationContext(applicationContext);
 
         OrdersCreateRequest ordersCreateRequest = new OrdersCreateRequest().requestBody(orderRequest);
