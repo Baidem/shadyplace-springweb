@@ -9,9 +9,20 @@
 <div class="container">
     <div class="row justify-content-center p-5">
         <div class="col-xl-6">
-            <form class="bg-primary-subtle border rounded-3 p-3 shadow" method="post" th:action="@{/logout}">
-                <input class="btn btn-danger shadow-sm" type="submit" value="Confirm logout">
-                <a class="btn btn-link" th:href="@{/}">Back to the site</a>
+            <form class="bg-bluesky border rounded-3 p-3 shadow" method="post" th:action="@{/logout}">
+                <h1 class="card-title text-center mb-3">
+                    <img style="max-height:60px" th:src="@{/images/logo-sunny-parasol-60px.png}">
+                    Log on to Shadyplace
+                </h1>
+                <div class="row">
+                    <div class="col ms-3 py-3">
+                        <a class="btn btn-success shadow-sm w-100" th:href="@{/}">Back to the site</a>
+                    </div>
+
+                    <div class="col me-3 py-3">
+                        <input class="btn btn-danger shadow-sm w-100" type="submit" value="Confirm logout">
+                    </div>
+                </div>
             </form>
         </div>
     </div>

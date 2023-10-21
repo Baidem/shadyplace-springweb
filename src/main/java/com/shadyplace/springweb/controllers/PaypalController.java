@@ -67,12 +67,14 @@ public class PaypalController {
     }
 
 
-    @RequestMapping(value = "/capture", method = RequestMethod.GET)
-    public String capturePayment(@RequestParam("token") String token) {
+    @RequestMapping(value = "/capture/{command}", method = RequestMethod.GET)
+    public String capturePayment(@RequestParam("token") String token, @PathVariable Command command) {
 
         CompletedOrder completedOrder = this.paypalService.capturePayment(token);
 
         if (completedOrder.getStatus() == "success") {
+            command.setStatus(CommandStatus.PAYMENT_MADE);
+            commandService.save(command);
             return "redirect:/paypal/success";
         } else {
             return "redirect:/paypal/error";
@@ -141,7 +143,10 @@ public class PaypalController {
 
     @RequestMapping("/success")
     public ModelAndView success(){
+        System.out.println("success ?");
+
         ModelAndView mv = new ModelAndView("paypal/success");
+
         return mv;
     }
 }

@@ -37,7 +37,7 @@ public class PaypalService {
         orderRequest.purchaseUnits(List.of(purchaseUnitRequest));
 
         ApplicationContext applicationContext = new ApplicationContext()
-                .returnUrl("http://localhost:8083/paypal/capture")
+                .returnUrl("http://localhost:8083/paypal/capture/" + commandId)
                 .cancelUrl("http://localhost:8083/paypal/cancel/" + commandId);
         orderRequest.applicationContext(applicationContext);
 

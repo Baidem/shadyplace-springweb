@@ -32,3 +32,15 @@ a {
 .bg-bluesky {
     background: linear-gradient(to bottom, #0077b6, #0099e5) !important;
 }
+
+.bg-sunfall {
+    background: linear-gradient(to bottom, #FF8F8F, #FFE0A7);
+!important;
+
+}
+
+.text-shadow{
+    text-shadow: 1px 1px 3px dimgray;
+}
+
+

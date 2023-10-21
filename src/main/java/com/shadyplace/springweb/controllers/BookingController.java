@@ -41,6 +41,8 @@ public class BookingController {
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView addBooking(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName()) ;
 
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
@@ -51,6 +53,7 @@ public class BookingController {
         mv.addObject("bookingForm", bookingForm);
         mv.addObject("equipmentList", equipmentList);
         mv.addObject("lineList", lineList);
+        mv.addObject("user", user);
 
         return mv;
     }
@@ -59,6 +62,8 @@ public class BookingController {
     public String addBookingSubmit(@Valid BookingForm bookingForm,
                                  BindingResult bindingResult,
                                  @RequestBody String postPayload, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName()) ;
 
         // Selects options
         List<Equipment> equipmentList = this.equipmentService.findAll();
@@ -86,12 +91,11 @@ public class BookingController {
             model.addAttribute("equipmentList", equipmentList);
             model.addAttribute("lineList", lineList);
             model.addAttribute("globalErrors", globalErrors);
+            model.addAttribute("user", user);
+
 
             return "booking/form";
         } else { // Saving the Command with its Bookings
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = userService.findByEmail(authentication.getName()) ;
-
             List<Booking> bookingList =
                     this.bookingService.BookingFormToBookingList(bookingForm, user);
 
