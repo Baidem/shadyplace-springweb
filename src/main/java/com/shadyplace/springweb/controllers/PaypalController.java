@@ -1,11 +1,11 @@
 package com.shadyplace.springweb.controllers;
 
-import com.shadyplace.springweb.models.Command;
-import com.shadyplace.springweb.models.User;
+import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.models.enums.CommandStatus;
 import com.shadyplace.springweb.models.paypal.CompletedOrder;
-import com.shadyplace.springweb.services.CommandService;
-import com.shadyplace.springweb.services.UserService;
+import com.shadyplace.springweb.services.bookingResa.CommandService;
+import com.shadyplace.springweb.services.userAuth.UserService;
 import com.shadyplace.springweb.services.paypal.PaypalService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

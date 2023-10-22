@@ -2,10 +2,10 @@ package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.exception.FileTypeException;
 import com.shadyplace.springweb.forms.SearchForm;
-import com.shadyplace.springweb.models.Article;
-import com.shadyplace.springweb.models.Image;
-import com.shadyplace.springweb.services.ArticleService;
-import com.shadyplace.springweb.services.ImageService;
+import com.shadyplace.springweb.models.articleBlog.Article;
+import com.shadyplace.springweb.models.articleBlog.Image;
+import com.shadyplace.springweb.services.articleBlog.ArticleService;
+import com.shadyplace.springweb.services.articleBlog.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.shadyplace.springweb;
 
-import com.shadyplace.springweb.services.UploadImageService;
+import com.shadyplace.springweb.services.articleBlog.UploadImageService;
 import jakarta.annotation.Resource;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

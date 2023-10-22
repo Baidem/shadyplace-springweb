@@ -1,6 +1,6 @@
 package com.shadyplace.springweb.config;
 
-import com.shadyplace.springweb.services.SpringAuthService;
+import com.shadyplace.springweb.services.userAuth.SpringAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.shadyplace.springweb.exception;
 
-import com.shadyplace.springweb.models.ErrorValidation;
+import com.shadyplace.springweb.models.paypal.ErrorValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

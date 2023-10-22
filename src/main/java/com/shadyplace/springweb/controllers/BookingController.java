@@ -2,9 +2,14 @@ package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
-import com.shadyplace.springweb.models.*;
+import com.shadyplace.springweb.models.bookingResa.Booking;
+import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.bookingResa.Equipment;
+import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.models.enums.CommandStatus;
-import com.shadyplace.springweb.services.*;
+import com.shadyplace.springweb.models.userAuth.User;
+import com.shadyplace.springweb.services.bookingResa.*;
+import com.shadyplace.springweb.services.userAuth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

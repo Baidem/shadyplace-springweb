@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.forms;
 
-import com.shadyplace.springweb.models.Equipment;
-import com.shadyplace.springweb.models.Line;
+import com.shadyplace.springweb.models.bookingResa.Equipment;
+import com.shadyplace.springweb.models.bookingResa.Line;
 
 public class ParasolForm {
 
