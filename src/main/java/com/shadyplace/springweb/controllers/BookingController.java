@@ -2,6 +2,7 @@ package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
+import com.shadyplace.springweb.forms.SearchForm;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.bookingResa.Equipment;
@@ -12,15 +13,15 @@ import com.shadyplace.springweb.services.bookingResa.*;
 import com.shadyplace.springweb.services.userAuth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -43,6 +44,77 @@ public class BookingController {
     private CommandService commandService;
     @Autowired
     private UserService userService;
+
+    @RequestMapping( "/mybookinglist")
+    public ModelAndView getAll(@RequestParam(required = false) String page,
+                               @RequestParam(required = false) String searchBar) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if (page == null) {
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("booking/myBookingList");
+
+        if (searchBar == null) {
+            searchBar = "";
+        }
+
+        Page<Command> commands = this.commandService
+                .getCommandPageByUserAndSearchForm(user, new SearchForm(searchBar), 4, pageNumber - 1);
+
+        mv.addObject("commands", commands);
+        mv.addObject("pageNumber", (String) page);
+        mv.addObject("form", new SearchForm(searchBar));
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/mybookinglist", method = RequestMethod.POST)
+    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
+                                         @Valid SearchForm searchForm,
+                                         BindingResult bindingResult){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if(page == null){
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("booking/myBookingList");
+
+        Page<Command> commands = this.commandService
+                .getCommandPageByUserAndSearchForm(user, searchForm, 4, pageNumber-1);
+
+        mv.addObject("commands", commands);
+        mv.addObject("pageNumber", (String) page );
+        mv.addObject("form", searchForm);
+
+        return mv;
+    }
+    @RequestMapping(value = "/details/{command}", method = RequestMethod.GET)
+    public ModelAndView bookingDetails(@PathVariable Command command){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if(user != command.getUser()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Booking not found");
+        }
+        ModelAndView mv = new ModelAndView("booking/details");
+        List<Booking> bookings = command.getBookings();
+        if(bookings.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Booking details not found");
+        }
+
+        mv.addObject("bookings", bookings);
+
+        return mv;
+    }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView addBooking(){

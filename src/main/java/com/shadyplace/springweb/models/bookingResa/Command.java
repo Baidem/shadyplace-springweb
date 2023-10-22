@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.models.bookingResa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.enums.CommandStatus;
 import com.shadyplace.springweb.models.userAuth.User;
 import jakarta.persistence.*;

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Booking details</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
+
+</head>
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<header th:replace="fragments/navbar.html :: navbar">...</header>
+
+<main>
+
+
+    <!--/* Admin article list */-->
+    <section id="admin-list" class=" my-3">
+        <div class="container bg-light-subtle pb-2">
+            <h1>My bookings</h1>
+
+            <!--/* Table */-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="">
+                        <table class="table table-striped shadow m-0">
+                            <thead>
+                            <tr>
+                                <th>Stay date</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Equipments</th>
+                                <th>Location</th>
+                                <th>My Rank</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="booking : ${bookings}">
+                                <td th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${booking.bookingPrice} + ' €'"></td>
+                                <td th:text="${booking.bookingStatus.label}"></td>
+                                <td th:text="${booking.equipment.option}"></td>
+                                <td th:text="${booking.location != null ?
+                                'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber)
+                                : '-'}"></td>
+                                <td th:text="${booking.fidelityRank.label}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>
