@@ -60,7 +60,7 @@
                 <!--/* Right column booking form */-->
                 <div id="stay" class="col-lg p-0">
                     <div class="bg-bluesky border rounded-3 shadow p-0">
-                        <form th:object="${bookingForm}" method="post" class="">
+                        <form id="myForm" th:object="${bookingForm}" method="post" class="">
 
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
@@ -108,13 +108,13 @@
                                 </div>
                             </div>
 
-                            <!--/* add parasol place */-->
+                            <!--/* add parasol place id="collectionEquipment"*/-->
                             <div id="collectionEquipment">
                                 <div class="collectionForm" th:each="plage, state : ${bookingForm.parasols}">
-                                    <div class="card mx-2 mb-3 bg-carte">
+                                    <div class="card mx-2 mb-3 bg-bluesky">
                                         <div class="card-body">
                                             <label th:text="'Parasol '+${state.index+1}" class="card-title fs-4 text-light text-shadow"></label>
-                                            <div class="card-text">
+                                            <div class="card-text mb-2">
                                                 <label for="line" class="form-label text-light text-shadow">Line</label>
                                                 <select th:name="'items_'+${state.index}+'_line'" class="form-select shadow-sm" id="line">
                                                     <option th:each="line : ${lineList}" th:text="${line.label}" th:value="${line.id}"></option>
@@ -134,18 +134,17 @@
                             <!--/* Buttons */-->
                             <div class="row mx-2 mb-3">
                                 <div class="col-5">
-                                    <a id="addEmplacement" class="btn bg-carte w-100 shadow-sm text-light text-shadow">
+                                    <a id="addEmplacement" class="btn bg-warning bg-gradient w-100 shadow-sm text-light text-shadow">
                                         Add parasol
                                     </a>
                                 </div>
 
                                 <div class="col">
-<!--                                    <a th:href="@{/booking/new#navbar}" type="text" class="btn btn-secondary w-100 shadow-sm text-light text-shadow">Refresh</a>-->
-                                    <button id="btnRefresh" type="reset" class="btn btn-secondary w-100 shadow-sm text-light text-shadow">Refresh</button>
+                                    <button id="btnRefresh" type="reset" class="btn btn-secondary bg-gradient w-100 shadow-sm text-light text-shadow">Refresh</button>
                                 </div>
 
                                 <div class="col">
-                                    <button type="submit" class="btn btn-success w-100 shadow-sm text-light text-shadow">Submit</button>
+                                    <button type="submit" class="btn btn-success bg-gradient w-100 shadow-sm text-light text-shadow">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -162,29 +161,33 @@
 <div th:replace="fragments/scripts-js.html">...</div>
 
 <script>
-    $("#addEmplacement").click(function (){
-        let index =  $('.collectionForm').length - 1;
-        divToCopy = $('.collectionForm').last();
+    const btnRefresh = document.getElementById("btnRefresh");
+    const form = document.getElementById('myForm');
+    const stayForm = document.getElementById("stay");
+    const addEmplacement = document.getElementById("addEmplacement");
 
-        newDiv = divToCopy.html();
-        newDiv = newDiv.replace('Parasol '+parseInt(index+1), 'Parasol '+parseInt(index+2));
-        newDiv = newDiv.replace('name="items_'+parseInt(index)+'_line"', 'name="items_'+parseInt(index+1)+'_line"');
-        newDiv = newDiv.replace('name="items_'+parseInt(index)+'_equipment"', 'name="items_'+parseInt(index+1)+'_equipment"');
+    addEmplacement.addEventListener("click", function () {
+        let collectionForms = document.querySelectorAll(".collectionForm");
+        let index = collectionForms.length - 1;
+        let divToCopy = collectionForms[index];
 
-        newDiv = '<div class="collectionForm">'+newDiv+'</div>';
-        $('#collectionEquipment').append(newDiv);
+        let newDiv = divToCopy.innerHTML;
+        newDiv = newDiv.replace('Parasol ' + (index + 1), 'Parasol ' + (index + 2));
+        newDiv = newDiv.replace('name="items_' + index + '_line"', 'name="items_' + (index + 1) + '_line"');
+        newDiv = newDiv.replace('name="items_' + index + '_equipment"', 'name="items_' + (index + 1) + '_equipment"');
 
-        $('#collectionEquipement').append(newDiv);
-    })
+        newDiv = '<div class="collectionForm">' + newDiv + '</div>';
 
-    const btnRefresh = docunment.getElementById("btnRefresh");
-    const form = document.getElementById('form');
+        let collectionEquipment = document.getElementById("collectionEquipment");
+        collectionEquipment.insertAdjacentHTML('beforeend', newDiv);
+
+    });
 
     btnRefresh.addEventListener('click', (e) => {
         e.stopPropagation();
+        stayForm.scrollIntoView({ behavior: "auto" });
         form.reset();
         document.location.reload(false);
-        // TODO routine pour supprimer les parasols en trop
     })
 
 </script>
