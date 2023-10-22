@@ -3,6 +3,10 @@ body {
     color : #201800;
 }
 
+header {
+    height: 10px;
+}
+
 footer {
     padding-top: 1rem;
     padding-bottom: 10rem;
@@ -36,7 +40,6 @@ a {
 .bg-sunfall {
     background: linear-gradient(to bottom, #FF8F8F, #FFE0A7);
 !important;
-
 }
 
 .text-shadow{

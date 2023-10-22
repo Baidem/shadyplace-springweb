@@ -21,56 +21,57 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbarNav" class="collapse navbar-collapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a th:href="@{/#navbar}" aria-current="page" class="nav-link active">Home</a>
-                    </li>
+                <div class="row-cols-auto">
+                    <div class="col">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a th:href="@{/#navbar}" aria-current="page" class="nav-link active">Home</a>
+                            </li>
+
+                            <th:block sec:authorize="isAuthenticated()">
+                                <li class="nav-item">
+                                    <a th:href="@{/booking/new#navbar}" class="nav-link">Reserve a shady place !</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{/booking/list#navbar}" class="nav-link">See my bookings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a  th:href="@{/logout}" th:text="Logout" class="nav-link"></a>
+                                </li>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <li class="nav-item">
+                                    <a th:href="@{/login}" th:text="Login" class="nav-link"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="http://localhost:8043/jee/user-register" class="nav-link">Create an account</a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
                     <th:block sec:authorize="hasAnyAuthority('ADMIN')">
-                        <li class="nav-item">
-                            <a th:href="@{/admin/order/list#navbar}" class="nav-link text-bg-success">Manage orders</a>
-                        </li>
+                    <div class="col">
+                        <ul class="navbar-nav">
+                            <li class="nav-item p-0">
+                                <a th:href="@{/admin/order/list#navbar}" class=" btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage orders</a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a th:href="@{/admin/customer/list#navbar}" class="btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage customers</a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a th:href="@{/admin/article/list#navbar}" class="btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage articles</a>
+                            </li>
+                        </ul>
+                    </div>
                     </th:block>
-                    <th:block sec:authorize="hasAnyAuthority('ADMIN')">
-                        <li class="nav-item">
-                            <a th:href="@{/admin/customer/list#navbar}" class="nav-link text-bg-success">Manage customers</a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="hasAnyAuthority('ADMIN')">
-                        <li class="nav-item">
-                            <a th:href="@{/admin/article/list#navbar}" class="nav-link text-bg-success">Manage articles</a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="isAuthenticated()">
-                        <li class="nav-item">
-                            <a th:href="@{/booking/new#navbar}" class="nav-link">Reserve a shady place !</a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="isAuthenticated()">
-                        <li class="nav-item">
-                            <a th:href="@{/booking/list#navbar}" class="nav-link">See my bookings</a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="isAuthenticated()">
-                        <li class="nav-item">
-                            <a  th:href="@{/logout}" th:text="Logout" class="nav-link"></a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="isAnonymous()">
-                        <li class="nav-item">
-                            <a th:href="@{/login}" th:text="Login" class="nav-link"></a>
-                        </li>
-                    </th:block>
-                    <th:block sec:authorize="isAnonymous()">
-                        <li class="nav-item">
-                            <a href="http://localhost:8043/jee/user-register" class="nav-link">Create an account</a>
-                        </li>
-                    </th:block>
-                </ul>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div sec:authorize="hasAnyAuthority('ADMIN')" class="text-center text-bg-success shadow">Back-office</div>
     <div class="bg-light shadow opacity-50">
         <div sec:authorize="isAuthenticated()" class="container">Connected : <th:block th:text="${#authentication.getPrincipal().username}"></th:block></div>
     </div>
