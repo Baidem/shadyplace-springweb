@@ -5,6 +5,8 @@ public enum CommandStatus {
     ABANDONED("abandoned"),
     AWAITING_PAYMENT("awaiting payment"),
     PAYMENT_MADE("payment made"),
+    PAYMENT_SUCCESS("payment success"),
+    PAYMENT_ERROR("payment error"),
     PAYMENT_REFUSED("payment refused");
 
     private String label;

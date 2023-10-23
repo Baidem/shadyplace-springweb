@@ -1,8 +1,10 @@
 package com.shadyplace.springweb.models.paypal;
 
+import com.shadyplace.springweb.models.bookingResa.Command;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 
@@ -24,11 +26,22 @@ public class PaymentOrder implements Serializable {
         this.redirectUrl = redirectUrl;
     }
 
+    @ManyToOne(optional = false)
+    public Command command;
+
     public PaymentOrder(String status) {
         this.status = status;
     }
 
     public PaymentOrder() {
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     public String getStatus() {

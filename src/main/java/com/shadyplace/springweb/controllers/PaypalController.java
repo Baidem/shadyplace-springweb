@@ -70,11 +70,9 @@ public class PaypalController {
     @RequestMapping(value = "/capture/{command}", method = RequestMethod.GET)
     public String capturePayment(@RequestParam("token") String token, @PathVariable Command command) {
 
-        CompletedOrder completedOrder = this.paypalService.capturePayment(token);
+        CompletedOrder completedOrder = this.paypalService.capturePayment(token, command);
 
         if (completedOrder.getStatus() == "success") {
-            command.setStatus(CommandStatus.PAYMENT_MADE);
-            commandService.save(command);
             return "redirect:/paypal/success";
         } else {
             return "redirect:/paypal/error";
@@ -105,7 +103,7 @@ public class PaypalController {
         } else {
             // send request to Paypal
             response.sendRedirect(
-                    paypalService.createPayment(BigDecimal.valueOf(command.getTotalPrice()), command.getId())
+                    paypalService.createPayment(BigDecimal.valueOf(command.getTotalPrice()), command)
                             .getRedirectUrl()
             );
             // update order status to AWAITING_PAYMENT
