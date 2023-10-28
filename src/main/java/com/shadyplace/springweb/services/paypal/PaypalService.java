@@ -38,7 +38,9 @@ public class PaypalService {
 
         AmountWithBreakdown amountBreakdown = new AmountWithBreakdown().currencyCode("EUR").value(montant.toString());
 
-        PurchaseUnitRequest purchaseUnitRequest = new PurchaseUnitRequest().amountWithBreakdown(amountBreakdown);
+        PurchaseUnitRequest purchaseUnitRequest = new PurchaseUnitRequest()
+                .amountWithBreakdown(amountBreakdown)
+                .customId("Shady place order number : " + command.getId());
         orderRequest.purchaseUnits(List.of(purchaseUnitRequest));
 
         ApplicationContext applicationContext = new ApplicationContext()

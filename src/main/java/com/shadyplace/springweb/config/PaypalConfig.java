@@ -10,7 +10,7 @@ import com.paypal.core.PayPalHttpClient;
 @Configuration
 public class PaypalConfig {
     @Bean
-    public PayPalHttpClient getPaypalCllient(
+    public PayPalHttpClient getPaypalClient(
             @Value("${paypal.clientId}") String clientId,
             @Value("${paypal.clientSecret}") String clientSecret) {
 
