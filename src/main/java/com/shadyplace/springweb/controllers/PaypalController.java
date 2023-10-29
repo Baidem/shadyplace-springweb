@@ -2,7 +2,7 @@ package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.userAuth.User;
-import com.shadyplace.springweb.models.enums.CommandStatus;
+import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.models.paypal.CompletedOrder;
 import com.shadyplace.springweb.services.bookingResa.CommandService;
 import com.shadyplace.springweb.services.userAuth.UserService;
@@ -47,7 +47,7 @@ public class PaypalController {
     @PostMapping(value = "/cart/{command}")
     public String myCartSubmit(@PathVariable Command command, @RequestParam("conditionsOfSale") boolean conditionsOfSale) {
         if (conditionsOfSale = true){
-            command.setStatus(CommandStatus.AWAITING_PAYMENT);
+            command.setPaymentStatus(CommandPaymentStatus.AWAITING_PAYMENT);
             commandService.save(command);
 
             return "redirect:/paypal/payment/" + command.getId();
@@ -59,7 +59,7 @@ public class PaypalController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
-        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.CART) {
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getPaymentStatus() != CommandPaymentStatus.CART) {
             return false;
         }
 
@@ -95,7 +95,7 @@ public class PaypalController {
                     HttpStatus.BAD_REQUEST, "Invalid command"
             );
         }
-        if (!(command.getStatus() == CommandStatus.AWAITING_PAYMENT)){
+        if (!(command.getPaymentStatus() == CommandPaymentStatus.AWAITING_PAYMENT)){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Error in command status"
             );
@@ -107,7 +107,7 @@ public class PaypalController {
                             .getRedirectUrl()
             );
             // update order status to AWAITING_PAYMENT
-            command.setStatus(CommandStatus.AWAITING_PAYMENT);
+            command.setPaymentStatus(CommandPaymentStatus.AWAITING_PAYMENT);
             this.commandService.save(command);
         }
 
@@ -132,7 +132,7 @@ public class PaypalController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
-        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.AWAITING_PAYMENT) {
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getPaymentStatus() != CommandPaymentStatus.AWAITING_PAYMENT) {
             return false;
         }
 

@@ -1,16 +1,15 @@
 package com.shadyplace.springweb.models.enums;
 
-public enum BookingStatus {
+public enum CommandValidationStatus {
     //pending, validated, refused
     PENDING("pending", "P"),
     VALIDATED("validated", "V"),
-    REFUSED("refused", "RS"),
-    REFUNDED("refunded", "RN");
+    REFUSED("refused", "RS");
 
     private String label;
     private String abbreviation;
 
-    BookingStatus(String label, String abbreviation) {
+    CommandValidationStatus(String label, String abbreviation) {
         this.label = label;
         this.abbreviation = abbreviation;
     }

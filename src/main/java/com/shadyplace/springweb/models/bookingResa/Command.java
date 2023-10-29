@@ -1,7 +1,8 @@
 package com.shadyplace.springweb.models.bookingResa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.shadyplace.springweb.models.enums.CommandStatus;
+import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
+import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,12 +24,14 @@ public class Command {
     @Column(name = "total_price",columnDefinition = "float(10,2)")
     @PositiveOrZero(message = "Command's totalPrice cannot be negative.")
     private double totalPrice;
-    @Column(columnDefinition = "TEXT")
-    private String bill;
     @Column(length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Command's status cannot be null.")
-    private CommandStatus status;
+    @NotNull(message = "Command's payment status cannot be null.")
+    private CommandPaymentStatus paymentStatus;
+    @Column(length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Command's validation status cannot be null.")
+    private CommandValidationStatus validationStatus;
     @Column(name = "created_at",nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @PastOrPresent(message = "Command's createdAt cannot be in the future.")
@@ -38,6 +41,7 @@ public class Command {
     @Temporal(TemporalType.TIMESTAMP)
     @PastOrPresent(message = "Command's updatedAt cannot be in the future.")
     private Calendar updatedAt;
+
     @ManyToOne(optional = false)
     @JsonIgnore
     @NotNull(message = "Command's user cannot be null.")
@@ -78,20 +82,12 @@ public class Command {
         this.totalPrice = totalPrice;
     }
 
-    public String getBill() {
-        return bill;
+    public CommandPaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setBill(String bill) {
-        this.bill = bill;
-    }
-
-    public CommandStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CommandStatus status) {
-        this.status = status;
+    public void setPaymentStatus(CommandPaymentStatus status) {
+        this.paymentStatus = status;
     }
 
     public void setBookings(List<Booking> bookings) {
@@ -128,6 +124,14 @@ public class Command {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public CommandValidationStatus getValidationStatus() {
+        return validationStatus;
+    }
+
+    public void setValidationStatus(CommandValidationStatus validationStatus) {
+        this.validationStatus = validationStatus;
     }
 
 }

@@ -1,11 +1,12 @@
 package com.shadyplace.springweb.services.bookingResa;
 
+import com.shadyplace.springweb.forms.SearchCommandForm;
 import com.shadyplace.springweb.forms.SearchForm;
-import com.shadyplace.springweb.models.articleBlog.Article;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.User;
-import com.shadyplace.springweb.models.enums.CommandStatus;
+import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.repository.bookingResa.CommandCriteriaRepository;
 import com.shadyplace.springweb.repository.bookingResa.CommandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,13 @@ public class CommandService {
         try {
             command.setTotalPrice(computeTotalPrice(command.getBookings()));
             command.setCreatedAt(Calendar.getInstance());
-            command.setStatus(CommandStatus.CART);
-            //bill
+            command.setPaymentStatus(CommandPaymentStatus.CART);
+            command.setValidationStatus(CommandValidationStatus.PENDING);
 
             for (Booking booking : command.getBookings()) {
                 booking.setCommand(command);
             }
             commandRepository.save(command);
-                System.out.println("hello");
 
         } catch (Exception e){
             throw new RuntimeException("Command save error : "+e.getMessage());
@@ -67,9 +67,9 @@ public class CommandService {
         this.commandRepository.delete(command);
     }
 
-    public Page<Command> getCommandPageByUserAndSearchForm(User user, SearchForm searchForm, int nbResult, int page){
+    public Page<Command> getCommandPageByUserAndSearchForm(User user, SearchCommandForm searchCommandForm, int nbResult, int page){
         Pageable pageable = PageRequest.of(page, nbResult);
-        Page<Command> commandPaginated = this.commandCriteriaRepository.getCommandPageByUserAndSearchForm(user, searchForm, pageable);
+        Page<Command> commandPaginated = this.commandCriteriaRepository.getCommandPageByUserAndSearchForm(user, searchCommandForm, pageable);
         return commandPaginated;
     }
 

@@ -29,10 +29,28 @@
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
                     <div class="row g-3 align-items-center justify-content-end">
+                        <!--/* Filters */-->
+                        <!-- Filters -->
+                        <div class="col-auto btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterAll" autocomplete="off" value="filterAll" checked>
+                            <label class="btn btn-outline-secondary" for="filterAll">All</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterPending" autocomplete="off" value="filterPending">
+                            <label class="btn btn-outline-secondary" for="filterPending">Pending</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterValidated" autocomplete="off" value="filterValidated">
+                            <label class="btn btn-outline-secondary" for="filterValidated">Validated</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterRefused" autocomplete="off" value="filterRefused">
+                            <label class="btn btn-outline-secondary" for="filterRefused">Refused</label>
+                        </div>
+
+
+                    <!--/* Search bar */-->
                         <div th:if="${commands.getTotalPages() == 0}"
                              class="text-danger col-auto">No results</div>
                         <div class="col-auto">
-                            <input type="text" th:field="*{searchBar}" placeholder="Search for comment"
+                            <input type="text" th:field="*{searchContentBar}" placeholder="Search for comment"
                                    class="form-control shadow-sm">
                         </div>
                         <div class="col-auto">
@@ -50,19 +68,7 @@
         <div class="container bg-light-subtle pb-2">
             <h1>My bookings</h1>
 
-            <!--/* Filters */-->
-<!--            <div class="row">-->
-<!--                <div class="col">-->
-<!--                    <div id="filter1">-->
-<!--                        <bouton class="btn btn-outline-secondary">Filter 1</bouton>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col">-->
-<!--                    <div id="filter2">-->
-<!--                        <bouton class="btn btn-outline-secondary">Filter 2</bouton>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+
 
             <!--/* Table */-->
             <div class="row">
@@ -73,7 +79,8 @@
                             <tr>
                                 <th>Created at</th>
                                 <th>Price</th>
-                                <th>Status</th>
+                                <th>Payment Status</th>
+                                <th>Validation Status</th>
                                 <th>Comment</th>
                                 <th>Details</th>
                             </tr>
@@ -82,7 +89,8 @@
                             <tr th:each="command : ${commands}">
                                 <td th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}"></td>
                                 <td th:text="${command.totalPrice} + ' €'"></td>
-                                <td th:text="${command.status.label}"></td>
+                                <td th:text="${command.paymentStatus.label}"></td>
+                                <td th:text="${command.validationStatus.label}"></td>
                                 <td th:text="${command.comment}"></td>
                                 <td ><a class="alert-link" target="_blank" th:href="@{'/booking/details/' + ${command.id} +'#navbar'}">See details</a></td>
                             </tr>

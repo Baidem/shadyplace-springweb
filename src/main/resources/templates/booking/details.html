@@ -34,7 +34,6 @@
                             <tr>
                                 <th>Stay date</th>
                                 <th>Price</th>
-                                <th>Status</th>
                                 <th>Equipments</th>
                                 <th>Location</th>
                                 <th>My Rank</th>
@@ -45,7 +44,6 @@
                             <tr th:each="booking : ${bookings}">
                                 <td th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
                                 <td th:text="${booking.bookingPrice} + ' €'"></td>
-                                <td th:text="${booking.bookingStatus.label}"></td>
                                 <td th:text="${booking.equipment.option}"></td>
                                 <td th:text="${booking.location != null ?
                                 'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber)

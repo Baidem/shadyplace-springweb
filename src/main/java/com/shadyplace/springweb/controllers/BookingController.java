@@ -2,12 +2,12 @@ package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
-import com.shadyplace.springweb.forms.SearchForm;
+import com.shadyplace.springweb.forms.SearchCommandForm;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.bookingResa.Equipment;
 import com.shadyplace.springweb.models.bookingResa.Line;
-import com.shadyplace.springweb.models.enums.CommandStatus;
+import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.bookingResa.*;
 import com.shadyplace.springweb.services.userAuth.UserService;
@@ -47,7 +47,9 @@ public class BookingController {
 
     @RequestMapping( "/mybookinglist")
     public ModelAndView getAll(@RequestParam(required = false) String page,
-                               @RequestParam(required = false) String searchBar) {
+                               @RequestParam(required = false) String searchBar,
+                               @RequestParam(required = false) String filterStatus
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
@@ -61,21 +63,30 @@ public class BookingController {
         if (searchBar == null) {
             searchBar = "";
         }
+        if (filterStatus == null) {
+            filterStatus = "";
+        }
 
         Page<Command> commands = this.commandService
-                .getCommandPageByUserAndSearchForm(user, new SearchForm(searchBar), 4, pageNumber - 1);
+                .getCommandPageByUserAndSearchForm(
+                        user,
+                        new SearchCommandForm(searchBar, filterStatus),
+                        4,
+                        pageNumber - 1
+                );
 
         mv.addObject("commands", commands);
         mv.addObject("pageNumber", (String) page);
-        mv.addObject("form", new SearchForm(searchBar));
+        mv.addObject("form", new SearchCommandForm(searchBar, filterStatus));
 
         return mv;
     }
 
     @RequestMapping(value = "/mybookinglist", method = RequestMethod.POST)
     public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
-                                         @Valid SearchForm searchForm,
+                                         @Valid SearchCommandForm searchCommandForm,
                                          BindingResult bindingResult){
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
@@ -87,14 +98,23 @@ public class BookingController {
         ModelAndView mv = new ModelAndView("booking/myBookingList");
 
         Page<Command> commands = this.commandService
-                .getCommandPageByUserAndSearchForm(user, searchForm, 4, pageNumber-1);
+                .getCommandPageByUserAndSearchForm(user, searchCommandForm, 4, pageNumber-1);
+
+        if (searchCommandForm.getSearchContentBar() == null) {
+            searchCommandForm.setSearchContentBar("");
+        }
+        if (searchCommandForm.getFilterStatus() == null) {
+            searchCommandForm.setFilterStatus("");
+        }
 
         mv.addObject("commands", commands);
         mv.addObject("pageNumber", (String) page );
-        mv.addObject("form", searchForm);
+        mv.addObject("form", searchCommandForm);
 
         return mv;
     }
+
+
     @RequestMapping(value = "/details/{command}", method = RequestMethod.GET)
     public ModelAndView bookingDetails(@PathVariable Command command){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -198,7 +218,7 @@ public class BookingController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
-        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getStatus() != CommandStatus.CART) {
+        if (command.getId() == 0 || user.getId() != command.getUser().getId() || command.getPaymentStatus() != CommandPaymentStatus.CART) {
             return false;
         }
 

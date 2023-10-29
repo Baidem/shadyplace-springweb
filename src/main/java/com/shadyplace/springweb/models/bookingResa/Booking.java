@@ -1,12 +1,10 @@
 package com.shadyplace.springweb.models.bookingResa;
 
-import com.shadyplace.springweb.models.enums.BookingStatus;
 import com.shadyplace.springweb.models.userAuth.FidelityRank;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Calendar;
 
@@ -25,14 +23,6 @@ public class Booking {
     @NotNull(message = "Booking's price cannot be null.")
     @PositiveOrZero(message = "Booking price must be positive.")
     private double bookingPrice;
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Booking's status cannot be null.")
-    private BookingStatus bookingStatus;
-    @Basic
-    @Length(max = 255, message = "Booking's comment must be no more than 255 characters long.")
-    private String comment;
-
     @ManyToOne(optional = true)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
@@ -51,10 +41,6 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "command_id", referencedColumnName = "id")
     private Command command;
-
-    public Booking() {
-        this.bookingStatus = BookingStatus.PENDING;
-    }
 
     public long getId() {
         return id;
@@ -79,7 +65,6 @@ public class Booking {
     public void setBookingPrice(double bookingPrice) {
         this.bookingPrice = bookingPrice;
     }
-
 
     public Equipment getEquipment() {
         return equipment;
@@ -119,22 +104,5 @@ public class Booking {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    public BookingStatus getBookingStatus() {
-        return bookingStatus;
-    }
-
-    public void setBookingStatus(BookingStatus bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
 
 }

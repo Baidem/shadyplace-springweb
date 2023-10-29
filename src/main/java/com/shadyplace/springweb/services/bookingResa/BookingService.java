@@ -3,7 +3,7 @@ package com.shadyplace.springweb.services.bookingResa;
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
 import com.shadyplace.springweb.models.bookingResa.Booking;
-import com.shadyplace.springweb.models.enums.BookingStatus;
+import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.FamilyLink;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.repository.bookingResa.BookingRepository;
@@ -52,8 +52,6 @@ public class BookingService {
                 Booking booking = new Booking();
 
                 booking.setBookingDate(calendar);
-                booking.setBookingStatus(BookingStatus.PENDING);
-                booking.setComment(bookingForm.getComment());
                 booking.setEquipment(parasolForm.getEquipment());
                 booking.setFidelityRank(user.getCurrentFidelityRank());
                 booking.setLine(parasolForm.getLine());

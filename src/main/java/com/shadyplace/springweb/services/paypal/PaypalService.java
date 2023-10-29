@@ -4,7 +4,7 @@ import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
 import com.paypal.orders.*;
 import com.shadyplace.springweb.models.bookingResa.Command;
-import com.shadyplace.springweb.models.enums.CommandStatus;
+import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.models.paypal.CompletedOrder;
 import com.shadyplace.springweb.models.paypal.PaymentOrder;
 import com.shadyplace.springweb.repository.paypal.CompletedOrderRepository;
@@ -72,16 +72,16 @@ public class PaypalService {
             HttpResponse<Order> httpResponse = payPalHttpClient.execute(ordersCaptureRequest);
             if (httpResponse.result().status() != null) {
                 completeOrder  =  new CompletedOrder("success", token);
-                command.setStatus(CommandStatus.PAYMENT_SUCCESS);
+                command.setPaymentStatus(CommandPaymentStatus.PAYMENT_SUCCESS);
                 commandService.save(command);
             } else {
                 completeOrder = new CompletedOrder("error");
-                command.setStatus(CommandStatus.PAYMENT_ERROR);
+                command.setPaymentStatus(CommandPaymentStatus.PAYMENT_ERROR);
                 commandService.save(command);
             }
         } catch (IOException e) {
             completeOrder = new CompletedOrder("error");
-            command.setStatus(CommandStatus.PAYMENT_ERROR);
+            command.setPaymentStatus(CommandPaymentStatus.PAYMENT_ERROR);
             commandService.save(command);
         }
         completeOrder.setCommand(command);
