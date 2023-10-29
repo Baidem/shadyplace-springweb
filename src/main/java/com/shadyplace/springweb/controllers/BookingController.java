@@ -58,7 +58,7 @@ public class BookingController {
         }
         int pageNumber = Integer.valueOf(page);
 
-        ModelAndView mv = new ModelAndView("booking/myBookingList");
+        ModelAndView mv = new ModelAndView("booking/commandList");
 
         if (searchBar == null) {
             searchBar = "";
@@ -102,7 +102,7 @@ public class BookingController {
         }
         int pageNumber = Integer.valueOf(page);
 
-        ModelAndView mv = new ModelAndView("booking/myBookingList");
+        ModelAndView mv = new ModelAndView("booking/commandList");
 
         Page<Command> commands = this.commandService
                 .getCommandPageByUserAndSearchForm(user, searchCommandForm, 4, pageNumber-1);
@@ -124,7 +124,7 @@ public class BookingController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Booking not found");
         }
-        ModelAndView mv = new ModelAndView("booking/details");
+        ModelAndView mv = new ModelAndView("booking/commandDetails");
         List<Booking> bookings = command.getBookings();
         if(bookings.isEmpty()){
             throw new ResponseStatusException(
@@ -144,7 +144,7 @@ public class BookingController {
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
 
-        ModelAndView mv = new ModelAndView("booking/form");
+        ModelAndView mv = new ModelAndView("booking/reservationForm");
 
         BookingForm bookingForm = new BookingForm();
         mv.addObject("bookingForm", bookingForm);
@@ -191,7 +191,7 @@ public class BookingController {
             model.addAttribute("user", user);
 
 
-            return "booking/form";
+            return "booking/reservationForm";
         } else { // Saving the Command with its Bookings
             List<Booking> bookingList =
                     this.bookingService.BookingFormToBookingList(bookingForm, user);
@@ -203,7 +203,6 @@ public class BookingController {
 
             return "redirect:/paypal/cart/" + command.getId() + "#navbar";
         }
-
     }
 
     @RequestMapping(value = "/cancel/{command}", method = RequestMethod.GET)
