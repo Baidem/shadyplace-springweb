@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Command manager</title>
+    <div th:replace="fragments/link-favicon.html">...</div>
+    <div th:replace="fragments/links-css.html">...</div>
+
+</head>
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<header th:replace="fragments/navbar.html :: navbar">...</header>
+
+<main>
+    <!--/* Search Engine */-->
+    <section id="search-engine" class="mt-0 py-2 bg-carte shadow">
+        <div class="container">
+            <div class="row text-end">
+
+                <form th:object="${form}" method="post" class="">
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    <div class="row g-3 align-items-center justify-content-end">
+                        <!--/* Filters */-->
+                        <div class="col-auto btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterAll" autocomplete="off" value="filterAll">
+                            <label class="btn btn-outline-secondary" for="filterAll">All</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterPending" autocomplete="off" value="filterPending">
+                            <label class="btn btn-outline-secondary" for="filterPending">Pending</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterValidated" autocomplete="off" value="filterValidated">
+                            <label class="btn btn-outline-secondary" for="filterValidated">Validated</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterRefused" autocomplete="off" value="filterRefused">
+                            <label class="btn btn-outline-secondary" for="filterRefused">Refused</label>
+                        </div>
+
+
+                        <!--/* Search bar */-->
+                        <div th:if="${commands.getTotalPages() == 0}"
+                             class="text-danger col-auto">No results</div>
+                        <div class="col-auto">
+                            <input type="text" th:field="*{searchContentBar}" placeholder="Search for comment"
+                                   class="form-control shadow-sm">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Admin command list */-->
+    <section id="admin-list" class=" my-3">
+        <div class="container bg-light-subtle pb-2">
+            <h1>Commands manager</h1>
+
+
+
+            <!--/* Table */-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bg-success-subtle">
+                        <table class="table table-success shadow m-0">
+                            <thead>
+                            <tr>
+                                <th>Created at</th>
+                                <th>Price</th>
+                                <th>Payment Status</th>
+                                <th>Validation Status</th>
+                                <th>Comment</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="command : ${commands}">
+                                <tr >
+                                    <td th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${command.totalPrice} + ' €'"></td>
+                                    <td th:text="${command.paymentStatus.label}"></td>
+                                    <td th:text="${command.validationStatus.label}"></td>
+                                    <td th:text="${command.comment}"></td>
+                                    <td>
+                                        <button type="button" class="btn-show-details btn btn-outline-warning" th:data-commandid="${command.id}">Show details</button>
+                                    </td>
+                                </tr>
+                            <!--/* Nested table */-->
+                                <tr >
+                                    <tr class="d-none" th:data-commandid="${command.id}">
+                                        <th class="border bg-warning">Stay date</th>
+                                        <th class="border bg-warning">Price</th>
+                                        <th class="border bg-warning">Equipments</th>
+                                        <th class="border bg-warning">Line</th>
+                                        <th class="border bg-warning">Location</th>
+                                        <th class="border bg-warning">Fidelity Rank</th>
+                                        <th class="border bg-warning">Family link</th>
+
+                                    </tr>
+
+                                    <tr th:each="booking : ${command.bookings}" class="d-none" th:data-commandid="${command.id}">
+                                        <td class="border bg-warning-subtle" th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
+                                        <td class="border bg-warning-subtle" th:text="${booking.bookingPrice} + ' €'"></td>
+                                        <td class="border bg-warning-subtle" th:text="${booking.line.label}"></td>
+                                        <td class="border bg-warning-subtle" th:text="${booking.equipment.option}"></td>
+                                        <td class="border bg-warning-subtle" th:text="${booking.location != null ?
+                                'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber)
+                                : '-'}"></td>
+                                        <td class="border bg-warning-subtle" th:text="${booking.fidelityRank.label}"></td>
+                                        <td class="border bg-warning-subtle" th:text="${command.user.familyLink.label}"></td>
+                                    </tr>
+
+                                </tr>
+
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Pagination */-->
+    <!--    <section class="mb-3" th:if="${commands.getTotalPages() > 1}">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row justify-content-center">-->
+    <!--                <div class="col">-->
+    <!--                    <div class="">-->
+    <!--                        <div class="d-flex justify-content-center">-->
+    <!--                            <nav aria-label="Page navigation">-->
+    <!--                                <ul class="pagination">-->
+    <!--                                    <li th:if="${commands.hasPrevious()}" class="page-item">-->
+    <!--                                        <a th:href="@{/admin/commands-manager?page=__${commands.getNumber()}__#navbar}" class="page-link bg-carte">Previous</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li th:each="pageNumber : ${#numbers.sequence(1, commands.getTotalPages())}" th:classappend="${pageNumber == commands.getNumber() + 1} ? 'page-item active' : 'page-item'">-->
+    <!--                                        <a th:href="@{/admin/commands-manager?page=__${pageNumber}__#navbar}" th:text="${pageNumber}" class="page-link bg-carte"></a>-->
+    <!--                                    </li>-->
+    <!--                                    <li th:if="${commands.hasNext()}" class="page-item">-->
+    <!--                                        <a th:href="@{/admin/commands-manager?page=__${commands.getNumber() + 2}__#navbar}" class="page-link bg-carte">Next</a>-->
+    <!--                                    </li>-->
+    <!--                                </ul>-->
+    <!--                            </nav>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </section>-->
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const showDetailButtons = document.querySelectorAll(".btn-show-details");
+        showDetailButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                const commandId = button.getAttribute("data-commandid");
+                const detailsRows = document.querySelectorAll(`tr[data-commandid="${commandId}"]`);
+
+                detailsRows.forEach(row => {
+                    if (row.classList.contains("d-none")) {
+                        row.classList.remove("d-none");
+                    } else {
+                        row.classList.add("d-none");
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

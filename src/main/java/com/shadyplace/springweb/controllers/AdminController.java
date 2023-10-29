@@ -1,15 +1,22 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.exception.FileTypeException;
+import com.shadyplace.springweb.forms.SearchCommandForm;
 import com.shadyplace.springweb.forms.SearchForm;
 import com.shadyplace.springweb.models.articleBlog.Article;
 import com.shadyplace.springweb.models.articleBlog.Image;
+import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ArticleService;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
+import com.shadyplace.springweb.services.bookingResa.CommandService;
+import com.shadyplace.springweb.services.userAuth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +40,79 @@ public class AdminController {
     ArticleService articleService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CommandService commandService;
+
+    @RequestMapping( "/commands-manager")
+    public ModelAndView getAll(@RequestParam(required = false) String page,
+                               @RequestParam(required = false) String searchBar,
+                               @RequestParam(required = false) String filterStatus
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if (page == null) {
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("admin/commandManager");
+
+        if (searchBar == null) {
+            searchBar = "";
+        }
+        if (filterStatus == null) {
+            filterStatus = "";
+        }
+
+        Page<Command> commands = this.commandService
+                .getCommandPageByUserAndSearchForm(
+                        user,
+                        new SearchCommandForm(searchBar, filterStatus),
+                        4,
+                        pageNumber - 1
+                );
+
+        mv.addObject("commands", commands);
+        mv.addObject("pageNumber", (String) page);
+        mv.addObject("form", new SearchCommandForm(searchBar, filterStatus));
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/commands-manager", method = RequestMethod.POST)
+    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
+                                         @Valid SearchCommandForm searchCommandForm,
+                                         BindingResult bindingResult){
+
+        if (searchCommandForm.getSearchContentBar() == null) {
+            searchCommandForm.setSearchContentBar("");
+        }
+        if (searchCommandForm.getFilterStatus() == null) {
+            searchCommandForm.setFilterStatus("filterAll");
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        if(page == null){
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("admin/commandManager");
+
+        Page<Command> commands = this.commandService
+                .getCommandPageByUserAndSearchForm(user, searchCommandForm, 4, pageNumber-1);
+
+        mv.addObject("commands", commands);
+        mv.addObject("pageNumber", (String) page );
+        mv.addObject("form", searchCommandForm);
+
+        return mv;
+    }
 
     @RequestMapping( "/article/list")
     public ModelAndView getAll(@RequestParam(required = false) String page,
