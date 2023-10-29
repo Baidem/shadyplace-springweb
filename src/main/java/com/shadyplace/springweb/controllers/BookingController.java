@@ -87,6 +87,13 @@ public class BookingController {
                                          @Valid SearchCommandForm searchCommandForm,
                                          BindingResult bindingResult){
 
+        if (searchCommandForm.getSearchContentBar() == null) {
+            searchCommandForm.setSearchContentBar("");
+        }
+        if (searchCommandForm.getFilterStatus() == null) {
+            searchCommandForm.setFilterStatus("filterAll");
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
@@ -99,13 +106,6 @@ public class BookingController {
 
         Page<Command> commands = this.commandService
                 .getCommandPageByUserAndSearchForm(user, searchCommandForm, 4, pageNumber-1);
-
-        if (searchCommandForm.getSearchContentBar() == null) {
-            searchCommandForm.setSearchContentBar("");
-        }
-        if (searchCommandForm.getFilterStatus() == null) {
-            searchCommandForm.setFilterStatus("");
-        }
 
         mv.addObject("commands", commands);
         mv.addObject("pageNumber", (String) page );
