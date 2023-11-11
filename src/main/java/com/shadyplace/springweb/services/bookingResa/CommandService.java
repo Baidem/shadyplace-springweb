@@ -73,4 +73,10 @@ public class CommandService {
         return commandPaginated;
     }
 
+    public Page<Command> getCommandPageBySearchForm(SearchCommandForm searchCommandForm, int nbResult, int page){
+        Pageable pageable = PageRequest.of(page, nbResult);
+        Page<Command> commandPaginated = this.commandCriteriaRepository.getCommandPageBySearchForm(searchCommandForm, pageable);
+        return commandPaginated;
+    }
+
 }

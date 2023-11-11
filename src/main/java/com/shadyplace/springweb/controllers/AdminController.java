@@ -68,8 +68,7 @@ public class AdminController {
         }
 
         Page<Command> commands = this.commandService
-                .getCommandPageByUserAndSearchForm(
-                        user,
+                .getCommandPageBySearchForm(
                         new SearchCommandForm(searchBar, filterStatus),
                         4,
                         pageNumber - 1
@@ -105,7 +104,7 @@ public class AdminController {
         ModelAndView mv = new ModelAndView("admin/commandManager");
 
         Page<Command> commands = this.commandService
-                .getCommandPageByUserAndSearchForm(user, searchCommandForm, 4, pageNumber-1);
+                .getCommandPageBySearchForm(searchCommandForm, 4, pageNumber-1);
 
         mv.addObject("commands", commands);
         mv.addObject("pageNumber", (String) page );

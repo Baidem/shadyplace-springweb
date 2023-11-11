@@ -8,10 +8,7 @@ import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -77,6 +74,88 @@ public class CommandCriteriaRepository {
         Page<Command> commandPage = new PageImpl<>(sublist, pageable, commandList.size());
 
         return commandPage;
+    }
+
+    public Page<Command> getCommandPageBySearchForm(SearchCommandForm searchCommandForm, Pageable pageable) {
+        // Criteria root
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Command> cq = cb.createQuery(Command.class);
+        Root<Command> commandRoot = cq.from(Command.class);
+        Join<Command, User> userJoin = commandRoot.join("user");
+
+        // Predicate list
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        // Predicate conditions
+        CommandValidationStatus commandValidationStatus = filterStatusToCommandValidationStatus(searchCommandForm.getFilterStatus());
+        Predicate pFilter;
+
+        if (commandValidationStatus != null) {
+            pFilter = cb.equal(commandRoot.get("validationStatus"), commandValidationStatus);
+            predicates.add(pFilter);
+        }
+
+        if (!searchCommandForm.getSearchContentBar().isEmpty()) {
+            String searchContent = searchCommandForm.getSearchContentBar();
+            Predicate pComment = cb.like(commandRoot.get("comment"), "%" + searchContent + "%");
+            Predicate pEmail = cb.like(userJoin.get("email"), "%" + searchContent + "%");
+            Predicate pFirstname = cb.like(userJoin.get("firstname"), "%" + searchContent + "%");
+            Predicate pLastname = cb.like(userJoin.get("lastname"), "%" + searchContent + "%");
+
+            Predicate combinedSearch;
+            if (isNumericLong(searchContent)) {
+                Predicate pId = cb.equal(commandRoot.get("id"), searchContent);
+                combinedSearch = cb.or(pComment, pEmail, pFirstname, pLastname, pId);
+            } else if (isNumericDouble(searchContent)) {
+                Predicate pPrice = cb.equal(commandRoot.get("totalPrice"), searchContent);
+                combinedSearch = cb.or(pComment, pEmail, pFirstname, pLastname, pPrice);
+            } else {
+                combinedSearch = cb.or(pComment, pEmail, pFirstname, pLastname);
+            }
+            predicates.add(combinedSearch);
+        }
+
+        cq.where(predicates.toArray(new Predicate[0]));
+        cq.orderBy(cb.desc(commandRoot.get("createdAt")));
+
+        TypedQuery<Command> query = entityManager.createQuery(cq);
+
+        List<Command> commandList = query.getResultList();
+        int start = (int) pageable.getOffset();
+        int end = start + pageable.getPageSize();
+
+        if (end > commandList.size()) {
+            end = commandList.size();
+        }
+
+        List<Command> sublist = commandList.subList(start, end);
+
+        Page<Command> commandPage = new PageImpl<>(sublist, pageable, commandList.size());
+
+        return commandPage;
+    }
+
+    private boolean isNumericLong(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            Long.parseLong(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+    private boolean isNumericDouble(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
 
