@@ -5,7 +5,6 @@
 >
 <head>
 
-
 </head>
 <body>
 
@@ -24,28 +23,41 @@
                 <div class="row-cols-auto">
                     <div class="col">
                         <ul class="navbar-nav">
+                            <!-- /* LINK Home */-->
                             <li class="nav-item">
-                                <a th:href="@{/#navbar}" aria-current="page" class="nav-link active">Home</a>
+                                <a th:href="@{/#navbar}" aria-current="page" class="nav-link">Home</a>
                             </li>
 
                             <th:block sec:authorize="isAuthenticated()">
+                                <!-- /* LINK Reserve a shady place ! */-->
                                 <li class="nav-item">
                                     <a th:href="@{/booking/new#navbar}" class="nav-link">Reserve a shady place !</a>
                                 </li>
+                                <!-- /* LINK See my bookings */-->
                                 <li class="nav-item">
                                     <a th:href="@{/booking/mybookinglist#navbar}" class="nav-link">See my bookings</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a  th:href="@{/logout}" th:text="Logout" class="nav-link"></a>
+                                <!-- /* BTN Logout */-->
+                                <li class="nav-item my-auto">
+                                    <a  th:href="@{/logout}" class="btn btn-outline-dark btn-sm my-0">
+                                        <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear me-1"></i>
+                                        <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user me-1"></i>
+                                        Log out
+                                    </a>
                                 </li>
                             </th:block>
 
                             <th:block sec:authorize="isAnonymous()">
+                            <!-- /* LINK Create an account */-->
                                 <li class="nav-item">
-                                    <a th:href="@{/login}" th:text="Login" class="nav-link"></a>
+                                    <a href="http://localhost:8043/jee/user-register" class="nav-link my-auto">Create an account</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="http://localhost:8043/jee/user-register" class="nav-link">Create an account</a>
+                            <!-- /* BTN Login */-->
+                                <li class="nav-item my-auto">
+                                    <a th:href="@{/login}" class="btn btn-outline-dark btn-sm my-0">
+                                        <i class="fa-solid fa-user me-1"></i>
+                                        Log in
+                                    </a>
                                 </li>
                             </th:block>
                         </ul>
@@ -73,7 +85,10 @@
     </nav>
 
     <div class="bg-light shadow opacity-50">
-        <div sec:authorize="isAuthenticated()" class="container">Connected : <th:block th:text="${#authentication.getPrincipal().username}"></th:block></div>
+        <div sec:authorize="isAuthenticated()" class="container">
+            <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2"></i>
+            <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2"></i>
+            <th:block th:text="${#authentication.getPrincipal().username}"></th:block></div>
     </div>
 </th:block>
 

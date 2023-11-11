@@ -307,7 +307,7 @@ public class DataCreatorApplication {
                 user.setEmail("baidem@gmail.com");
                 user.setFirstname("Vincent");
                 user.setLastname("Poupaert");
-                user.setPassword("$2y$10$LXglFW2ICkJ6pSkqgjG/2eDCStEfrwFWNJlbX3963Rfs2sunxuqHq");
+                user.setPassword("$2y$10$LXglFW2ICkJ6pSkqgjG/2eDCStEfrwFWNJlbX3963Rfs2sunxuqHq"); // MP : poulet
                 user.setConfirmPassword("$2y$10$LXglFW2ICkJ6pSkqgjG/2eDCStEfrwFWNJlbX3963Rfs2sunxuqHq");
                 user.setResidenceCountry(Country.FRANCE);
                 user.setRegistrationDate(Calendar.getInstance());
@@ -319,6 +319,7 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Vincent' added");
             }
+            String HashOfSecret456 = "$2a$10$xALSaBcbaNbhvm6x3BPm7OCQCvBnAdtWyQ94TdZvK4j0vZO3Myo8y"; // MP : secret456
 // User 1
             if (userService.findByEmail("alice@example.com") == null) {
                 logger.info("Creation : User 'Alice'");
@@ -326,8 +327,8 @@ public class DataCreatorApplication {
                 user.setEmail("alice@example.com");
                 user.setFirstname("Alice");
                 user.setLastname("Johnson");
-                user.setPassword("$2a$10$K28OexlX03x2zE1N9L5pBeZ6Lv9EaF2MvB9iqNtMpmzNoD4aXqtSu"); // Mot de passe : secret123
-                user.setConfirmPassword("$2a$10$K28OexlX03x2zE1N9L5pBeZ6Lv9EaF2MvB9iqNtMpmzNoD4aXqtSu"); // Mot de passe : secret123
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.UNITED_STATES);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.NO_FAMILY));
@@ -338,7 +339,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Alice' added");
             }
-
 // User 2
             if (userService.findByEmail("bob@example.com") == null) {
                 logger.info("Creation : User 'Bob'");
@@ -346,8 +346,8 @@ public class DataCreatorApplication {
                 user.setEmail("bob@example.com");
                 user.setFirstname("Bob");
                 user.setLastname("Smith");
-                user.setPassword("$2a$10$gqI6XExVr9xxafPbwMYf2O0rkwCPxvVXHz/zlj77.Pp68LLEdZcSy"); // Mot de passe : secure456
-                user.setConfirmPassword("$2a$10$gqI6XExVr9xxafPbwMYf2O0rkwCPxvVXHz/zlj77.Pp68LLEdZcSy"); // Mot de passe : secure456
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.CANADA);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.CHILD));
@@ -358,7 +358,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Bob' added");
             }
-
 // User 3
             if (userService.findByEmail("charlie@example.com") == null) {
                 logger.info("Creation : User 'Charlie'");
@@ -366,8 +365,8 @@ public class DataCreatorApplication {
                 user.setEmail("charlie@example.com");
                 user.setFirstname("Charlie");
                 user.setLastname("Brown");
-                user.setPassword("$2a$10$D7G4KfIK2er6g3b9/HTyP.DuYsM.kAHzqDeFSeIjjSkqssJFYqK76"); // Mot de passe : mypass789
-                user.setConfirmPassword("$2a$10$D7G4KfIK2er6g3b9/HTyP.DuYsM.kAHzqDeFSeIjjSkqssJFYqK76"); // Mot de passe : mypass789
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.FRANCE);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.GRANDPARENT));
@@ -385,8 +384,8 @@ public class DataCreatorApplication {
                 user.setEmail("david@example.com");
                 user.setFirstname("David");
                 user.setLastname("Wilson");
-                user.setPassword("$2a$10$j2zFy4Syj21y18QsyVlMU.FOQy3AsBksB/s89o/OjFXGmX4uy7LeK"); // Mot de passe : secure789
-                user.setConfirmPassword("$2a$10$j2zFy4Syj21y18QsyVlMU.FOQy3AsBksB/s89o/OjFXGmX4uy7LeK"); // Mot de passe : secure789
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.UNITED_KINGDOM);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.PARENT));
@@ -397,7 +396,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'David' added");
             }
-
 // User 5
             if (userService.findByEmail("emily@example.com") == null) {
                 logger.info("Creation : User 'Emily'");
@@ -405,8 +403,8 @@ public class DataCreatorApplication {
                 user.setEmail("emily@example.com");
                 user.setFirstname("Emily");
                 user.setLastname("Davis");
-                user.setPassword("$2a$10$9zSyBzT63Zy1yB6gkhoVceZOjDP9Qw1p2V8y7uz63SgK9nxy7nxjO"); // Mot de passe : secret456
-                user.setConfirmPassword("$2a$10$9zSyBzT63Zy1yB6gkhoVceZOjDP9Qw1p2V8y7uz63SgK9nxy7nxjO"); // Mot de passe : secret456
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.AUSTRALIA);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.NO_FAMILY));
@@ -417,7 +415,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Emily' added");
             }
-
 // User 6
             if (userService.findByEmail("frank@example.com") == null) {
                 logger.info("Creation : User 'Frank'");
@@ -425,8 +422,8 @@ public class DataCreatorApplication {
                 user.setEmail("frank@example.com");
                 user.setFirstname("Frank");
                 user.setLastname("Johnson");
-                user.setPassword("$2a$10$f.5Jld9MRNn81Nq9nl5BQMOODvrrUyXq4.qZQ.7e1wa.xRZFR1Qm3"); // Mot de passe : mypass123
-                user.setConfirmPassword("$2a$10$f.5Jld9MRNn81Nq9nl5BQMOODvrrUyXq4.qZQ.7e1wa.xRZFR1Qm3"); // Mot de passe : mypass123
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.GERMANY);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.CHILD));
@@ -444,8 +441,8 @@ public class DataCreatorApplication {
                 user.setEmail("sophie@example.com");
                 user.setFirstname("Sophie");
                 user.setLastname("Martinez");
-                user.setPassword("$2a$10$WUvXNfbKqnql1R.jTRf2Uud5ncf/LBGJqD/0p2cY3z4ON/GpZNRQm"); // Mot de passe : secure123
-                user.setConfirmPassword("$2a$10$WUvXNfbKqnql1R.jTRf2Uud5ncf/LBGJqD/0p2cY3z4ON/GpZNRQm"); // Mot de passe : secure123
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.UNITED_STATES);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.GRANDPARENT));
@@ -456,7 +453,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Sophie' added");
             }
-
 // User 8
             if (userService.findByEmail("james@example.com") == null) {
                 logger.info("Creation : User 'James'");
@@ -464,8 +460,8 @@ public class DataCreatorApplication {
                 user.setEmail("james@example.com");
                 user.setFirstname("James");
                 user.setLastname("Smith");
-                user.setPassword("$2a$10$rIdRoZLZ1ZyJZ7s91EDBhuBmVQ8gfiO.zmr..g0Fz70j1mQYYN/EE"); // Mot de passe : mysecret456
-                user.setConfirmPassword("$2a$10$rIdRoZLZ1ZyJZ7s91EDBhuBmVQ8gfiO.zmr..g0Fz70j1mQYYN/EE"); // Mot de passe : mysecret456
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.CANADA);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.SIBLING));
@@ -476,7 +472,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'James' added");
             }
-
 // User 9
             if (userService.findByEmail("linda@example.com") == null) {
                 logger.info("Creation : User 'Linda'");
@@ -484,8 +479,8 @@ public class DataCreatorApplication {
                 user.setEmail("linda@example.com");
                 user.setFirstname("Linda");
                 user.setLastname("Brown");
-                user.setPassword("$2a$10$j1zP/BrOYfz8I7/mqKKHZOYvGokk0waV/T2WlHvf0RRi.t5QpZl9O"); // Mot de passe : secret789
-                user.setConfirmPassword("$2a$10$j1zP/BrOYfz8I7/mqKKHZOYvGokk0waV/T2WlHvf0RRi.t5QpZl9O"); // Mot de passe : secret789
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.UNITED_STATES);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.CHILD));
@@ -496,7 +491,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Linda' added");
             }
-
 // User 10
             if (userService.findByEmail("michael@example.com") == null) {
                 logger.info("Creation : User 'Michael'");
@@ -504,8 +498,8 @@ public class DataCreatorApplication {
                 user.setEmail("michael@example.com");
                 user.setFirstname("Michael");
                 user.setLastname("Wilson");
-                user.setPassword("$2a$10$kDxqK/CVDfRBXhH.JIh3VeS3K/tE5b4xlyw2C9YImfgM6hPXxt9mO"); // Mot de passe : secure234
-                user.setConfirmPassword("$2a$10$kDxqK/CVDfRBXhH.JIh3VeS3K/tE5b4xlyw2C9YImfgM6hPXxt9mO"); // Mot de passe : secure234
+                user.setPassword(HashOfSecret456); // MP : secret456
+                user.setConfirmPassword(HashOfSecret456); // MP : secret456
                 user.setResidenceCountry(Country.AUSTRALIA);
                 user.setRegistrationDate(Calendar.getInstance());
                 user.setFamilyLink(familyLinkService.findByLabel(FamilyLinkLabel.NO_FAMILY));
@@ -516,13 +510,6 @@ public class DataCreatorApplication {
 
                 logger.info("User 'Michael' added");
             }
-
-
-
         };
-
     }
-
-
-
 }
