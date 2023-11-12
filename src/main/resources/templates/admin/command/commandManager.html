@@ -46,11 +46,17 @@
                         <div th:if="${commands.getTotalPages() == 0}"
                              class="text-danger col-auto">No results</div>
                         <div class="col-auto">
-                            <input type="text" th:field="*{searchContentBar}" placeholder="Search for comment"
+                            <input type="text" th:field="*{searchContentBar}" placeholder="Search"
                                    class="form-control shadow-sm">
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
+                            <button
+                                type="submit"
+                                class="btn btn-secondary shadow-sm"
+                            >
+                                <i class="fa-solid fa-magnifying-glass me-1"></i>
+                                Search
+                            </button>
                         </div>
                     </div>
 
@@ -61,65 +67,84 @@
 
     <!--/* Admin command list */-->
     <section id="admin-list" class=" my-3">
-        <div class="container bg-light-subtle pb-2">
+        <div class="container-fluid pb-2">
             <h1>Commands manager</h1>
-
-
-
             <!--/* Table */-->
             <div class="row">
                 <div class="col-lg-12">
                     <div class="bg-success-subtle">
-                        <table class="table table-success shadow m-0">
+                        <table class="table table-success table-striped shadow m-0">
                             <thead>
                             <tr>
-                                <th>Created at</th>
-                                <th>Price</th>
-                                <th>Payment Status</th>
-                                <th>Validation Status</th>
-                                <th>Comment</th>
-                                <th>Actions</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Validation</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <th:block th:each="command : ${commands}">
                                 <tr >
+                                    <th scope="row" th:text="${command.id}"></th>
                                     <td th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}"></td>
                                     <td th:text="${command.totalPrice} + ' €'"></td>
                                     <td th:text="${command.paymentStatus.label}"></td>
                                     <td th:text="${command.validationStatus.label}"></td>
                                     <td th:text="${command.comment}"></td>
+                                    <td th:text="${command.user.firstname + ' ' + command.user.lastname}"></td>
+                                    <td >
+                                        <a class="text-primary" th:href="'mailto:' + ${command.user.email}" th:text="${command.user.email}"></a>
+                                    </td>
                                     <td>
-                                        <button type="button" class="btn-show-details btn btn-outline-warning" th:data-commandid="${command.id}">Show details</button>
+                                        <button type="button" class="btn-show-details btn btn-sm btn-secondary" th:data-commandid="${command.id}">
+                                            <i class="fa-solid fa-arrow-down me-1"></i>
+                                            Show details
+                                        </button>
+                                        <a
+                                            th:href="@{'/admin/commands-manager-form/' + ${command.id}}"
+                                            type="button"
+                                            class="btn-switch-status btn btn-sm btn-secondary"
+                                            th:data-commandid="${command.id}"
+                                        >
+                                            <i class="fa-solid fa-folder-open me-1"></i>
+                                            Open
+                                        </a>
+
                                     </td>
                                 </tr>
                             <!--/* Nested table */-->
                                 <tr >
-                                    <tr class="d-none" th:data-commandid="${command.id}">
-                                        <th class="border bg-warning">Stay date</th>
-                                        <th class="border bg-warning">Price</th>
-                                        <th class="border bg-warning">Equipments</th>
-                                        <th class="border bg-warning">Line</th>
-                                        <th class="border bg-warning">Location</th>
-                                        <th class="border bg-warning">Fidelity Rank</th>
-                                        <th class="border bg-warning">Family link</th>
-
+                                    <tr class="d-none table-warning" th:data-commandid="${command.id}">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Stay date</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Equipments</th>
+                                        <th scope="col">Line</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Fidelity Rank</th>
+                                        <th scope="col">Family link</th>
+                                        <th scope="col"></th>
                                     </tr>
 
-                                    <tr th:each="booking : ${command.bookings}" class="d-none" th:data-commandid="${command.id}">
-                                        <td class="border bg-warning-subtle" th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
-                                        <td class="border bg-warning-subtle" th:text="${booking.bookingPrice} + ' €'"></td>
-                                        <td class="border bg-warning-subtle" th:text="${booking.line.label}"></td>
-                                        <td class="border bg-warning-subtle" th:text="${booking.equipment.option}"></td>
-                                        <td class="border bg-warning-subtle" th:text="${booking.location != null ?
-                                'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber)
-                                : '-'}"></td>
-                                        <td class="border bg-warning-subtle" th:text="${booking.fidelityRank.label}"></td>
-                                        <td class="border bg-warning-subtle" th:text="${command.user.familyLink.label}"></td>
+                                    <tr th:each="booking : ${command.bookings}" class="d-none table-warning" th:data-commandid="${command.id}">
+                                        <th scope="row" th:text="${booking.id}"></th>
+                                        <td th:text="${#dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${booking.bookingPrice} + ' €'"></td>
+                                        <td th:text="${booking.line.label}"></td>
+                                        <td th:text="${booking.equipment.option}"></td>
+                                        <td
+                                            th:text="${booking.location != null ? 'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber) : '-'}"
+                                        ></td>
+                                        <td th:text="${booking.fidelityRank.label}"></td>
+                                        <td th:text="${command.user.familyLink.label.label}"></td>
+                                        <td></td>
                                     </tr>
-
                                 </tr>
-
                             </th:block>
                             </tbody>
                         </table>

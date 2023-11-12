@@ -25,6 +25,7 @@ public class SecurityConfig {
                 (request) ->
                         request
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers("/not-found").permitAll()
                                 .requestMatchers("error/**","/css/**", "/js/**", "/images/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/upload/**").permitAll()

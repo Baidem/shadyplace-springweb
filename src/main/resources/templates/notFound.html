@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <div th:replace="fragments/links-global">...</div>
+</head>
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+    <!--/* Not found */-->
+    <section class="m-3">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <div class="">
+                        <div class="card text-dark bg-warning mb-3 shadow">
+                            <div class="card-body text-center ">
+                                <h1>
+                                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                                    PAGE NOT FOUND !
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+</body>
+</html>

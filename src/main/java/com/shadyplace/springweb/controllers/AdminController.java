@@ -5,7 +5,9 @@ import com.shadyplace.springweb.forms.SearchCommandForm;
 import com.shadyplace.springweb.forms.SearchForm;
 import com.shadyplace.springweb.models.articleBlog.Article;
 import com.shadyplace.springweb.models.articleBlog.Image;
+import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ArticleService;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
@@ -31,6 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -45,10 +49,108 @@ public class AdminController {
     @Autowired
     CommandService commandService;
 
+    @RequestMapping( "/location-manually/{booking}")
+    public ModelAndView locationManually(
+            @PathVariable(required = false) Booking booking
+    ) {
+        if (booking == null) {
+            ModelAndView mv = new ModelAndView("notFound");
+            return mv;
+        }
+
+        ModelAndView mv = new ModelAndView("admin/location/manually");
+
+        Map<String, String> planningLocatiolnMap = new HashMap<String, String>();
+
+        mv.addObject("booking", booking);
+        mv.addObject("map", planningLocatiolnMap);
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/location-manually/{booking}", method = RequestMethod.POST)
+    public ModelAndView locationManuallySubmit(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Map map,
+            @PathVariable(required = false) Booking booking
+    ){
+        if (booking == null) {
+            ModelAndView mv = new ModelAndView("notFound");
+            return mv;
+        }
+
+        ModelAndView mv = new ModelAndView("admin/location/manually");
+
+        // TODO Service d'assignation de la position
+        mv.addObject("booking", booking);
+        mv.addObject("map", map);
+
+        return mv;
+    }
+
+    @RequestMapping( "/location-automatic/{booking}")
+    public String locationAutomatic(
+            @PathVariable(required = false) Booking booking
+    ) {
+        if (booking == null) {
+            ModelAndView mv = new ModelAndView("notFound");
+            return "redirect:/not-found";
+        }
+
+        // TODO auto incrémentation de la localisation
+
+        return "redirect:/admin/commands-manager-form/" + booking.getCommand().getId();
+    }
+
+    @RequestMapping( "/commands-manager-form/{command}")
+    public ModelAndView commandsManagerForm(
+        @RequestParam(required = false) String commandStatus,
+        @PathVariable(required = false) Command command
+    ) {
+        if (command == null) {
+            ModelAndView mv = new ModelAndView("notFound");
+            return mv;
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        ModelAndView mv = new ModelAndView("admin/command/commandManagerForm");
+
+        mv.addObject("command", command);
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/commands-manager-form/{command}", method = RequestMethod.POST)
+    public ModelAndView commandsManagerFormSubmit(
+            @RequestParam(required = false) String commandStatus,
+            @PathVariable(required = false) Command command
+    ){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+
+        ModelAndView mv = new ModelAndView("admin/command/commandManagerForm");
+
+        if (commandStatus.equals("validated")) {
+            command.setValidationStatus(CommandValidationStatus.VALIDATED);
+        } else if (commandStatus.equals("refused")) {
+            command.setValidationStatus(CommandValidationStatus.REFUSED);
+        } else {
+            command.setValidationStatus(CommandValidationStatus.PENDING);
+        }
+        commandService.save(command);
+
+        mv.addObject("command", command);
+
+        return mv;
+    }
+
     @RequestMapping( "/commands-manager")
-    public ModelAndView getAll(@RequestParam(required = false) String page,
-                               @RequestParam(required = false) String searchBar,
-                               @RequestParam(required = false) String filterStatus
+    public ModelAndView commandsManager(
+        @RequestParam(required = false) String page,
+        @RequestParam(required = false) String searchBar,
+        @RequestParam(required = false) String filterStatus
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
@@ -58,7 +160,7 @@ public class AdminController {
         }
         int pageNumber = Integer.valueOf(page);
 
-        ModelAndView mv = new ModelAndView("admin/commandManager");
+        ModelAndView mv = new ModelAndView("admin/command/commandManager");
 
         if (searchBar == null) {
             searchBar = "";
@@ -82,10 +184,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/commands-manager", method = RequestMethod.POST)
-    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
-                                         @Valid SearchCommandForm searchCommandForm,
-                                         BindingResult bindingResult){
-
+    public ModelAndView commandsManagerSubmit(
+            @RequestParam(required = false) String page,
+            @Valid SearchCommandForm searchCommandForm,
+            BindingResult bindingResult
+    ){
         if (searchCommandForm.getSearchContentBar() == null) {
             searchCommandForm.setSearchContentBar("");
         }
@@ -101,7 +204,7 @@ public class AdminController {
         }
         int pageNumber = Integer.valueOf(page);
 
-        ModelAndView mv = new ModelAndView("admin/commandManager");
+        ModelAndView mv = new ModelAndView("admin/command/commandManager");
 
         Page<Command> commands = this.commandService
                 .getCommandPageBySearchForm(searchCommandForm, 4, pageNumber-1);
@@ -114,8 +217,10 @@ public class AdminController {
     }
 
     @RequestMapping( "/article/list")
-    public ModelAndView getAll(@RequestParam(required = false) String page,
-                               @RequestParam(required = false) String searchBar) {
+    public ModelAndView articleList(
+            @RequestParam(required = false) String page,
+            @RequestParam(required = false) String searchBar
+    ){
         if (page == null) {
             page = "1";
         }
@@ -138,10 +243,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "article/list", method = RequestMethod.POST)
-    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
-                                         @Valid SearchForm searchForm,
-                                         BindingResult bindingResult){
-
+    public ModelAndView articleListSubmit(
+            @RequestParam(required = false) String page,
+            @Valid SearchForm searchForm,
+            BindingResult bindingResult
+    ){
         if(page == null){
             page = "1";
         }
@@ -160,7 +266,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/article/add", method = RequestMethod.GET)
-    public ModelAndView add(){
+    public ModelAndView articleAdd(){
 
         ModelAndView mv = new ModelAndView("admin/article/form");
         Article article = new Article();
@@ -171,8 +277,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/article/add", method = RequestMethod.POST)
-    public String addSubmit(@Validated Article article, BindingResult bindingResult, Model model) {
-
+    public String articleAddSubmit(
+            @Validated Article article,
+            BindingResult bindingResult,
+            Model model
+    ){
         if (article == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "article not found");
@@ -193,8 +302,9 @@ public class AdminController {
     }
 
     @RequestMapping("article/preview/{article}")
-    public ModelAndView article(@PathVariable(required = false) Article article){
-
+    public ModelAndView articlePreview(
+            @PathVariable(required = false) Article article
+    ){
         ModelAndView mv = new ModelAndView("/admin/article/preview");
         mv.addObject("article", article);
 
@@ -202,8 +312,9 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/article/delete/{article}", method = RequestMethod.GET)
-    public String delete(@Valid Article article) throws IOException {
-
+    public String articleDelete(
+            @Valid Article article
+    ) throws IOException {
         if (article == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Article not found"
@@ -224,8 +335,9 @@ public class AdminController {
     }
 
     @RequestMapping(value ="/article/edit/{article}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable(required = false) Article article){
-
+    public ModelAndView articleEdit(
+            @PathVariable(required = false) Article article
+    ){
         if (article == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Article not found");
@@ -238,8 +350,10 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/article/edit/{article}", method = RequestMethod.POST)
-    public String editSubmit(@Valid Article article, BindingResult bindingResult, Model model){
-
+    public String articleEditSubmit(
+            @Valid Article article, BindingResult bindingResult,
+            Model model
+    ){
         if (article == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Article not found"
@@ -255,9 +369,10 @@ public class AdminController {
         }
     }
 
-    // TODO image CHANGE (pour remplacer add image et edit image
     @RequestMapping(value = "/image/change/{article}", method = RequestMethod.GET)
-    public ModelAndView changeArticleImage(@PathVariable(required = false) Article article){
+    public ModelAndView changeArticleImage(
+            @PathVariable(required = false) Article article
+    ){
 
         if (article == null) {
             throw new ResponseStatusException(
@@ -321,6 +436,4 @@ public class AdminController {
             }
         }
     }
-
-
 }

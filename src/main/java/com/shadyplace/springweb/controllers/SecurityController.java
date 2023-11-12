@@ -20,4 +20,9 @@ public class SecurityController {
         ModelAndView mv = new ModelAndView("security/logout");
         return mv;
     }
+    @RequestMapping(value = "/not-found", method = RequestMethod.GET)
+    ModelAndView notFound(){
+        ModelAndView mv = new ModelAndView("notFound");
+        return mv;
+    }
 }
