@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+
 <head>
     <meta charset="UTF-8">
     <title>Location manually</title>
+    <div th:replace="fragments/links-global">...</div>
 </head>
-<body>
-    hello !
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+
+    <section>
+        <div class="container-fluid">
+            <table>
+                <tbody>
+                <tr th:each="row : ${beach2D}">
+                    <td class="border" th:each="cell : ${row}" th:text="${cell}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
 </body>
 </html>

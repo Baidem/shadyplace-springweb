@@ -12,6 +12,7 @@ import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ArticleService;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
 import com.shadyplace.springweb.services.bookingResa.CommandService;
+import com.shadyplace.springweb.services.bookingResa.LocationService;
 import com.shadyplace.springweb.services.userAuth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ public class AdminController {
     UserService userService;
     @Autowired
     CommandService commandService;
+    @Autowired
+    LocationService locationService;
 
     @RequestMapping( "/location-manually/{booking}")
     public ModelAndView locationManually(
@@ -60,10 +63,12 @@ public class AdminController {
 
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
-        Map<String, String> planningLocatiolnMap = new HashMap<String, String>();
+//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
+        var beach2D = locationService.beach2D();
 
+        mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
-        mv.addObject("map", planningLocatiolnMap);
+//        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }
@@ -71,7 +76,6 @@ public class AdminController {
     @RequestMapping(value = "/location-manually/{booking}", method = RequestMethod.POST)
     public ModelAndView locationManuallySubmit(
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) Map map,
             @PathVariable(required = false) Booking booking
     ){
         if (booking == null) {
@@ -79,11 +83,16 @@ public class AdminController {
             return mv;
         }
 
+//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
+
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
         // TODO Service d'assignation de la position
+        var beach2D = locationService.beach2D();
+
+        mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
-        mv.addObject("map", map);
+//        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }

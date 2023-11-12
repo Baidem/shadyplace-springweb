@@ -11,7 +11,7 @@ import com.shadyplace.springweb.models.userAuth.FidelityRank;
 import com.shadyplace.springweb.models.userAuth.Role;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
-import com.shadyplace.springweb.services.articleBlog.LocationService;
+import com.shadyplace.springweb.services.bookingResa.LocationService;
 import com.shadyplace.springweb.services.bookingResa.EquipmentService;
 import com.shadyplace.springweb.services.bookingResa.LineService;
 import com.shadyplace.springweb.services.userAuth.FamilyLinkService;
