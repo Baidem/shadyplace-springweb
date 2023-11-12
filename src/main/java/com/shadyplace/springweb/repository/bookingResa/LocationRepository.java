@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LocationRepository extends CrudRepository<Location, Long> {
 
+       Location findLocationByLineNumberAndRankNumber(int lineNumber, int rankNumber);
 
 }

@@ -3,6 +3,7 @@ package com.shadyplace.springweb;
 import com.shadyplace.springweb.models.articleBlog.Image;
 import com.shadyplace.springweb.models.bookingResa.Equipment;
 import com.shadyplace.springweb.models.bookingResa.Line;
+import com.shadyplace.springweb.models.bookingResa.Location;
 import com.shadyplace.springweb.models.enums.Country;
 import com.shadyplace.springweb.models.enums.FamilyLinkLabel;
 import com.shadyplace.springweb.models.userAuth.FamilyLink;
@@ -10,6 +11,7 @@ import com.shadyplace.springweb.models.userAuth.FidelityRank;
 import com.shadyplace.springweb.models.userAuth.Role;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
+import com.shadyplace.springweb.services.articleBlog.LocationService;
 import com.shadyplace.springweb.services.bookingResa.EquipmentService;
 import com.shadyplace.springweb.services.bookingResa.LineService;
 import com.shadyplace.springweb.services.userAuth.FamilyLinkService;
@@ -43,9 +45,22 @@ public class DataCreatorApplication {
             FidelityRankService fidelityRankService,
             UserService userService,
             LineService lineService,
-            RoleService roleService
+            RoleService roleService,
+            LocationService locationService
     ){
         return args -> {
+
+// Locations
+            for (int i = 1; i <= 8; i++) {
+                for (int j = 1; j <= 36; j++) {
+                    if (locationService.finByLineAndRank(i, j) == null){
+                        logger.info("Creation : location L" + i + " R" + j);
+                        Location l = new Location(i, j);
+                        locationService.save(l);
+                        logger.info("location L" + i + " R" + j + " added");
+                    }
+                }
+            }
 // Image par defaut
             if (imageService.findByLocation("upload/default-image.jpg")==null) {
                 logger.info("Creation : image 'default-image'");
