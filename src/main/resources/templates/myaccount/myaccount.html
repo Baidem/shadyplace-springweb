@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+
+<head>
+  <meta charset="UTF-8">
+  <title>My account</title>
+  <div th:replace="fragments/links-global">...</div>
+</head>
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+
+  <!--/* Account card */-->
+  <session>
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="">
+            <!--/* Card */-->
+            <div class="card shadow">
+              <div class="card-header bg-bluesky text-light">My account</div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">First name</div>
+                    <div class="col-auto" th:text="${user.firstname}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">Last name</div>
+                    <div class="col-auto" th:text="${user.lastname}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">Email</div>
+                    <div class="col-auto" th:text="${user.email}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">Country</div>
+                    <div class="col-auto" th:text="${user.residenceCountry.name}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">Fidelity Rank</div>
+                    <div class="col-auto" th:text="${user.currentFidelityRank.label}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row">
+                    <div class="col-3">Family link</div>
+                    <div class="col-auto" th:text="${user.familyLink.label.label}"></div>
+                  </div>
+                </li>
+                <li class="list-group-item container-fluid">
+                  <div class="row justify-content-end">
+                    <div class="col-auto">
+                      <a th:href="@{/myaccount#navbar}" class="card-link fw-bold">Edit</a>
+                      <a th:href="@{/myaccount#navbar}" class="card-link fw-bold">Change password</a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </session>
+
+
+
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+</body>
+</html>
