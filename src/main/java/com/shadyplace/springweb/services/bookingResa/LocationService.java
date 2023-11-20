@@ -24,25 +24,25 @@ public class LocationService {
         locationRepository.save(location);
     }
 
-//    public List<Location> getAll(){
-//        return locationRepository.getAll();
-//    }
+    public List<Location> getAll(){
+        return locationRepository.findAll();
+    }
 
-//    public Map<String, String> getPlanningMap(Calendar bookingDate) {
-//        Map<String, String> map = new HashMap<String, String>();
-//        List<Location> locations = locationRepository.getAll();
-//        List<Location> occupiedLocations = locationRepository.getAllLocationByBookingDate(bookingDate);
-//
-//        for (Location location : locations) {
-//            String key = location.getLineNumber()+","+ location.getRankNumber();
-//            boolean isOccupied = occupiedLocations.stream()
-//                    .anyMatch(occLocation -> occLocation.getLineNumber() == location.getLineNumber()
-//                            && occLocation.getRankNumber() == location.getRankNumber());
-//
-//            map.put(key, isOccupied ? "Occupied" : "Available");
-//        }
-//        return map;
-//    }
+    public Map<String, String> getPlanningMap(Calendar bookingDate) {
+        Map<String, String> map = new HashMap<String, String>();
+        List<Location> locations = locationRepository.findAll();
+        List<Location> occupiedLocations = locationRepository.getAllLocationByBookingDate(bookingDate);
+
+        for (Location location : locations) {
+            String key = location.getLineNumber()+","+ location.getRankNumber();
+            boolean isOccupied = occupiedLocations.stream()
+                    .anyMatch(occLocation -> occLocation.getLineNumber() == location.getLineNumber()
+                            && occLocation.getRankNumber() == location.getRankNumber());
+
+            map.put(key, isOccupied ? "Occupied" : "Available");
+        }
+        return map;
+    }
 
     public String[][] beach2D() {
         String[][] array2D = new String[8][36];

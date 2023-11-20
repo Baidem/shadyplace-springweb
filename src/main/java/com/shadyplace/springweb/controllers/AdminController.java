@@ -63,12 +63,12 @@ public class AdminController {
 
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
-//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
+        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
         var beach2D = locationService.beach2D();
 
         mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
-//        mv.addObject("map", planningLocatiolnMap);
+        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }
@@ -83,7 +83,7 @@ public class AdminController {
             return mv;
         }
 
-//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
+        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
 
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
@@ -92,7 +92,7 @@ public class AdminController {
 
         mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
-//        mv.addObject("map", planningLocatiolnMap);
+        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }

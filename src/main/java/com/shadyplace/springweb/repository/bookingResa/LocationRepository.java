@@ -18,5 +18,5 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
        @Query("SELECT l FROM Location l JOIN Booking b WHERE b.bookingDate = :bookingDate")
        List<Location> getAllLocationByBookingDate(@Param("bookingDate") Calendar bookingDate);
 
-//       List<Location> getAll();
+        List<Location> findAll();
 }
