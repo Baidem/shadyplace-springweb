@@ -83,9 +83,11 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/mybookinglist", method = RequestMethod.POST)
-    public ModelAndView searchFormSubmit(@RequestParam(required = false) String page,
-                                         @Valid SearchCommandForm searchCommandForm,
-                                         BindingResult bindingResult){
+    public ModelAndView searchFormSubmit(
+            @RequestParam(required = false) String page,
+            @Valid SearchCommandForm searchCommandForm,
+            BindingResult bindingResult
+    ){
 
         if (searchCommandForm.getSearchContentBar() == null) {
             searchCommandForm.setSearchContentBar("");
@@ -156,9 +158,11 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String addBookingSubmit(@Valid BookingForm bookingForm,
-                                 BindingResult bindingResult,
-                                 @RequestBody String postPayload, Model model){
+    public String addBookingSubmit(
+            @Valid BookingForm bookingForm,
+            BindingResult bindingResult,
+            @RequestBody String postPayload, Model model
+    ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName()) ;
 

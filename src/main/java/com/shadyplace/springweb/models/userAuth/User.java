@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
@@ -17,15 +18,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(nullable = false, unique = true)
     @NotBlank(message = "User's email cannot be blank.")
     @Email(message = "User's email format is invalid.")
     private String email;
     @Column(name = "password", nullable = false)
     @NotBlank(message = "User's password cannot be blank.")
-    private String password; // TODO REGEX PASSWORD
-
+    private String password;
     @Column(length = 50, nullable = false)
     @Length(max = 50, message = "The user's first name must be no more than 50 characters long.")
     @NotBlank(message = "User's firstname cannot be blank.")
@@ -34,30 +33,22 @@ public class User {
     @Length(max = 50, message = "The user's last name must be no more than 50 characters long.")
     @NotBlank(message = "User's lastname cannot be blank.")
     private String lastname;
-
     @Transient
-    @NotBlank(message = "User's password confirm cannot be blank")
     private String confirmPassword;
-
     @Column(name = "registration_date",nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar registrationDate;
-
     @Column(name = "residence_country", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "User's country cannot be null.")
     private Country residenceCountry;
-
     @ManyToOne()
     @JoinColumn(name = "family_link_id", referencedColumnName = "id")
     private FamilyLink familyLink;
-
     @ManyToOne()
     @JoinColumn(name = "current_fidelity_rank_id", referencedColumnName = "id")
     @NotNull(message = "User's currentFidelityRank cannot be null.")
     private FidelityRank currentFidelityRank;
-
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "utilisateur_role",

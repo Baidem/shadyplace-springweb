@@ -24,7 +24,7 @@ public class BookingForm {
     @Future(message = "This date has already passed")
     @OpeningDatesConstraint()
     private Date dateEnd;
-    private String Comment;
+    private String comment;
     private List<ParasolForm> parasols;
 
     public BookingForm() {
@@ -55,11 +55,11 @@ public class BookingForm {
     }
 
     public String getComment() {
-        return Comment;
+        return comment;
     }
 
     public void setComment(String comment) {
-        Comment = comment;
+        this.comment = comment;
     }
 
     public List<ParasolForm> getParasols() {
