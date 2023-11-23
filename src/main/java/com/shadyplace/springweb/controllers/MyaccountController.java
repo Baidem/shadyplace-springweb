@@ -39,6 +39,7 @@ public class MyaccountController {
 
         return mv;
     }
+    // MY ACCOUNT fORM //
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelAndView myaccountForm(){
         // User //
@@ -60,6 +61,7 @@ public class MyaccountController {
 
         return mv;
     }
+    // MY ACCOUNT FORM SUBMIT //
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String myaccountFormSubmit(
             @Valid AccountForm accountForm,
