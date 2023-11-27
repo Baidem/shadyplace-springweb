@@ -1,6 +1,7 @@
 package com.shadyplace.springweb.controllers;
 
 import com.shadyplace.springweb.forms.AccountForm;
+import com.shadyplace.springweb.forms.PasswordForm;
 import com.shadyplace.springweb.models.enums.Country;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.userAuth.UserService;
@@ -39,7 +40,61 @@ public class MyaccountController {
 
         return mv;
     }
-    // MY ACCOUNT fORM //
+    // MY ACCOUNT PASSWORD FORM //
+    @RequestMapping(value = "/passwordform", method = RequestMethod.GET)
+    public ModelAndView myaccountPasswordForm(){
+        // User //
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        // Password Form //
+        PasswordForm passwordForm = new PasswordForm();
+        // Model And View //
+        ModelAndView mv = new ModelAndView("myaccount/myaccountPasswordForm");
+        mv.addObject("passwordForm", passwordForm);
+        mv.addObject("user", user);
+
+        return mv;
+    }
+    // MY ACCOUNT PASSWORD FORM SUBMIT //
+    @RequestMapping(value = "/passwordform", method = RequestMethod.POST)
+    public String myaccountFormSubmit(
+            @Valid PasswordForm passwordForm,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        // User //
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        // Revalidate bookingForm
+        DataBinder binder = new DataBinder(passwordForm);
+        binder.setValidator(validator);
+        binder.validate(passwordForm, "passwordForm");
+        bindingResult = binder.getBindingResult();
+        // ici comparer les hash de current pw et db pw
+        List<ObjectError> globalErrors = bindingResult.getGlobalErrors();
+
+        // hasErrors //
+        if (bindingResult.hasErrors() || !globalErrors.isEmpty()) {
+            // Model //
+            model.addAttribute("fields", bindingResult);
+            model.addAttribute("passwordForm", passwordForm);
+            model.addAttribute("globalErrors", globalErrors);
+            model.addAttribute("user", user);
+
+            return "myaccount/myaccountPasswordForm";
+        } else {
+            // Set user's password with new password hash //
+//            user.setFirstname(accountForm.getFirstname());
+//            user.setLastname(accountForm.getLastname());
+//            user.setEmail(accountForm.getEmail());
+//            Country newCountry = Country.getCountryByNameOrAbbreviation(accountForm.getCountry());
+//            user.setResidenceCountry(newCountry);
+//            // Saving the User modified //
+//            this.userService.saveUser(user);
+
+            return "redirect:/myaccount";
+        }
+    }    // MY ACCOUNT FORM //
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelAndView myaccountForm(){
         // User //
