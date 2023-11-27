@@ -11,10 +11,8 @@ public class SecurityController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
         ModelAndView mv = new ModelAndView("security/login");
-
         return mv;
     }
-
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     ModelAndView logout(){
         ModelAndView mv = new ModelAndView("security/logout");
