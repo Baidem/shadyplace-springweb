@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,13 +85,9 @@ public class MyaccountController {
             return "myaccount/myaccountPasswordForm";
         } else {
             // Set user's password with new password hash //
-//            user.setFirstname(accountForm.getFirstname());
-//            user.setLastname(accountForm.getLastname());
-//            user.setEmail(accountForm.getEmail());
-//            Country newCountry = Country.getCountryByNameOrAbbreviation(accountForm.getCountry());
-//            user.setResidenceCountry(newCountry);
-//            // Saving the User modified //
-//            this.userService.saveUser(user);
+            user.setPassword(BCrypt.hashpw(passwordForm.getNewPassword(), BCrypt.gensalt()));
+            // Saving the User modified //
+            this.userService.saveUser(user);
 
             return "redirect:/myaccount";
         }
