@@ -35,11 +35,23 @@
                 <li class="list-group-item container-fluid">
                   <div class="row input-group input-group-sm">
                     <div class="col-3">
-                        <label for="firstname" class="form-label">Firstname</label>
+                        <label for="firstname" class="form-label">
+                          Firstname
+                        </label>
                     </div>
                     <div class="col-9">
-                      <input id="firstname" type="text" th:field="*{firstname}" class="form-control shadow-sm "/>
-                      <small th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}" class="form-text text-warning"></small>
+                      <input
+                              id="firstname"
+                              type="text"
+                              th:field="*{firstname}"
+                              class="form-control shadow-sm"
+                              style="max-width: 18rem;"
+                      />
+                      <small
+                              th:if="${#fields.hasErrors('firstname')}"
+                              th:errors="*{firstname}"
+                              class="form-text text-danger"
+                      ></small>
                     </div>
                   </div>
                 </li>
@@ -49,8 +61,17 @@
                         <label for="lastname" class="form-label">Last name</label>
                     </div>
                     <div class="col-9">
-                      <input id="lastname" type="text" th:field="*{lastname}" class="form-control shadow-sm "/>
-                      <small th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="form-text text-warning"></small>
+                      <input
+                              id="lastname" type="text"
+                              th:field="*{lastname}"
+                              class="form-control shadow-sm"
+                              style="max-width: 18rem;"
+                      />
+                      <small
+                              th:if="${#fields.hasErrors('lastname')}"
+                              th:errors="*{lastname}"
+                              class="form-text text-danger"
+                      ></small>
                     </div>
                   </div>
                 </li>
@@ -60,28 +81,48 @@
                       <label for="email" class="form-label">Email</label>
                     </div>
                     <div class="col-9">
-                      <input id="email" type="text" th:field="*{email}" class="form-control shadow-sm "/>
-                      <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text table-warning"></small>
+                      <input
+                              id="email"
+                              type="text"
+                              th:field="*{email}"
+                              class="form-control shadow-sm"
+                              style="max-width: 18rem;"
+                      />
+                      <small
+                              th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}"
+                              class="form-text text-danger"
+                      ></small>
                     </div>
                   </div>
                 </li>
                 <li class="list-group-item container-fluid">
-                  <div class="row">
+                  <div class="row input-group">
                     <div class="col-3">
                       <label class="form-label">Country of residence</label>
                     </div>
-                    <div class="col-6">
-                      <select name="country" class="form-select shadow-sm">
+                    <div class="col-9">
+                      <select
+                              name="country"
+                              class="form-select shadow-sm"
+                              style="max-width: 18rem;"
+                      >
                         <option th:value="${accountForm.country}" th:text="${accountForm.country}"></option>
                         <option th:each="country: ${countryList}" th:value="${country}" th:text="${country}"></option>
                       </select>
-                      <small th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="form-text text-warning"></small>
-
+                      <small
+                              th:if="${#fields.hasErrors('country')}"
+                              th:errors="*{country}"
+                              class="form-text text-danger"
+                      ></small>
                     </div>
                   </div>
                 </li>
                 <li class="list-group-item container-fluid">
                   <div class="row justify-content-end">
+                    <div class="col-auto">
+                      <a th:href="@{/myaccount#navbar}" class="btn btn-secondary">Cancel</a>
+                    </div>
                     <div class="col-auto">
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
