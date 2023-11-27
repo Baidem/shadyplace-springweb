@@ -33,11 +33,12 @@ public class ValidCurrentPasswordConstraintValidator implements ConstraintValida
                     .findByEmail(
                             authentication.getName()
                     ).getPassword();
-            return encoder
+            Boolean isValid = encoder
                     .matches(
                             passwordForm.getCurrentPassword(),
                             passwordHash
                     );
+            return isValid;
         } else {
             return false;
         }
