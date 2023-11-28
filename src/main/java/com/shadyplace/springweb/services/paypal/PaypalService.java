@@ -20,13 +20,10 @@ import java.util.NoSuchElementException;
 
 @Service
 public class PaypalService {
-
     @Autowired
     private PayPalHttpClient payPalHttpClient;
-
     @Autowired
     private CompletedOrderRepository completedOrderRepository;
-
     @Autowired
     private PaymentOrderRepository paymentOrderRepository;
     @Autowired
@@ -89,8 +86,4 @@ public class PaypalService {
 
         return completeOrder;
     }
-
-
-
-
 }

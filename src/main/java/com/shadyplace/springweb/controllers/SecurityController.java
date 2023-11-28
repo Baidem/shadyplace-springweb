@@ -8,16 +8,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller()
 public class SecurityController {
+    // LOGIN //
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
         ModelAndView mv = new ModelAndView("security/login");
         return mv;
     }
+    // LOGOUT //
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     ModelAndView logout(){
         ModelAndView mv = new ModelAndView("security/logout");
         return mv;
     }
+    // NOT FOUND //
     @RequestMapping(value = "/not-found", method = RequestMethod.GET)
     ModelAndView notFound(){
         ModelAndView mv = new ModelAndView("notFound");

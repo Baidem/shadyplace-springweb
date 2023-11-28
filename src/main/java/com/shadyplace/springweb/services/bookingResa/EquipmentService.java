@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class EquipmentService {
-
     @Autowired
     EquipmentRepository equipmentRepository;
 
@@ -24,5 +23,4 @@ public class EquipmentService {
     public List<Equipment> findAll(){
         return this.equipmentRepository.findAll();
     }
-
 }

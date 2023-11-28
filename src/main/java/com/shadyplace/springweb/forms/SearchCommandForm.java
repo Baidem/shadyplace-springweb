@@ -2,7 +2,6 @@ package com.shadyplace.springweb.forms;
 
 public class SearchCommandForm {
     private String searchContentBar;
-
     private String filterStatus;
 
     public SearchCommandForm(String searchContentBar, String filterStatus) {

@@ -14,5 +14,4 @@ public class SearchForm {
     public void setSearchBar(String searchBar) {
         this.searchBar = searchBar;
     }
-
 }

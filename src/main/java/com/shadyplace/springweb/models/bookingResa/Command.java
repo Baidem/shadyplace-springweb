@@ -41,15 +41,14 @@ public class Command {
     @Temporal(TemporalType.TIMESTAMP)
     @PastOrPresent(message = "Command's updatedAt cannot be in the future.")
     private Calendar updatedAt;
-
     @ManyToOne(optional = false)
     @JsonIgnore
     @NotNull(message = "Command's user cannot be null.")
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "command", cascade = CascadeType.ALL)
     private List<Booking> bookings;
+
     public Command(){
         this.bookings = new ArrayList<>();
     }
@@ -63,9 +62,11 @@ public class Command {
     public void addBooking(Booking booking){
         this.bookings.add(booking);
     }
+
     public void removeBooking(Booking booking){
         this.bookings.remove(booking);
     }
+
     public List<Booking> getBookings(){
         return this.bookings;
     }
@@ -133,5 +134,4 @@ public class Command {
     public void setValidationStatus(CommandValidationStatus validationStatus) {
         this.validationStatus = validationStatus;
     }
-
 }

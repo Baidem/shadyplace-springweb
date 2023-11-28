@@ -12,12 +12,10 @@ import java.util.List;
 
 @Repository
 public interface CommandRepository extends CrudRepository<Command, Long> {
-
     @Query(value = "FROM Command")
     Page<Command> paginationResult(Pageable pageable);
 
     List<Command> findByUser(User user);
 
     List<Command> getCommandByUser(User user);
-
 }

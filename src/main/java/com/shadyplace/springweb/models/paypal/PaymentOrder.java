@@ -13,10 +13,8 @@ public class PaymentOrder implements Serializable {
     @Id
     @Basic
     private String payId;
-
     @Basic
     private String status;
-
     @Basic
     private String redirectUrl;
 
@@ -67,6 +65,4 @@ public class PaymentOrder implements Serializable {
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
     }
-
-
 }

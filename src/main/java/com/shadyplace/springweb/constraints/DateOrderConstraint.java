@@ -12,12 +12,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE}) // two fields!
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateOrderConstraint {
-
     String message() default "Start date must be before end date";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {}; // request content
-
     String fieldStart();
     String fieldEnd();
-
 }

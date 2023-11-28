@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-
 @Entity
 @Table(name = "fidelity_rank")
 public class FidelityRank {
@@ -38,5 +37,4 @@ public class FidelityRank {
     public void setLabel(String label) {
         this.label = label;
     }
-
 }

@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.services.bookingResa;
 
 import com.shadyplace.springweb.forms.SearchCommandForm;
-import com.shadyplace.springweb.forms.SearchForm;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
@@ -20,10 +19,8 @@ import java.util.List;
 
 @Service
 public class CommandService {
-
     @Autowired
     private CommandRepository commandRepository;
-
     @Autowired
     CommandCriteriaRepository commandCriteriaRepository;
 
@@ -78,5 +75,4 @@ public class CommandService {
         Page<Command> commandPaginated = this.commandCriteriaRepository.getCommandPageBySearchForm(searchCommandForm, pageable);
         return commandPaginated;
     }
-
 }

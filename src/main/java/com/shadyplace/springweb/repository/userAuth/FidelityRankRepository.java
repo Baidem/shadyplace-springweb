@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FidelityRankRepository extends CrudRepository<FidelityRank, Long> {
-
      @Query(value = "FROM FidelityRank WHERE label = :label")
      FidelityRank findFirstByLabel(String label);
 }

@@ -11,11 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 public class ValidCurrentPasswordConstraintValidator implements ConstraintValidator<ValidCurrentPasswordConstraint, Object> {
-
     @Autowired
     UserService userService;
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
     @Autowired
     BCryptPasswordEncoder encoder;
 
@@ -23,7 +21,6 @@ public class ValidCurrentPasswordConstraintValidator implements ConstraintValida
     public void initialize(ValidCurrentPasswordConstraint constraint) {
         ConstraintValidator.super.initialize(constraint);
     }
-
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
         PasswordForm passwordForm = (PasswordForm) o;

@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.repository.bookingResa;
 
 import com.shadyplace.springweb.forms.SearchCommandForm;
-import com.shadyplace.springweb.forms.SearchForm;
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
@@ -20,7 +19,6 @@ import java.util.List;
 
 @Repository
 public class CommandCriteriaRepository {
-
     @Autowired
     private EntityManager entityManager;
 
@@ -158,7 +156,6 @@ public class CommandCriteriaRepository {
         return true;
     }
 
-
     private CommandValidationStatus filterStatusToCommandValidationStatus(String filterStatus){
         if (filterStatus.equals("filterPending")) {return CommandValidationStatus.PENDING;}
         else if (filterStatus.equals("filterValidated")) {return CommandValidationStatus.VALIDATED;}
@@ -194,13 +191,10 @@ public class CommandCriteriaRepository {
         if (end > commandList.size()) {
             end = commandList.size();
         }
-
         List<Command> sublist = commandList.subList(start, end);
 
         Page<Command> commandPage = new PageImpl<>(sublist, pageable, commandList.size());
 
         return commandPage;
     }
-
-
 }

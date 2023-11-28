@@ -16,19 +16,14 @@ import java.util.*;
 
 @Service
 public class BookingService {
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     DaoAuthenticationProvider daoAuthenticationProvider;
-
     @Autowired
     LineService lineService;
-
     @Autowired
     BookingRepository bookingRepository;
-
 
     public List<Booking> BookingFormToBookingList(BookingForm bookingForm, User user) {
         List<Calendar> datesInRange = new ArrayList<>();
@@ -46,7 +41,7 @@ public class BookingService {
             currentDate.add(Calendar.DATE, 1);
         }
 
-        // Pour chaque date de la liste une réservation est construite et ajoutée au résultat
+        // For each date in the list, a reservation is created and added to the result.
         for (Calendar calendar : datesInRange){
             for (ParasolForm parasolForm : bookingForm.getParasols()) {
                 Booking booking = new Booking();
@@ -84,6 +79,5 @@ public class BookingService {
     public List<Booking> getByCommandId(Long id){
         return this.bookingRepository.getByCommandId(id);
     }
-
 }
 

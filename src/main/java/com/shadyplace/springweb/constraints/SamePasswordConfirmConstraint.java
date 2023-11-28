@@ -12,12 +12,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE}) // two fields!
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SamePasswordConfirmConstraint {
-
     String message() default "The new password must be the same as the confirmation password.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {}; // request content
-
     String fieldNewPassword();
     String fieldConfirmPassword();
-
 }

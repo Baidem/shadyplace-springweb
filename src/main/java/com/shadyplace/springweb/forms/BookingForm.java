@@ -13,7 +13,6 @@ import java.util.List;
 
 @DateOrderConstraint(fieldStart = "dateStart", fieldEnd = "dateEnd")
 public class BookingForm {
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Start date cannot be null")
     @Future(message = "This date has already passed")
@@ -31,6 +30,7 @@ public class BookingForm {
         this.parasols = new ArrayList<>();
         this.parasols.add(new ParasolForm());
     }
+
     public void addLocation(ParasolForm parasolForm){
         this.parasols.add(parasolForm);
     }

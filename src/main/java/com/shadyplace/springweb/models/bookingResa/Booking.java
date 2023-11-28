@@ -104,5 +104,4 @@ public class Booking {
     public void setLocation(Location location) {
         this.location = location;
     }
-
 }

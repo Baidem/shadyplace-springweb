@@ -8,12 +8,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class OpeningDatesConstraintValidator implements ConstraintValidator<OpeningDatesConstraint, Object> {
-
     @Override
     public void initialize(OpeningDatesConstraint constraint) {
         ConstraintValidator.super.initialize(constraint);
     }
-
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
         Date date = (Date) o;

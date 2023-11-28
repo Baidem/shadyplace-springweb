@@ -1,7 +1,7 @@
 package com.shadyplace.springweb.models.enums;
 
 public enum CommandValidationStatus {
-    //pending, validated, refused
+    // pending, validated, refused
     PENDING("pending", "P"),
     VALIDATED("validated", "V"),
     REFUSED("refused", "RS");
@@ -21,5 +21,4 @@ public enum CommandValidationStatus {
     public String getAbbreviation() {
         return abbreviation;
     }
-
 }

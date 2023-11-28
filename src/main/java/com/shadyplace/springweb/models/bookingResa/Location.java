@@ -1,6 +1,5 @@
 package com.shadyplace.springweb.models.bookingResa;
 
-import com.shadyplace.springweb.models.bookingResa.Booking;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
@@ -31,12 +30,15 @@ public class Location {
     public Location() {
         this.bookings = Collections.emptyList();
     }
+
     public void addBooking(Booking booking){
         this.bookings.add(booking);
     }
+
     public void removeBooking(Booking booking){
         this.bookings.remove(booking);
     }
+
     public List<Booking> getBookings(){
         return this.bookings;
     }

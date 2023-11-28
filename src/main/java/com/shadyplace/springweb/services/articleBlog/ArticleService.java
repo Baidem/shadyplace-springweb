@@ -14,10 +14,8 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-
     @Autowired
     private ArticleRepository articleRepository;
-
     @Autowired
     private ArticleCriteriaRepository articleCriteriaRepository;
 
@@ -51,5 +49,4 @@ public class ArticleService {
         Page<Article> articlePaginated = this.articleCriteriaRepository.getArticlePageBySearchForm(searchForm, pageable);
         return articlePaginated;
     }
-
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ArticleRepository extends CrudRepository<Article, Long> {
-
     List<Article> findAll();
 
     @Query(value = "FROM Article")
@@ -21,5 +20,4 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
 
     @Query(value = "FROM Article a ORDER BY a.publicationDate desc")
     Page<Article> pagePagination(Pageable page);
-
 }

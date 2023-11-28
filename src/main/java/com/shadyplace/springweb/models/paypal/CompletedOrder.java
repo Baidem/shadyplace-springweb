@@ -9,13 +9,10 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CompletedOrder {
-
     @Id
     private String payId;
-
     @Basic
     private String status;
-
     @ManyToOne(optional = false)
     public Command command;
 

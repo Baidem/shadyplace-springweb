@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface EquipmentRepository extends CrudRepository<Equipment, Long> {
-
     Equipment findFirstByOption(String option);
 
     List<Equipment> findAll();
+
     Equipment getById(Long id);
 }

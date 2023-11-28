@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
 @Entity
 @Table(name = "image")
 public class Image {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +22,6 @@ public class Image {
     @Column(nullable = false)
     @NotBlank(message = "Please enter an image title")
     private String imageTitle;
-
     @Temporal(TemporalType.DATE)
     private GregorianCalendar addedAt;
 

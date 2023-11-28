@@ -3,7 +3,6 @@ package com.shadyplace.springweb.models.paypal;
 import java.util.Date;
 
 public class ErrorValidation {
-
     private String input;
     private String message;
     private Long timestamp;

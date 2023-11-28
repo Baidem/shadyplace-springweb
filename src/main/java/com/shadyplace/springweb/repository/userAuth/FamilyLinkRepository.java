@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FamilyLinkRepository extends CrudRepository<FamilyLink, Long> {
-
-
     FamilyLink findFirstByLabel(FamilyLinkLabel familyLinkLabel);
 }

@@ -16,7 +16,6 @@ import java.util.List;
 
 @Service
 public class SpringAuthService implements UserDetailsService {
-
     @Autowired
     UserRepository userRepository;
 
@@ -37,5 +36,4 @@ public class SpringAuthService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
     }
-
 }

@@ -1,7 +1,6 @@
 package com.shadyplace.springweb.repository.bookingResa;
 
 import com.shadyplace.springweb.models.bookingResa.Location;
-import jakarta.persistence.criteria.From;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

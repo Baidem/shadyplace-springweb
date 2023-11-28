@@ -84,6 +84,4 @@ public class ArticleCriteriaRepository {
 
         return articlePage;
     }
-
-
 }

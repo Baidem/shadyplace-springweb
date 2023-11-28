@@ -11,21 +11,17 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "title", nullable = false)
     @NotBlank(message = "Please enter a title")
     private String title;
-
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     @NotBlank(message = "Please enter a content")
     private String content;
     @Column(nullable = false, name = "publication_date")
     @Temporal(value = TemporalType.TIMESTAMP)
     private GregorianCalendar publicationDate;
-
     @Column(name = "add_link")
     private String addLink;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Image image;
 
@@ -52,7 +48,6 @@ public class Article {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public String getContent() {
         return content;

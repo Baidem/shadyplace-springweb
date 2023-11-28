@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/paypal")
 public class PaypalController {
-
     @Autowired
     private PaypalService paypalService;
     @Autowired
@@ -34,6 +33,7 @@ public class PaypalController {
     @Autowired
     UserService userService;
 
+    // MY CART //
     @RequestMapping(value = "/cart/{command}", method = RequestMethod.GET)
     public ModelAndView myCart(@PathVariable Command command) {
         ModelAndView mv = new ModelAndView("paypal/cart");
@@ -43,7 +43,7 @@ public class PaypalController {
 
         return mv;
     }
-
+    // MY CART SUBMIT //
     @PostMapping(value = "/cart/{command}")
     public String myCartSubmit(@PathVariable Command command, @RequestParam("conditionsOfSale") boolean conditionsOfSale) {
         if (conditionsOfSale = true){
@@ -54,7 +54,7 @@ public class PaypalController {
         }
         return "redirect:/cart/"+command.getId();
     }
-
+    // SHOULD DISPLAY CART //
     private boolean shouldDisplayCart(Command command) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
@@ -65,8 +65,7 @@ public class PaypalController {
 
         return true;
     }
-
-
+    // CAPTURE PAYMENT //
     @RequestMapping(value = "/capture/{command}", method = RequestMethod.GET)
     public String capturePayment(@RequestParam("token") String token, @PathVariable Command command) {
 
@@ -78,7 +77,7 @@ public class PaypalController {
             return "redirect:/paypal/error";
         }
      }
-
+    // PROCEED PAYMENT //
     @RequestMapping(value = "/payment/{command}", method = RequestMethod.GET)
     public void proceedPayment(
             HttpServletResponse response, @Valid Command command,
@@ -112,13 +111,13 @@ public class PaypalController {
         }
 
     }
-
+    // CANCEL //
     @RequestMapping("/cancel")
     public ModelAndView cancel(){
         ModelAndView mv = new ModelAndView("paypal/cancel");
         return mv;
     }
-
+    // PAYMENT CANCEL //
     @RequestMapping(value = "/cancel/{command}", method = RequestMethod.GET)
     public ModelAndView paymentCancel(@PathVariable Command command) {
         if (shouldCancelCommand(command)) {
@@ -127,7 +126,7 @@ public class PaypalController {
         ModelAndView mv = new ModelAndView("paypal/cancel");
         return mv;
     }
-
+    // SHOULD CANCEL COMMAND //
     private boolean shouldCancelCommand(Command command) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
@@ -138,7 +137,7 @@ public class PaypalController {
 
         return true;
     }
-
+    // SUCCESS //
     @RequestMapping("/success")
     public ModelAndView success(){
         System.out.println("success ?");

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class UserService {
-
     @Autowired
     UserRepository userRepository;
 
@@ -36,6 +35,5 @@ public class UserService {
     public void delete(User user){
         this.userRepository.delete(user);
     }
-
 
 }

@@ -21,7 +21,6 @@ public class ImageService {
     ImageRepository imageRepository;
 
     private final Path rootLocation;
-
     private UploadImageConfig config;
 
     public ImageService(UploadImageConfig config){
@@ -60,8 +59,5 @@ public class ImageService {
         Path locationPath = Paths.get(location);
 
         Files.delete(locationPath);
-
     }
-
-
 }

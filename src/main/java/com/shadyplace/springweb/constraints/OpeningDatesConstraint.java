@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OpeningDatesConstraint {
-
     String message() default "We are closed on this date";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

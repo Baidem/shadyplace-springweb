@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @Service
 public class UploadImageService {
-
     private final Path rootLocation;
     private final String uploadFolder;
     private List<String> allowedImageExtension;
