@@ -21,7 +21,7 @@ jobs:
 
     - name: Maven Build
       run: mvn clean package -DskipTests
-        -Dstart-class=com.shadyplace.springweb
+        -Dstart-class=com.shadyplace.springweb.MainApplicationClass
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
