@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Maven Build
-        run: mvn clean package -DskipTests -Dstart-class=com.shadyplace.springweb.ShadyPlaceApplication.java
+        run: mvn clean package -DskipTests -Dstart-class=com.shadyplace.springweb.ShadyPlaceApplication
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
