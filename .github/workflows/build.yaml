@@ -28,4 +28,3 @@ jobs:
       with:
         name: packaged-artifact
         path: target/*.jar
-
