@@ -26,3 +26,4 @@ jobs:
         with:
           name: packaged-artifact
           path: target/*.jar
+# java -jar application-web-0.0.1-SNAPSHOT.jar

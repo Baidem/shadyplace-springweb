@@ -61,7 +61,11 @@ public class CommandService {
     }
 
     public void delete(Command command){
-        this.commandRepository.delete(command);
+        try {
+            this.commandRepository.deleteById(command.getId());
+        } catch (Exception e){
+            System.out.println("delete in CommandService : " + e.getMessage());
+        }
     }
 
     public Page<Command> getCommandPageByUserAndSearchForm(User user, SearchCommandForm searchCommandForm, int nbResult, int page){

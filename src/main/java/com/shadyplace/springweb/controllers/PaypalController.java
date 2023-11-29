@@ -122,6 +122,7 @@ public class PaypalController {
     public ModelAndView paymentCancel(@PathVariable Command command) {
         if (shouldCancelCommand(command)) {
             commandService.delete(command);
+            System.out.println(command.toString());
         }
         ModelAndView mv = new ModelAndView("paypal/cancel");
         return mv;
