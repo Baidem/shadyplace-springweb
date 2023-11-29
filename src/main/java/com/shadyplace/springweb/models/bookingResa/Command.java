@@ -3,6 +3,7 @@ package com.shadyplace.springweb.models.bookingResa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shadyplace.springweb.models.enums.CommandPaymentStatus;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
+import com.shadyplace.springweb.models.paypal.PaymentOrder;
 import com.shadyplace.springweb.models.userAuth.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +49,8 @@ public class Command {
     private User user;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "command", cascade = CascadeType.ALL)
     private List<Booking> bookings;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "command", cascade = CascadeType.ALL)
+    private List<PaymentOrder> paymentOrders;
 
     public Command(){
         this.bookings = new ArrayList<>();
@@ -57,6 +60,14 @@ public class Command {
         this();
         this.bookings = bookings;
         this.user = user;
+    }
+
+    public List<PaymentOrder> getPaymentOrders() {
+        return paymentOrders;
+    }
+
+    public void setPaymentOrders(List<PaymentOrder> paymentOrders) {
+        this.paymentOrders = paymentOrders;
     }
 
     public void addBooking(Booking booking){
