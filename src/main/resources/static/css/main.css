@@ -37,6 +37,11 @@ a {
     background: linear-gradient(to bottom, #0077b6, #0099e5) !important;
 }
 
+.bg-cloudy {
+    background: linear-gradient(to bottom, #f0f8ff, #d8e6f3, #b5c8e9, #92a8de, #6f88d4, #4c68c9, #2948bf) !important;
+}
+
+
 .bg-sunfall {
     background: linear-gradient(to bottom, #FF8F8F, #FFE0A7);
 !important;

@@ -93,7 +93,8 @@
         <div sec:authorize="isAuthenticated()" class="container">
             <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2"></i>
             <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2"></i>
-            <th:block th:text="${#authentication.getPrincipal().username}"></th:block></div>
+            <th:block th:text="${#authentication.getPrincipal().username}"></th:block>
+        </div>
     </div>
 </th:block>
 

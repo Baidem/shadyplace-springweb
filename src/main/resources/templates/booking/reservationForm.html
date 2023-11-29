@@ -70,7 +70,7 @@
                                 </div>
                             </div>
 
-                            <!--/* Stay dates*/-->
+                            <!--/* Stay dates */-->
                             <div class="row ">
                                 <div class="col border-top mx-3 py-3">
                                     <div class="row g-2">
@@ -110,8 +110,11 @@
                             <!--/* add parasol place id="collectionEquipment"*/-->
                             <div id="collectionEquipment">
                                 <div class="collectionForm" th:each="plage, state : ${bookingForm.parasols}">
-                                    <div class="card mx-2 mb-3 bg-bluesky">
-                                        <div class="card-body">
+                                    <div class="card mx-2 mb-3 bg-bluesky border-1 border-light shadow-sm">
+                                        <div class="card-body position-relative">
+                                            <button class="btn position-absolute top-0 end-0 text-light" onclick="removeEmplacement(this)">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
                                             <label th:text="'Parasol '+${state.index+1}" class="card-title fs-4 text-light text-shadow"></label>
                                             <div class="card-text mb-2">
                                                 <label for="line" class="form-label text-light text-shadow">Line</label>
@@ -132,17 +135,13 @@
 
                             <!--/* Buttons */-->
                             <div class="row mx-2 mb-3">
-                                <div class="col-5">
-                                    <a id="addEmplacement" class="btn bg-warning bg-gradient w-100 shadow-sm text-light text-shadow">
+                                <div class="col-6">
+                                    <a id="addEmplacement" class="btn btn-light shadow-sm">
                                         Add parasol
                                     </a>
                                 </div>
 
-                                <div class="col">
-                                    <button id="btnRefresh" type="reset" class="btn btn-secondary bg-gradient w-100 shadow-sm text-light text-shadow">Refresh</button>
-                                </div>
-
-                                <div class="col">
+                                <div class="col-6">
                                     <button type="submit" class="btn btn-success bg-gradient w-100 shadow-sm text-light text-shadow">Submit</button>
                                 </div>
                             </div>
@@ -164,30 +163,35 @@
     const form = document.getElementById('myForm');
     const stayForm = document.getElementById("stay");
     const addEmplacement = document.getElementById("addEmplacement");
+    let index = 0
 
     addEmplacement.addEventListener("click", function () {
         let collectionForms = document.querySelectorAll(".collectionForm");
-        let index = collectionForms.length - 1;
-        let divToCopy = collectionForms[index];
+        let divToCopy = collectionForms[0];
+        const parasolTxt = divToCopy.querySelector('label').textContent;
+        const i = parseInt(parasolTxt.match(/\d+/))-1
 
         let newDiv = divToCopy.innerHTML;
-        newDiv = newDiv.replace('Parasol ' + (index + 1), 'Parasol ' + (index + 2));
-        newDiv = newDiv.replace('name="items_' + index + '_line"', 'name="items_' + (index + 1) + '_line"');
-        newDiv = newDiv.replace('name="items_' + index + '_equipment"', 'name="items_' + (index + 1) + '_equipment"');
+        newDiv = newDiv.replace('Parasol ' + (i + 1), 'Parasol ' + (index + 2));
+        newDiv = newDiv.replace('name="items_' + i + '_line"', 'name="items_' + (index + 1) + '_line"');
+        newDiv = newDiv.replace('name="items_' + i + '_equipment"', 'name="items_' + (index + 1) + '_equipment"');
 
         newDiv = '<div class="collectionForm">' + newDiv + '</div>';
 
         let collectionEquipment = document.getElementById("collectionEquipment");
         collectionEquipment.insertAdjacentHTML('beforeend', newDiv);
-
+        index++;
     });
 
-    btnRefresh.addEventListener('click', (e) => {
-        e.stopPropagation();
-        stayForm.scrollIntoView({ behavior: "auto" });
-        reservationForm.reset();
-        document.location.reload(false);
-    })
+    function removeEmplacement(btn) {
+        event.preventDefault();
+        let collectionForms = document.querySelectorAll(".collectionForm");
+
+        if (collectionForms.length > 1) {
+            let collectionForm = btn.parentNode.parentNode.parentNode;
+            collectionForm.remove();
+        }
+    }
 
 </script>
 </body>
