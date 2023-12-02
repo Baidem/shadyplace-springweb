@@ -19,8 +19,28 @@ public class Line {
     @PositiveOrZero(message = "Line's price cannot be negative.")
     @NotNull(message = "Line's price cannot be null.")
     private double price;
+    @Column
+    private String lineNumberList;
+    @Column
+    private int maxPlace;
 
     public Line() {
+    }
+
+    public String getLineNumberList() {
+        return lineNumberList;
+    }
+
+    public void setLineNumberList(String lineNumberList) {
+        this.lineNumberList = lineNumberList;
+    }
+
+    public int getMaxPlace() {
+        return maxPlace;
+    }
+
+    public void setMaxPlace(int maxPlace) {
+        this.maxPlace = maxPlace;
     }
 
     public double getPrice() {
