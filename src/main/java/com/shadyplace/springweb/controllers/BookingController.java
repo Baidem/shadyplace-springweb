@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/booking")
@@ -145,6 +148,7 @@ public class BookingController {
 
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
+        Map<String, Integer> counterMap = new HashMap<String, Integer>();
 
         ModelAndView mv = new ModelAndView("booking/reservationForm");
 
@@ -153,6 +157,7 @@ public class BookingController {
         mv.addObject("equipmentList", equipmentList);
         mv.addObject("lineList", lineList);
         mv.addObject("user", user);
+        mv.addObject("counterMap", counterMap);
 
         return mv;
     }
@@ -164,7 +169,16 @@ public class BookingController {
             @RequestBody String postPayload, Model model
     ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(authentication.getName()) ;
+        User user = userService.findByEmail(authentication.getName());
+
+        Map<String, Integer> counterMap = new HashMap<>();
+        if (bookingForm.getDateStart().getTime() <= bookingForm.getDateEnd().getTime()) {
+            Calendar dateToStart = Calendar.getInstance();
+            dateToStart.setTime(bookingForm.getDateStart());
+            Calendar dateToEnd = Calendar.getInstance();
+            dateToEnd.setTime(bookingForm.getDateEnd());
+            counterMap = bookingService.getAvailablePlaceCounts(dateToStart, dateToEnd);
+        }
 
         // Selects options
         List<Equipment> equipmentList = this.equipmentService.findAll();
@@ -184,7 +198,6 @@ public class BookingController {
 
         // hasErrors
         if (bindingResult.hasErrors()) {
-
             model.addAttribute("fields", bindingResult);
             model.addAttribute("bookingForm", bookingForm);
 
@@ -193,7 +206,7 @@ public class BookingController {
             model.addAttribute("lineList", lineList);
             model.addAttribute("globalErrors", globalErrors);
             model.addAttribute("user", user);
-
+            model.addAttribute("counterMap", counterMap);
 
             return "booking/reservationForm";
         } else { // Saving the Command with its Bookings
