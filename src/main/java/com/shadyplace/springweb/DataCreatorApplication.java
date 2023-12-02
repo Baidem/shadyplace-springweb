@@ -289,6 +289,8 @@ public class DataCreatorApplication {
                 Line l = new Line();
                 l.setLabel("first line facing the sea");
                 l.setPrice(35.99);
+                l.setLineNumberList("1");
+                l.setMaxPlace(36);
 
                 lineService.save(l);
 
@@ -299,6 +301,8 @@ public class DataCreatorApplication {
                 Line l = new Line();
                 l.setLabel("second line facing the sea");
                 l.setPrice(32.99);
+                l.setLineNumberList("2");
+                l.setMaxPlace(36);
 
                 lineService.save(l);
 
@@ -309,6 +313,8 @@ public class DataCreatorApplication {
                 Line l = new Line();
                 l.setLabel("other line");
                 l.setPrice(29.99);
+                l.setLineNumberList("3,4,5,6,7,8");
+                l.setMaxPlace(216);
 
                 lineService.save(l);
 
