@@ -3,10 +3,12 @@ package com.shadyplace.springweb.services.bookingResa;
 import com.shadyplace.springweb.forms.BookingForm;
 import com.shadyplace.springweb.forms.ParasolForm;
 import com.shadyplace.springweb.models.bookingResa.Booking;
+import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.userAuth.FamilyLink;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.repository.bookingResa.BookingRepository;
+import com.shadyplace.springweb.repository.bookingResa.LineRepository;
 import com.shadyplace.springweb.repository.userAuth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,6 +26,8 @@ public class BookingService {
     LineService lineService;
     @Autowired
     BookingRepository bookingRepository;
+    @Autowired
+    private LineRepository lineRepository;
 
     public List<Booking> BookingFormToBookingList(BookingForm bookingForm, User user) {
         List<Calendar> datesInRange = new ArrayList<>();
@@ -78,6 +82,48 @@ public class BookingService {
 
     public List<Booking> getByCommandId(Long id){
         return this.bookingRepository.getByCommandId(id);
+    }
+
+    public Map<String, Integer> getAvailablePlaceCounts(Calendar dateOfStart, Calendar dateOfEnd) {
+        var resMap = new HashMap<String, Integer>();
+        List<Line> lines = lineRepository.findAll();
+        for (Line line : lines) {
+            resMap.put(line.getLabel(), line.getMaxPlace());
+        }
+        
+        List<Calendar> datesInRange = new ArrayList<>();
+
+        Calendar currentDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+
+        currentDate.setTime(dateOfStart.getTime());
+        endDate.setTime(dateOfEnd.getTime());
+
+        // List all dates in the range
+        while (!currentDate.after(endDate)) {
+            datesInRange.add((Calendar) currentDate.clone());
+            currentDate.add(Calendar.DATE, 1);
+        }
+
+        // For each date, get bookings
+        List<Map<String, Integer>> listOfMap = new ArrayList<Map<String, Integer>>();
+        for (Calendar date : datesInRange){
+            var map = new HashMap<String, Integer>();
+            map.putAll(resMap);
+            List<Booking> bookings = bookingRepository.getAllByBookingDate(date);
+            for (Booking booking : bookings) {
+                map.put(booking.getLine().getLabel(), resMap.get(booking.getLine().getLabel()) - 1);
+            }
+            listOfMap.add(map);
+        }
+        for (Map<String, Integer> map : listOfMap) {
+            for (Map.Entry<String, Integer> mapentry : map.entrySet()) {
+                if (mapentry.getValue() < resMap.getOrDefault(mapentry.getKey(), Integer.MAX_VALUE)) {
+                    resMap.put(mapentry.getKey(), mapentry.getValue());
+                }
+            }
+        }
+        return resMap;
     }
 }
 
