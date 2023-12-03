@@ -445,4 +445,53 @@ public class AdminController {
             }
         }
     }
+
+    @RequestMapping( "/user/list")
+    public ModelAndView userList(
+            @RequestParam(required = false) String page,
+            @RequestParam(required = false) String searchBar
+    ){
+        if (page == null) {
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("admin/user/userList");
+
+        if (searchBar == null) {
+            searchBar = "";
+        }
+
+        Page<User> users = this.userService
+                .getUserPageBySearchForm(new SearchForm(searchBar), 4, pageNumber - 1);
+
+        mv.addObject("users", users);
+        mv.addObject("pageNumber", (String) page);
+        mv.addObject("form", new SearchForm(searchBar));
+
+        return mv;
+    }
+
+    @RequestMapping(value = "user/list", method = RequestMethod.POST)
+    public ModelAndView userListSubmit(
+            @RequestParam(required = false) String page,
+            @Valid SearchForm searchForm,
+            BindingResult bindingResult
+    ){
+        if(page == null){
+            page = "1";
+        }
+        int pageNumber = Integer.valueOf(page);
+
+        ModelAndView mv = new ModelAndView("admin/user/userList");
+
+        Page<User> users = this.userService
+                .getUserPageBySearchForm(searchForm, 4, pageNumber-1);
+
+        mv.addObject("users", users);
+        mv.addObject("pageNumber", (String) page );
+        mv.addObject("form", searchForm);
+
+        return mv;
+    }
 }
