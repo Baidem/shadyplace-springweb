@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/booking")
@@ -171,33 +168,42 @@ public class BookingController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
 
-        Map<String, Integer> counterMap = new HashMap<>();
-        if (bookingForm.getDateStart().getTime() <= bookingForm.getDateEnd().getTime()) {
-            Calendar dateToStart = Calendar.getInstance();
-            dateToStart.setTime(bookingForm.getDateStart());
-            Calendar dateToEnd = Calendar.getInstance();
-            dateToEnd.setTime(bookingForm.getDateEnd());
-            counterMap = bookingService.getAvailablePlaceCounts(dateToStart, dateToEnd);
-        }
-
         // Selects options
         List<Equipment> equipmentList = this.equipmentService.findAll();
         List<Line> lineList = this.lineService.findAll();
-
-        // Convert postPayload to parasolFormList and set to bookingform
-        List<ParasolForm> parasolFormList =
-                this.parasolFormService.convertPayloadToParasolFormList(postPayload);
-        bookingForm.setParasols(parasolFormList);
 
         // Revalidate bookingForm
         DataBinder binder = new DataBinder(bookingForm);
         binder.setValidator(validator);
         binder.validate(bookingForm, "bookingForm");
         bindingResult = binder.getBindingResult();
-        List<ObjectError> globalErrors = bindingResult.getGlobalErrors(); // catch DateOrderConstraint error
+        List<ObjectError> globalErrors = new ArrayList<>(bindingResult.getGlobalErrors());
+
+        // Convert postPayload to parasolFormList and set to bookingform
+        List<ParasolForm> parasolFormList =
+                this.parasolFormService.convertPayloadToParasolFormList(postPayload);
+        bookingForm.setParasols(parasolFormList);
+
+        // counterMap
+        Map<String, Integer> availablePlaceCounterMap = new HashMap<>();
+        Map<String, Integer> parasolPlaceCounterMap = new HashMap<>();
+        if (bookingForm.getDateStart().getTime() <= bookingForm.getDateEnd().getTime()) {
+            Calendar dateToStart = Calendar.getInstance();
+            dateToStart.setTime(bookingForm.getDateStart());
+            Calendar dateToEnd = Calendar.getInstance();
+            dateToEnd.setTime(bookingForm.getDateEnd());
+            availablePlaceCounterMap = bookingService.getAvailablePlaceCounts(dateToStart, dateToEnd);
+            parasolPlaceCounterMap = parasolFormService.getParasolPlaceCounts(parasolFormList);
+            for (Map.Entry<String, Integer> mapentry : availablePlaceCounterMap.entrySet()) {
+                if (mapentry.getValue() < parasolPlaceCounterMap.getOrDefault(mapentry.getKey(), Integer.MAX_VALUE)) {
+                    ObjectError e = new ObjectError("Complete line", "The " + mapentry.getKey() + " is full for this period");
+                    globalErrors.add(e);
+                }
+            }
+        }
 
         // hasErrors
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || !globalErrors.isEmpty()) {
             model.addAttribute("fields", bindingResult);
             model.addAttribute("bookingForm", bookingForm);
 
@@ -206,7 +212,7 @@ public class BookingController {
             model.addAttribute("lineList", lineList);
             model.addAttribute("globalErrors", globalErrors);
             model.addAttribute("user", user);
-            model.addAttribute("counterMap", counterMap);
+            model.addAttribute("counterMap", availablePlaceCounterMap);
 
             return "booking/reservationForm";
         } else { // Saving the Command with its Bookings
@@ -240,6 +246,4 @@ public class BookingController {
 
         return true;
     }
-
-
 }
