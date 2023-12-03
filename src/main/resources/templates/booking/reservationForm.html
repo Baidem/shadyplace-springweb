@@ -77,17 +77,17 @@
                                         <div class="col-6 ">
                                             <label for="dateStart" class="form-label text-light text-shadow">Start</label>
                                             <input id="dateStart" type="date" th:field="*{dateStart}" class="form-control shadow-sm "/>
-                                            <small th:if="${#fields.hasErrors('dateStart')}" th:errors="*{dateStart}" class="form-text text-danger"></small>
+                                            <small th:if="${#fields.hasErrors('dateStart')}" th:errors="*{dateStart}" class="form-text text-light"></small>
                                         </div>
                                         <div class="col-6 ">
                                             <label for="dateEnd" class="form-label text-light text-shadow">End</label>
                                             <input id="dateEnd" type="date" th:field="*{dateEnd}" class="form-control shadow-sm "/>
-                                            <small th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}" class="form-text text-danger"></small>
+                                            <small th:if="${#fields.hasErrors('dateEnd')}" th:errors="*{dateEnd}" class="form-text text-light"></small>
                                         </div>
                                     </div>
-                                    <div th:if="${#fields.hasErrors()}" class="row p-2">
+                                    <div th:if="${not #lists.isEmpty(globalErrors)}" class="row p-2">
                                         <div th:each="error : ${globalErrors}" class="text-center">
-                                            <small th:text="${error.defaultMessage}" class="form-text text-danger"></small>
+                                            <small th:text="${error.defaultMessage}" class="form-text text-light"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                                             <label for="comment" class="form-label text-light text-shadow">Comment</label>
                                             <input type="text" th:field="*{comment}" class="form-control shadow-sm" id="comment"/>
                                             <small class="form-text text-light text-shadow">Optional</small>
-                                            <small th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="form-text text-danger"></small>
+                                            <small th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="form-text text-light"></small>
                                         </div>
                                     </div>
                                 </div>
