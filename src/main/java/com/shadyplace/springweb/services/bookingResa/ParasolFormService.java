@@ -1,6 +1,8 @@
 package com.shadyplace.springweb.services.bookingResa;
 
 import com.shadyplace.springweb.forms.ParasolForm;
+import com.shadyplace.springweb.models.bookingResa.Booking;
+import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.repository.bookingResa.EquipmentRepository;
 import com.shadyplace.springweb.repository.bookingResa.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,21 @@ public class ParasolFormService {
             }
         }
         return parasolFormArrayList;
+    }
+
+    public Map<String, Integer> getParasolPlaceCounts(List<ParasolForm> parasolFormList) {
+        var resMap = new HashMap<String, Integer>();
+        List<Line> lines = lineRepository.findAll();
+        for (Line line : lines) {
+            resMap.put(line.getLabel(), 0);
+        }
+
+        // For each parasolForm increment map
+        List<Map<String, Integer>> listOfMap = new ArrayList<Map<String, Integer>>();
+        for (ParasolForm parasolForm : parasolFormList){
+            String key = parasolForm.getLine().getLabel();
+            resMap.put(key, resMap.get(key) + 1);
+        }
+        return resMap;
     }
 }
