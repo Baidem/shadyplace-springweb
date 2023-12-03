@@ -51,22 +51,22 @@ public class ArticleCriteriaRepository {
         // Criteria root
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Article> cq = cb.createQuery(Article.class);
-        Root<Article> plageRoot = cq.from(Article.class);
+        Root<Article> articleRoot = cq.from(Article.class);
 
         // Predicate list
         List<Predicate> predicates = new ArrayList<Predicate>();
 
         // Predicate conditions
         if (!searchForm.getSearchBar().isEmpty()){
-            Predicate p1 = cb.like(plageRoot.get("title"), "%"+searchForm.getSearchBar()+"%");
-            Predicate p2 = cb.like(plageRoot.get("content"), "%"+searchForm.getSearchBar()+"%");
+            Predicate p1 = cb.like(articleRoot.get("title"), "%"+searchForm.getSearchBar()+"%");
+            Predicate p2 = cb.like(articleRoot.get("content"), "%"+searchForm.getSearchBar()+"%");
 
             predicates.add(cb.or(p1,p2));
         }
 
         cq.where(predicates.toArray(new Predicate[] {}));
 
-        cq.orderBy(cb.desc(plageRoot.get("publicationDate")));
+        cq.orderBy(cb.desc(articleRoot.get("publicationDate")));
 
         TypedQuery<Article> query = entityManager.createQuery(cq);
 
