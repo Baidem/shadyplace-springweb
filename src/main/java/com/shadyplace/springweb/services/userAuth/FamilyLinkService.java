@@ -6,6 +6,8 @@ import com.shadyplace.springweb.repository.userAuth.FamilyLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FamilyLinkService {
     @Autowired
@@ -17,5 +19,9 @@ public class FamilyLinkService {
 
     public void save(FamilyLink familyLink) {
         this.familyLinkRepository.save(familyLink);
+    }
+
+    public List<FamilyLink> getAll(){
+        return familyLinkRepository.findAll();
     }
 }
