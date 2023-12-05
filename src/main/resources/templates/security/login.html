@@ -4,62 +4,57 @@
     <div th:replace="fragments/links-global">...</div>
 </head>
 
-<body>
-
-<div class="container-md pt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form th:action="@{/login}" method="post" class="bg-bluesky rounded-3 p-3 shadow">
-                <h1 class="card-title text-center mb-3">
-                    <img style="max-height:60px" th:src="@{/images/logo-sunny-parasol-60px.png}">
-                    Log on to Shadyplace
-                </h1>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input id="email" name="username" type="text" class="form-control shadow-sm">
+<body class="bg-elegantgray d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto mx-1">
+                <div class="card bg-bluesky shadow" style="width: 28rem;">
+                    <div class="card-body ">
+                        <div class="text-center text-light border-bottom border-light pb-2 mb-3">
+                            <h1 class="card-title fs-3">
+                                <img style="max-height:40px" th:src="@{/images/logo-sunny-parasol-60px.png}">
+                                Shadyplace
+                            </h1>
+                            <h2 class="card-subtitle mb-2 fs-4">Log on to your account</h2>
+                            <div class="alert-warning text-warning" th:if="${param.registersuccess}">
+                                Your account is created please login
                             </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input id="password" name="password" type="password" class="form-control shadow-sm">
+                            <div class="alert-warning text-warning" th:if="${param.logout}">
+                                You are disconnected
                             </div>
+                        </div>
 
-                            <div class="alert-warning" th:if="${param.error}">
+                        <form th:action="@{/login}" method="post" class="m-0">
+
+                            <div class="form-floating mb-3">
+                                <input name="username" type="email" class="form-control" id="floatingEmail" placeholder="name@example.com">
+                                <label for="floatingEmail">Email</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                <label for="floatingPassword">Password</label>
+                            </div>
+                            <div class="alert-warning mb-3" th:if="${param.error}">
                                 Invalid login or password
                             </div>
 
-                            <div class="alert-warning" th:if="${param.registersuccess}">
-                                Your account is created please login
-                            </div>
-                            <div class="alert-warning" th:if="${param.logout}">
-                                You are disconnected
-                            </div>
-
-                            <div class="d-flex justify-content-end gap-2 p-2">
-                                <div class="">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                            <div class="row justify-content-center gap-2">
+                                <div class="col-auto p-0">
+                                    <a th:href="@{/}" class="btn btn-secondary">Visit without logging in</a>
+                                </div>
+                                <div class="col-auto p-0">
+                                    <button type="submit" class="btn btn-success">Connexion</button>
                                 </div>
                             </div>
-
-                            <div class="row text-center">
-                                <div class="">
-                                    <a th:href="@{/}" class="alert-link">Visit without logging in</a>
-                                </div>                            </div>
-                            <div class="row text-center">
-                                <p>I don't have an account yet ! <a href="http://localhost:8043/jee/user-register" class="alert-link">Create an account</a></p>
+                            <div class="row text-center text-light p-2">
+                                <a href="http://localhost:8043/jee/user-register" class="alert-link">You don't have an account yet! Create an account</a>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-            <div th:replace="fragments/scripts-js.html">...</div>
+            </div>
         </div>
     </div>
-</div>
 
 <div th:replace="fragments/scripts-js.html">...</div>
 
