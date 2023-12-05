@@ -1,11 +1,7 @@
-body {
-    background: linear-gradient(to bottom, #f5e9c5, #d4a55f);
-    color : #201800;
-}
-
-header {
-    height: 10px;
-}
+/*body {*/
+/*    background: linear-gradient(to bottom, #f5e9c5, #d4a55f);*/
+/*    color : #201800;*/
+/*}*/
 
 footer {
     padding-top: 1rem;
@@ -38,7 +34,7 @@ a {
 }
 
 .bg-cloudy {
-    background: linear-gradient(to bottom, #f0f8ff, #d8e6f3, #b5c8e9, #92a8de, #6f88d4, #4c68c9, #2948bf) !important;
+    background: linear-gradient(to bottom, #f0f8ff, #d8edf3, #cfedf8, #cfe3f1) !important;
 }
 
 
@@ -49,6 +45,10 @@ a {
 
 .text-shadow{
     text-shadow: 1px 1px 3px dimgray;
+}
+
+.bg-elegantgray {
+    background: linear-gradient(to bottom, #d0eaf8, #b2c2c9, #809aa8, #37444b) !important;
 }
 
 
