@@ -193,6 +193,14 @@
         }
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        var today = new Date().toISOString().split('T')[0];
+
+        document.getElementById("dateStart").value = today;
+        document.getElementById("dateEnd").value = today;
+    });
+
+
 </script>
 </body>
 </html>
