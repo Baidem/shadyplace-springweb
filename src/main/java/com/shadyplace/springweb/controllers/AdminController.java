@@ -3,16 +3,22 @@ package com.shadyplace.springweb.controllers;
 import com.shadyplace.springweb.exception.FileTypeException;
 import com.shadyplace.springweb.forms.SearchCommandForm;
 import com.shadyplace.springweb.forms.SearchForm;
+import com.shadyplace.springweb.forms.UserForm;
 import com.shadyplace.springweb.models.articleBlog.Article;
 import com.shadyplace.springweb.models.articleBlog.Image;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
+import com.shadyplace.springweb.models.enums.Country;
+import com.shadyplace.springweb.models.userAuth.FamilyLink;
+import com.shadyplace.springweb.models.userAuth.Role;
 import com.shadyplace.springweb.models.userAuth.User;
 import com.shadyplace.springweb.services.articleBlog.ArticleService;
 import com.shadyplace.springweb.services.articleBlog.ImageService;
 import com.shadyplace.springweb.services.bookingResa.CommandService;
 import com.shadyplace.springweb.services.bookingResa.LocationService;
+import com.shadyplace.springweb.services.userAuth.FamilyLinkService;
+import com.shadyplace.springweb.services.userAuth.RoleService;
 import com.shadyplace.springweb.services.userAuth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +29,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +42,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -51,6 +61,12 @@ public class AdminController {
     CommandService commandService;
     @Autowired
     LocationService locationService;
+    @Autowired
+    private FamilyLinkService familyLinkService;
+    @Autowired
+    Validator validator;
+    @Autowired
+    RoleService roleService;
 
     @RequestMapping( "/location-manually/{booking}")
     public ModelAndView locationManually(
@@ -494,4 +510,84 @@ public class AdminController {
 
         return mv;
     }
+
+    // MY USER FORM //
+    @RequestMapping(value = "/user/{user}", method = RequestMethod.GET)
+    public ModelAndView userForm(@PathVariable User user){
+        // Country selects //
+        List<Country> countryList = Country.getAllDestinationCountries();
+        // Family link selects //
+        List<FamilyLink> familyLinkList = familyLinkService.getAll();
+        // Roles selects //
+        List<Role> roleList = roleService.getAll();
+        // Account Form //
+        UserForm userForm = new UserForm();
+        userForm.setFirstname(user.getFirstname());
+        userForm.setLastname(user.getLastname());
+        userForm.setEmail(user.getEmail());
+        userForm.setCountry(user.getResidenceCountry().getName());
+        userForm.setFamilyLink(user.getFamilyLink());
+        userForm.setRole(user.getRoles().get(0));
+        // Model And View //
+        ModelAndView mv = new ModelAndView("admin/user/userForm");
+        mv.addObject("countryList", countryList);
+        mv.addObject("userForm", userForm);
+        mv.addObject("user", user);
+        mv.addObject("familyLinkList", familyLinkList);
+        mv.addObject("roleList", roleList);
+
+        return mv;
+    }
+    // MY ACCOUNT FORM SUBMIT //
+    @RequestMapping(value = "/user/{user}", method = RequestMethod.POST)
+    public String userFormSubmit(
+            @Valid UserForm userForm,
+            @PathVariable User user,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        // Country selects //
+        List<Country> countryList = Country.getAllDestinationCountries();
+        // Family link selects //
+        List<FamilyLink> familyLinkList = familyLinkService.getAll();
+        // Roles selects //
+        List<Role> roleList = roleService.getAll();
+        // Revalidate bookingForm
+        DataBinder binder = new DataBinder(userForm);
+        binder.setValidator(validator);
+        binder.validate(userForm, "userForm");
+        bindingResult = binder.getBindingResult();
+        List<ObjectError> globalErrors = bindingResult.getGlobalErrors();
+
+        // hasErrors //
+        if (bindingResult.hasErrors()) {
+            // Model //
+            model.addAttribute("fields", bindingResult);
+            model.addAttribute("userForm", userForm);
+            model.addAttribute("countryList", countryList);
+            model.addAttribute("familyLinkList", familyLinkList);
+            model.addAttribute("errors", globalErrors);
+            model.addAttribute("user", user);
+            model.addAttribute("roleList", roleList);
+
+
+            return "admin/user/userForm";
+        } else {
+            // Set user with accountForm //
+            user.setFirstname(userForm.getFirstname());
+            user.setLastname(userForm.getLastname());
+            user.setEmail(userForm.getEmail());
+            Country newCountry = Country.getCountryByNameOrAbbreviation(userForm.getCountry());
+            user.setResidenceCountry(newCountry);
+            user.setFamilyLink(userForm.getFamilyLink());
+            List<Role> roles = new ArrayList<>();
+            roles.add(userForm.getRole());
+            user.setRoles(roles);
+            // Saving the User modified //
+            this.userService.saveUser(user);
+
+            return "redirect:/admin/user/" + user.getId();
+        }
+    }
+
 }
