@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<footer class="container-fluid bg-carte" th:fragment="footer">
+<footer class="container-fluid" th:fragment="footer">
     <div class="row justify-content-center mt-3">
         <div class="col-auto">
             <h5>© 2023 Copyright: SchadyPlace</h5>
@@ -13,10 +13,46 @@
     </div>
     <div class="row justify-content-center mt-3">
         <div class="col-lg-4 text-center">
-            <p>Ici description du business case</p>
+            <p>BUSINESS CASE</p>
+            <p>Author : Vincent Poupaert</p>
         </div>
         <div class="col-lg-4 text-center">
-            <p>Ici description du business case</p>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/logo_degrade_jaune_300ppi.png}"
+                    style="max-height:4rem; max-width:16rem"
+                >
+            </div>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/FSE.png}"
+                    style="max-height:4rem; max-width:16rem"
+                >
+            </div>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/logo_pole_emploi.png}"
+                    style="max-height:8rem; max-width:16rem"
+                >
+            </div>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/logo_region_bleu.png}"
+                    style="max-height:4rem; max-width:16rem"
+                >
+            </div>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/ministere-du-travail.jpg}"
+                    style="max-height:4rem; max-width:16rem"
+                >
+            </div>
+            <div class="mb-2">
+                <img
+                    th:src="@{/images/pack-logos/opco-atlas.png}"
+                    style="max-height:4rem; max-width:16rem"
+                >
+            </div>
         </div>
     </div>
 </footer>
