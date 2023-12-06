@@ -32,11 +32,17 @@ a {
 .bg-bluesky {
     background: linear-gradient(to bottom, #0077b6, #0099e5) !important;
 }
+.text-darkblue {
+    color: #012334 !important;
+}
 
 .bg-cloudy {
     background: linear-gradient(to bottom, #f0f8ff, #d8edf3, #cfedf8, #cfe3f1) !important;
 }
 
+.bg-light50 {
+    background-color: rgba(255, 255, 255, 0.5); /* Blanc avec une opacité de 50% */
+}
 
 .bg-sunfall {
     background: linear-gradient(to bottom, #FF8F8F, #FFE0A7);
