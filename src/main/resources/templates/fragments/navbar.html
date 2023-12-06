@@ -10,7 +10,7 @@
 <body>
 
 <th:block th:fragment="navbar">
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-cloudy" >
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-secondary-subtle" >
         <div class="container">
             <a th:href="@{/}" class="navbar-brand">
                 <img th:src="@{/images/logo-sunny-parasol-60px.png}" style="max-height:60px">
@@ -53,7 +53,14 @@
                                 </th:block>
                             </ul>
                         </div>
-                        <div class="col-auto align-self-center">
+                        <div class="col-auto align-self-center text-end">
+                            <!--/* USER CONNECTED */-->
+                            <span sec:authorize="isAuthenticated()" class="container">
+                                <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2"></i>
+                                <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2"></i>
+                                <th:block th:text="${#authentication.getPrincipal().username}"></th:block>
+                            </span>
+
                             <th:block sec:authorize="isAnonymous()">
                                 <!-- /* BTN Login */-->
                                 <a th:href="@{/login}" class="btn btn-outline-dark btn-sm my-0">
@@ -69,6 +76,7 @@
                                     Log out
                                 </a>
                             </th:block>
+
                         </div>
                     </div>
                     <div class="row">
@@ -100,14 +108,6 @@
             </div>
         </div>
     </nav>
-    <!--/* USER CONNECTED */-->
-    <div class="bg-sunfall opacity-50">
-        <div sec:authorize="isAuthenticated()" class="container">
-            <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2"></i>
-            <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2"></i>
-            <th:block th:text="${#authentication.getPrincipal().username}"></th:block>
-        </div>
-    </div>
 </th:block>
 
 </body>
