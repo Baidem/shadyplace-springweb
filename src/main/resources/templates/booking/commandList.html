@@ -18,7 +18,7 @@
 <main>
 
     <!--/* Search Engine */-->
-    <section id="search-engine" class="mt-0 py-2 bg-carte shadow">
+    <section id="search-engine" class="mt-0 mb-5 py-2 bg-light-subtle shadow">
         <div class="container">
             <div class="row text-end">
 
@@ -62,11 +62,11 @@
     </section>
 
     <!--/* show command list */-->
-    <section id="admin-list" class=" my-3">
+    <section id="admin-list" class=" mb-2">
         <div class="container bg-light-subtle pb-2">
-            <h1>My bookings</h1>
-
-
+            <div class="rounded-top bg-bluesky">
+                <h1 class="fs-3 text-light text-center pb-1 m-0">My bookings</h1>
+            </div>
 
             <!--/* Table */-->
             <div class="row">
@@ -101,7 +101,7 @@
     </section>
 
     <!--/* Pagination */-->
-    <section class="mb-3" th:if="${commands.getTotalPages() > 1}">
+    <section class="mb-5" th:if="${commands.getTotalPages() > 1}">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col">
@@ -110,13 +110,13 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li th:if="${commands.hasPrevious()}" class="page-item">
-                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber()}__#navbar}" class="page-link bg-carte">Previous</a>
+                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber()}__#navbar}" class="page-link ">Previous</a>
                                     </li>
                                     <li th:each="pageNumber : ${#numbers.sequence(1, commands.getTotalPages())}" th:classappend="${pageNumber == commands.getNumber() + 1} ? 'page-item active' : 'page-item'">
-                                        <a th:href="@{/booking/mybookinglist?page=__${pageNumber}__#navbar}" th:text="${pageNumber}" class="page-link bg-carte"></a>
+                                        <a th:href="@{/booking/mybookinglist?page=__${pageNumber}__#navbar}" th:text="${pageNumber}" class="page-link "></a>
                                     </li>
                                     <li th:if="${commands.hasNext()}" class="page-item">
-                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber() + 2}__#navbar}" class="page-link bg-carte">Next</a>
+                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber() + 2}__#navbar}" class="page-link ">Next</a>
                                     </li>
                                 </ul>
                             </nav>

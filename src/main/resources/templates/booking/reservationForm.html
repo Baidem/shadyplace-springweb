@@ -18,44 +18,7 @@
     <!--/* Booking form */-->
     <section class="my-3">
         <div class="container">
-            <div class="row gap-3">
-                <!--/* Left column informations */-->
-                <div class="col-lg-8 p-0">
-                    <div class="bg-light-subtle shadow">
-                        <div class="row justify-content-center align-items-center">
-                            <h1 class="col-lg-4 card-title text-center text-shadow fs-2 py-2">Create booking</h1>
-                            <div class="col-lg-8 align-items-center mb-2">
-                                <div th:text="'You benefit from the ' + ${user.currentFidelityRank.label} + ' rank.'" class="text-center text-shadow"></div>
-                                <div th:if="${user.familyLink.label.label} != 'No Family Link'"
-                                     th:text="'You benefit from the ' + ${user.familyLink.label.label} + ' relationship.'" class="text-center text-shadow">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row border-top mx-2 py-2">
-                            <div>
-                                <a href="#stay" class="alert-link">Add stay now !!</a>
-                                <h2 class="text-shadow">The advantages of Shadyplace</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent augue libero, dapibus et rhoncus id, maximus quis orci. Donec luctus tortor at porta rhoncus. Sed tincidunt, diam et fringilla tempor, nisi quam euismod sapien, at fringilla nunc tellus vitae eros. Duis congue porttitor nibh, vel vulputate nulla tristique a. Sed vitae scelerisque mi, nec viverra nulla. In hac habitasse platea dictumst. Integer non augue dolor. Quisque sollicitudin, est non feugiat placerat, nisi est faucibus risus, nec tristique neque erat id lectus. Proin condimentum lorem dolor, ut accumsan magna fringilla in. Nullam convallis mi eget dolor posuere malesuada.</p>
-                            </div>
-                        </div>
-
-                        <div class="row border-top mx-2 py-2">
-                            <div>
-                                <h2 class=" text-shadow">Price list</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent augue libero, dapibus et rhoncus id, maximus quis orci. Donec luctus tortor at porta rhoncus. Sed tincidunt, diam et fringilla tempor, nisi quam euismod sapien, at fringilla nunc tellus vitae eros. Duis congue porttitor nibh, vel vulputate nulla tristique a. Sed vitae scelerisque mi, nec viverra nulla. In hac habitasse platea dictumst. Integer non augue dolor. Quisque sollicitudin, est non feugiat placerat, nisi est faucibus risus, nec tristique neque erat id lectus. Proin condimentum lorem dolor, ut accumsan magna fringilla in. Nullam convallis mi eget dolor posuere malesuada.</p>
-                            </div>
-                        </div>
-
-                        <div class="row border-top mx-2 py-2 pb-3">
-                            <div class="col">
-                                <h2 class="text-shadow">Map</h2>
-                                <img width="100%" src="/images/beach_sketch.jpg" alt="Beach map">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="row flex-row-reverse gap-3">
                 <!--/* Right column booking form */-->
                 <div id="stay" class="col-lg p-0">
                     <div class="bg-bluesky border rounded-3 shadow p-0">
@@ -148,6 +111,44 @@
                         </form>
                     </div>
                 </div>
+
+                <!--/* Left column informations */-->
+                <div class="col-lg-8 p-0">
+                    <div class="bg-light-subtle border border-secondary shadow">
+                        <div class="row justify-content-center align-items-center">
+                            <h1 class="col-lg-4 card-title text-center text-shadow fs-2 py-2">Create booking</h1>
+                            <div class="col-lg-8 align-items-center mb-2">
+                                <div th:text="'You benefit from the ' + ${user.currentFidelityRank.label} + ' rank.'" class="text-center"></div>
+                                <div th:if="${user.familyLink.label.label} != 'No Family Link'"
+                                     th:text="'You benefit from the ' + ${user.familyLink.label.label} + ' relationship.'" class="text-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row border-top border-secondary mx-2 py-2">
+                            <div>
+                                <a href="#stay" class="alert-link">Add stay now !!</a>
+                                <h2 class="text-shadow">The advantages of Shadyplace</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent augue libero, dapibus et rhoncus id, maximus quis orci. Donec luctus tortor at porta rhoncus. Sed tincidunt, diam et fringilla tempor, nisi quam euismod sapien, at fringilla nunc tellus vitae eros. Duis congue porttitor nibh, vel vulputate nulla tristique a. Sed vitae scelerisque mi, nec viverra nulla. In hac habitasse platea dictumst. Integer non augue dolor. Quisque sollicitudin, est non feugiat placerat, nisi est faucibus risus, nec tristique neque erat id lectus. Proin condimentum lorem dolor, ut accumsan magna fringilla in. Nullam convallis mi eget dolor posuere malesuada.</p>
+                            </div>
+                        </div>
+
+                        <div class="row border-top border-secondary mx-2 py-2">
+                            <div>
+                                <h2 class=" text-shadow">Price list</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent augue libero, dapibus et rhoncus id, maximus quis orci. Donec luctus tortor at porta rhoncus. Sed tincidunt, diam et fringilla tempor, nisi quam euismod sapien, at fringilla nunc tellus vitae eros. Duis congue porttitor nibh, vel vulputate nulla tristique a. Sed vitae scelerisque mi, nec viverra nulla. In hac habitasse platea dictumst. Integer non augue dolor. Quisque sollicitudin, est non feugiat placerat, nisi est faucibus risus, nec tristique neque erat id lectus. Proin condimentum lorem dolor, ut accumsan magna fringilla in. Nullam convallis mi eget dolor posuere malesuada.</p>
+                            </div>
+                        </div>
+
+                        <div class="row border-top border-secondary mx-2 py-2 pb-3">
+                            <div class="col">
+                                <h2 class="text-shadow">Map</h2>
+                                <img width="100%" src="/images/beach_sketch.jpg" alt="Beach map">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

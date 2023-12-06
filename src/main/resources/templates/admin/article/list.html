@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="bg-carte-light">
+<body class="">
 
 <header th:replace="fragments/header.html :: header">...</header>
 
@@ -19,7 +19,7 @@
 <main>
 
     <!--/* Search Engine */-->
-    <section id="search-engine" class="mt-0 py-2 bg-carte shadow">
+    <section id="search-engine" class="mt-0 py-2 mb-5 bg-light-subtle shadow">
         <div class="container">
             <div class="row text-end">
 
@@ -37,6 +37,10 @@
                         <div class="col-auto">
                             <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
                         </div>
+                        <div class="col-auto">
+                            <a class="btn btn-success shadow-sm" th:href="@{/admin/article/add#navbar}" >Add an article</a>
+                        </div>
+
                     </div>
 
                 </form>
@@ -45,14 +49,10 @@
     </section>
 
     <!--/* Admin article list */-->
-    <section id="admin-list" class="mb-3">
+    <section id="admin-list" class="mb-5">
         <div class="container">
-            <h1>Manage articles</h1>
-
-            <div class="d-flex justify-content-start gap-2 p-2">
-                <div class="">
-                    <a class="btn btn-success shadow-sm" th:href="@{/admin/article/add#navbar}" >Add an article</a>
-                </div>
+            <div class="rounded-top bg-bluesky">
+                <h1 class="fs-3 text-light text-center pb-1 m-0">Manage articles</h1>
             </div>
 
             <div class="row">
@@ -86,11 +86,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-start gap-2 p-2">
-                <div class="">
-                    <a class="btn btn-success shadow-sm" th:href="@{/admin/article/add#navbar}" >Add an article</a>
                 </div>
             </div>
         </div>
