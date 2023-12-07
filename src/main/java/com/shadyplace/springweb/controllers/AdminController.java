@@ -356,7 +356,7 @@ public class AdminController {
             this.articleService.remove(article);
         }
 
-        return "redirect:/admin/article/list#navbar";
+        return "redirect:/admin/article/list";
     }
 
     @RequestMapping(value ="/article/edit/{article}", method = RequestMethod.GET)

@@ -10,7 +10,7 @@
     <div th:replace="fragments/links-global">...</div>
 </head>
 
-<body class="bg-carte-light">
+<body>
 
 <header th:replace="fragments/header.html :: header">...</header>
 
@@ -21,11 +21,18 @@
     <!--/* Article Preview */-->
     <section id="news-feed" class="mb-3">
         <div class="container">
-            <div class="row text-center"><h2 class="my-2">Article preview</h2></div>
+            <!--/* Title page */-->
+            <div class="row justify-content-center my-3">
+                <div class="col">
+                    <div class="card bg-bluesky text-light text-center border-secondary shadow border">
+                        <h5 class="w-100 px-2 pt-1">Article preview</h5>
+                    </div>
+                </div>
+            </div>
             <div class="row justify-content-center">
-                <div class="col-lg-6 mb-3">
+                <div class="col-auto mb-3">
                     <div class=""><!--/* Here content */-->
-                        <div class="card shadow bg-carte px-0" >
+                        <div class="card shadow px-0" style="max-width: 32rem;">
 
                             <img th:src="${article.image != null ? article.image.location : '/images/default-image.jpg'}"
                                  th:alt="${article.image != null ? article.image.description : 'image'}"
@@ -47,17 +54,17 @@
                     <!--/* Buttons */-->
                     <div class="d-flex justify-content-end gap-2 p-2">
                         <div class="">
-                            <a th:href="@{/admin/article/list#navbar}" class="btn btn-success shadow-sm">
+                            <a th:href="@{/admin/article/list}" class="btn btn-secondary shadow-sm">
                                 Article list
                             </a>
                         </div>
                         <div class="">
-                            <a th:href="@{'/admin/article/edit/' + ${article.id} +'#navbar'}" class="btn btn-success shadow-sm">
+                            <a th:href="@{'/admin/article/edit/' + ${article.id}}" class="btn btn-primary shadow-sm">
                                 Edit article
                             </a>
                         </div>
                         <div class="">
-                            <a th:href="@{'/admin/image/change/' + ${article.id} +'#navbar'}" class="btn btn-success shadow-sm">
+                            <a th:href="@{'/admin/image/change/' + ${article.id}}" class="btn btn-primary shadow-sm">
                                 Change image
                             </a>
                         </div>

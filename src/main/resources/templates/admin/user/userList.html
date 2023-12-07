@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="bg-carte-light">
+<body>
 
 <header th:replace="fragments/header.html :: header">...</header>
 
@@ -19,7 +19,7 @@
 <main>
 
     <!--/* Search Engine */-->
-    <section id="search-engine" class="mt-0 py-2 bg-carte shadow">
+    <section id="search-engine" class="mt-0 py-2 mb-5 bg-light-subtle shadow">
         <div class="container">
             <div class="row text-end">
 
@@ -45,41 +45,51 @@
     </section>
 
     <!--/* Admin article list */-->
-    <section id="admin-list" class="mb-3">
+    <section id="admin-list" class="mb-5">
         <div class="container">
-            <h1>Manage users</h1>
-
+            <div class="rounded-top bg-bluesky shadow">
+                <h1 class="fs-3 text-light text-center pb-1 m-0">Manage users</h1>
+            </div>
+            <!--/* Table */-->
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col">
                     <div class="">
                         <table class="table table-striped shadow m-0">
                             <thead>
-                            <tr>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>Registration date</th>
-                                <th>Email</th>
-                                <th>Country</th>
-                                <th>Family link</th>
-                                <th>Fidelity rank</th>
-                                <th>User roles</th>
-                                <th>Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Registration date</th>
+                                    <th>Email</th>
+                                    <th>Country</th>
+                                    <th>Family link</th>
+                                    <th>Fidelity rank</th>
+                                    <th>User roles</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.firstname}"></td>
-                                <td th:text="${user.lastname}"></td>
-                                <td th:text="${#dates.format(user.registrationDate, 'dd/MM/yyyy')}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.residenceCountry.name}"></td>
-                                <td th:text="${user.familyLink.label.label}"></td>
-                                <td th:text="${user.currentFidelityRank.label}"></td>
-                                <td>
-                                    <span th:each="role : ${user.roles}" th:text="${role.roleName} + ', '"></span>
-                                </td>
-                                <td ><a class="nav-link" th:href="@{'/admin/user/' + ${user.id}}">Edit</a></td>
-                            </tr>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.firstname}"></td>
+                                    <td th:text="${user.lastname}"></td>
+                                    <td th:text="${#dates.format(user.registrationDate, 'dd/MM/yyyy')}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.residenceCountry.name}"></td>
+                                    <td th:text="${user.familyLink.label.label}"></td>
+                                    <td th:text="${user.currentFidelityRank.label}"></td>
+                                    <td>
+                                        <span th:each="role : ${user.roles}" th:text="${role.roleName} + ', '"></span>
+                                    </td>
+                                    <!--/* Actions */-->
+                                    <td >
+                                        <a
+                                                class="btn btn-sm btn-outline-primary"
+                                                th:href="@{'/admin/user/' + ${user.id}}"
+                                        >
+                                            Edit user
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -98,13 +108,13 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li th:if="${users.hasPrevious()}" class="page-item">
-                                        <a th:href="@{/admin/user/list?page=__${users.getNumber()}__#navbar}" class="page-link bg-carte">Previous</a>
+                                        <a th:href="@{/admin/user/list?page=__${users.getNumber()}__}" class="page-link">Previous</a>
                                     </li>
                                     <li th:each="pageNumber : ${#numbers.sequence(1, users.getTotalPages())}" th:classappend="${pageNumber == users.getNumber() + 1} ? 'page-item active' : 'page-item'">
-                                        <a th:href="@{/admin/user/list?page=__${pageNumber}__#navbar}" th:text="${pageNumber}" class="page-link bg-carte"></a>
+                                        <a th:href="@{/admin/user/list?page=__${pageNumber}__}" th:text="${pageNumber}" class="page-link"></a>
                                     </li>
                                     <li th:if="${users.hasNext()}" class="page-item">
-                                        <a th:href="@{/admin/user/list?page=__${users.getNumber() + 2}__#navbar}" class="page-link bg-carte">Next</a>
+                                        <a th:href="@{/admin/user/list?page=__${users.getNumber() + 2}__}" class="page-link">Next</a>
                                     </li>
                                 </ul>
                             </nav>

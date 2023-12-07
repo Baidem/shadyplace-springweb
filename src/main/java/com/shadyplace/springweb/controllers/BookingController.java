@@ -224,7 +224,7 @@ public class BookingController {
 
             this.commandService.saveWithBookingList(command);
 
-            return "redirect:/paypal/cart/" + command.getId() + "#navbar";
+            return "redirect:/paypal/cart/" + command.getId()";
         }
     }
 
