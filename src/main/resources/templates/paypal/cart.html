@@ -16,11 +16,11 @@
 <main>
 
     <!--/* Cart and paypal */-->
-    <section>
+    <section class="my-5">
         <div class="container">
             <div class="row gap-3">
                 <!--/* Left column cart */-->
-                <div class="col-lg-8 bg-light-subtle my-3">
+                <div class="col-lg-8 border bg-light-subtle my-3 shadow">
                     <div class="">
                         <div class="row justify-content-center align-items-center">
                             <h1 class="col-lg-4 card-title text-center py-2">My cart</h1>
@@ -32,9 +32,8 @@
                             </div>
                         </div>
                         <div th:each="booking: ${command.bookings}" class="row border-top mx-2 py-1">
-                            <div class="col-2">
-                                <img style="max-height:60px" alt="logo shady place"
-                                     th:src="@{/images/logo-sunny-parasol-60px.png}">
+                            <div class="col-2 text-center my-auto">
+                                <i class="fa-solid fa-umbrella-beach fs-2"></i>
                             </div>
                             <div class="col-10">
                                 <div>
@@ -54,31 +53,31 @@
                 </div>
 
                 <!--/* Right column paypal */-->
-                <div class="col-lg my-3">
+                <div class="col-lg border bg-light-subtle my-3 shadow">
                     <form  method="post" class="">
 
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                        <div class="row bg-light-subtle">
+                        <div class="row">
                             <h2 class="col card-title ps-3 py-2">Total</h2>
                         </div>
 
-                        <div class="row bg-light-subtle px-3">
+                        <div class="row px-3">
                             <div class="border-top py-3 ">
                                 <div th:text="'Subtotal ' + ${command.totalPrice +  ' €'}" class="fs-4 text-end"></div>
                             </div>
                         </div>
 
-                        <div class="row bg-light-subtle px-3">
+                        <div class="row px-3">
                             <div class="border-top py-3 text-center">
                                 <a href="https://www.entreprises.cci-paris-idf.fr/web/reglementation/contrats-modeles/commerciaux/conditions-generales-de-vente-entre-professionnels"
-                                   target=”_blank” class="alert-link shadow-sm w-100">
+                                   target=”_blank” class="alert-link text-primary">
                                     Read the terms and conditions of sale
                                 </a>
                             </div>
                         </div>
 
-                        <div class="row bg-light-subtle px-3">
+                        <div class="row px-3">
                             <div class="pb-3 text-center">
                                 <input id="conditions_of_sale" name="conditionsOfSale" type="checkbox"
                                         class="form-check-input me-1"/>
@@ -86,7 +85,7 @@
                             </div>
                         </div>
 
-                        <div class="row bg-light-subtle">
+                        <div class="row">
                             <div class="col ms-3 pb-3">
                                 <button type="submit" id="submitBtn" disabled
                                         class="btn btn-success shadow-sm w-100">
