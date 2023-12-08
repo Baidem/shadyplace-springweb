@@ -123,6 +123,7 @@ public class AdminController {
         }
 
         // TODO auto incrémentation de la localisation
+        locationService.autoLocationBooking(booking);
 
         return "redirect:/admin/commands-manager-form/" + booking.getCommand().getId();
     }

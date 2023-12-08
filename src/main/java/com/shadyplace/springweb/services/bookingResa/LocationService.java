@@ -4,6 +4,7 @@ package com.shadyplace.springweb.services.bookingResa;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.models.bookingResa.Location;
+import com.shadyplace.springweb.repository.bookingResa.BookingRepository;
 import com.shadyplace.springweb.repository.bookingResa.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class LocationService {
 
     @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     public Location finByLineAndRank(int lineNumber, int rankNumber) {
         return locationRepository.findLocationByLineNumberAndRankNumber(lineNumber, rankNumber);
@@ -53,11 +56,27 @@ public class LocationService {
         return array2D;
     }
 
-    public void autoLocationBooking(Booking booking) {
+    public boolean autoLocationBooking(Booking booking) {
         Line line = booking.getLine();
         Calendar date = booking.getBookingDate();
         List<Location> allLocationInLine = this.getAllLocationInline(line);
         List<Location> reservedLocationInLine = this.getReservedLocationInline(date, line);
+
+        for (Location loc : allLocationInLine) {
+            boolean locationNotReserved = true;
+            for (Location reservedLoc : reservedLocationInLine) {
+                if (loc.getId() == reservedLoc.getId()) {
+                    locationNotReserved = false;
+                    break;
+                }
+            }
+            if (locationNotReserved) {
+                booking.setLocation(loc);
+                bookingRepository.save(booking);
+                return true;
+            }
+        }
+        return false;
     }
 
     private List<Location> getAllLocationInline(Line line){
@@ -80,7 +99,6 @@ public class LocationService {
 
         return locations;
     }
-
 
 }
 

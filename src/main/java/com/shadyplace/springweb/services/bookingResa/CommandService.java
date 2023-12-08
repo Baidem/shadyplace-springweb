@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommandService {
@@ -24,6 +25,9 @@ public class CommandService {
     @Autowired
     CommandCriteriaRepository commandCriteriaRepository;
 
+    public Optional<Command> findById(Long id) {
+        return commandRepository.findById(id);
+    }
     public List<Command> getCommandByUser(User user){
         return this.commandRepository.getCommandByUser(user);
     }
