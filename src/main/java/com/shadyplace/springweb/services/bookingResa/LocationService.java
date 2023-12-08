@@ -1,15 +1,14 @@
 package com.shadyplace.springweb.services.bookingResa;
 
 
+import com.shadyplace.springweb.models.bookingResa.Booking;
+import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.models.bookingResa.Location;
 import com.shadyplace.springweb.repository.bookingResa.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class LocationService {
@@ -53,5 +52,35 @@ public class LocationService {
         }
         return array2D;
     }
+
+    public void autoLocationBooking(Booking booking) {
+        Line line = booking.getLine();
+        Calendar date = booking.getBookingDate();
+        List<Location> allLocationInLine = this.getAllLocationInline(line);
+        List<Location> reservedLocationInLine = this.getReservedLocationInline(date, line);
+    }
+
+    private List<Location> getAllLocationInline(Line line){
+        List<Location> locations = new ArrayList<Location>();
+        List<Integer> numberLineList = new ArrayList<Integer>();
+        for (String st : Arrays.stream(line.getLineNumberList().split(",")).toList()) {
+            Integer nb = Integer.parseInt(st);
+            locations.addAll(locationRepository.getLocationsByLineNumber(nb));
+        }
+
+        return locations;
+    }
+    private List<Location> getReservedLocationInline(Calendar bookingDate, Line line){
+        List<Location> locations = new ArrayList<Location>();
+        List<Integer> numberLineList = new ArrayList<Integer>();
+        for (String st : Arrays.stream(line.getLineNumberList().split(",")).toList()) {
+            Integer nb = Integer.parseInt(st);
+            locations.addAll(locationRepository.getLocationsByBookingDateAndLineNumber(bookingDate, nb));
+        }
+
+        return locations;
+    }
+
+
 }
 
