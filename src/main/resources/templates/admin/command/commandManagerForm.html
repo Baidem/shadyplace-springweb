@@ -56,7 +56,7 @@
                   <li class="list-group-item" th:text="'Validation: ' + ${command.validationStatus.label}"></li>
                   <li class="list-group-item" th:text="'Comment: ' + ${command.comment}"></li>
                   <li class="list-group-item" th:text="'User: ' + ${command.user.firstname + ' ' + command.user.lastname}"></li>
-                  <li class="list-group-item"><a class="text-primary" th:href="'mailto:' + ${command.user.email}" th:text="'Email' + ${command.user.email}"></a></li>
+                  <li class="list-group-item"><a class="text-primary" th:href="'mailto:' + ${command.user.email}" th:text="'Email: ' + ${command.user.email}"></a></li>
                   <li class="list-group-item">
                     <div class="col-auto btn-group shadow-sm" role="group" aria-label="Basic radio toggle button group">
                       <input type="radio" class="btn-check" name="commandStatus" id="validatedCommand" autocomplete="off" value="validated">
