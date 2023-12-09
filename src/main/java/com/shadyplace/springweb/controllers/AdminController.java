@@ -121,8 +121,6 @@ public class AdminController {
             ModelAndView mv = new ModelAndView("notFound");
             return "redirect:/not-found";
         }
-
-        // TODO auto incrémentation de la localisation
         locationService.autoLocationBooking(booking);
 
         return "redirect:/admin/commands-manager-form/" + booking.getCommand().getId();
