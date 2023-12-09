@@ -128,7 +128,7 @@
               <td th:text="${booking.bookingPrice + ' €'}"></td>
               <td th:text="${booking.line.label}"></td>
               <td th:text="${booking.equipment.option}"></td>
-              <td th:text="${booking.location != null ? 'Line: ' + #strings.toString(booking.location.lineNumber) + ', Rank: ' + #strings.toString(booking.location.lineNumber) : '-'}"></td>
+              <td th:text="${booking.location != null ? booking.location.toString() : '-'}"></td>
               <td th:text="${booking.fidelityRank.label}"></td>
               <td th:text="${command.user.familyLink.label}"></td>
               <td>
