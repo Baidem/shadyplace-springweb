@@ -60,4 +60,10 @@ public class Location {
     public int getRankNumber() {
         return rankNumber;
     }
+
+    @Override
+    public String toString() {
+        return "line=" + lineNumber +
+                ", rank=" + rankNumber;
+    }
 }
