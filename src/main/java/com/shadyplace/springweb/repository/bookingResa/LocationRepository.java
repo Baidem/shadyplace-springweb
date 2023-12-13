@@ -16,27 +16,14 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 
        List<Location> getLocationsByLineNumber(int lineNumber);
 
-//       @Query("SELECT l FROM Location l JOIN Booking b WHERE b.bookingDate = :bookingDate")
-//       List<Location> getAllLocationByBookingDate(@Param("bookingDate") Calendar bookingDate);
-
        @Query("SELECT l FROM Location l JOIN l.bookings b WHERE b.bookingDate = :bookingDate")
        List<Location> getAllLocationByBookingDate(@Param("bookingDate") Calendar bookingDate);
-
-
-//       @Query("SELECT l FROM Location l JOIN Booking b WHERE b.bookingDate = :bookingDate AND l.lineNumber = :lineNumber")
-//       List<Location> getLocationsByBookingDateAndLineNumber(
-//               @Param("bookingDate") Calendar bookingDate,
-//               @Param("lineNumber") int lineNumber
-//       );
 
        @Query("SELECT l FROM Location l JOIN l.bookings b WHERE b.bookingDate = :bookingDate AND l.lineNumber = :lineNumber")
        List<Location> getLocationsByBookingDateAndLineNumber(
                @Param("bookingDate") Calendar bookingDate,
                @Param("lineNumber") int lineNumber
        );
-
-
-
 
        List<Location> findAll();
 }
