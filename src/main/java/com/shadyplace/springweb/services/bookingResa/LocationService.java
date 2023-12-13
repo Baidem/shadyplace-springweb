@@ -4,6 +4,7 @@ package com.shadyplace.springweb.services.bookingResa;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Line;
 import com.shadyplace.springweb.models.bookingResa.Location;
+import com.shadyplace.springweb.models.bookingResa.Parasol;
 import com.shadyplace.springweb.repository.bookingResa.BookingRepository;
 import com.shadyplace.springweb.repository.bookingResa.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class LocationService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    private final int LINE_SIZE = 36;
+    private final int RANK_SIZE = 8;
+
     public Location finByLineAndRank(int lineNumber, int rankNumber) {
         return locationRepository.findLocationByLineNumberAndRankNumber(lineNumber, rankNumber);
     }
@@ -30,30 +34,47 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Map<String, String> getPlanningMap(Calendar bookingDate) {
-        Map<String, String> map = new HashMap<String, String>();
-        List<Location> locations = locationRepository.findAll();
-        List<Location> occupiedLocations = locationRepository.getAllLocationByBookingDate(bookingDate);
+    public List<Location> getSortLocationList() {
+        List<Location> list = locationRepository.findAll();
 
-        for (Location location : locations) {
-            String key = location.getLineNumber()+","+ location.getRankNumber();
-            boolean isOccupied = occupiedLocations.stream()
-                    .anyMatch(occLocation -> occLocation.getLineNumber() == location.getLineNumber()
-                            && occLocation.getRankNumber() == location.getRankNumber());
+        Comparator<Location> locationComparator = Comparator
+                .comparingInt(Location::getLineNumber)
+                .thenComparingInt(Location::getRankNumber);
 
-            map.put(key, isOccupied ? "Occupied" : "Available");
-        }
-        return map;
+        list.sort(locationComparator);
+
+        return list;
     }
 
-    public String[][] beach2D() {
-        String[][] array2D = new String[8][36];
-        for (int i = 0; i < array2D.length; i++) {
-            for (int j = 0; j < array2D[i].length; j++) {
-                array2D[i][j] = (i + 1) + "," + (j + 1);
+    public Parasol[][] beachBuilder(Booking booking) {
+        List<Location> locations = this.getSortLocationList();
+        List<Booking> bookingsAtThisDate = bookingRepository.getAllByBookingDate(booking.getBookingDate());
+
+        Parasol[][] parasols = new Parasol[8][36];
+
+        for (Location loc : locations) {
+            Parasol p = new Parasol();
+            p.setLineNumber(loc.getLineNumber());
+            p.setRankNumber(loc.getRankNumber());
+
+            if (booking.getLocation() != null &&
+                    loc.getLineNumber() == booking.getLocation().getLineNumber() &&
+                    loc.getRankNumber() == booking.getLocation().getRankNumber()) {
+                p.setSelected(true);
             }
+
+            for (Booking b : bookingsAtThisDate) {
+                if (b.getLocation() != null &&
+                        loc.getLineNumber() == b.getLocation().getLineNumber() &&
+                        loc.getRankNumber() == b.getLocation().getRankNumber()) {
+                    p.setBookingId(b.getId());
+                }
+            }
+
+            parasols[p.getLineNumber() - 1][p.getRankNumber() - 1] = p;
         }
-        return array2D;
+
+        return parasols;
     }
 
     public boolean autoLocationBooking(Booking booking) {
@@ -99,6 +120,4 @@ public class LocationService {
 
         return locations;
     }
-
 }
-
