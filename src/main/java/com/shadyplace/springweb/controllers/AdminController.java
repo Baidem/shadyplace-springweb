@@ -8,6 +8,7 @@ import com.shadyplace.springweb.models.articleBlog.Article;
 import com.shadyplace.springweb.models.articleBlog.Image;
 import com.shadyplace.springweb.models.bookingResa.Booking;
 import com.shadyplace.springweb.models.bookingResa.Command;
+import com.shadyplace.springweb.models.bookingResa.Parasol;
 import com.shadyplace.springweb.models.enums.CommandValidationStatus;
 import com.shadyplace.springweb.models.enums.Country;
 import com.shadyplace.springweb.models.userAuth.FamilyLink;
@@ -79,12 +80,14 @@ public class AdminController {
 
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
-        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
-        var beach2D = locationService.beach2D();
+//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
+//        var beach2D = locationService.beach2D();
+        Parasol[][] parasols = locationService.beachBuilder(booking);
 
-        mv.addObject("beach2D", beach2D);
+//        mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
-        mv.addObject("map", planningLocatiolnMap);
+        mv.addObject("parasols", parasols);
+//        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }
@@ -105,6 +108,7 @@ public class AdminController {
 
         // TODO Service d'assignation de la position
         var beach2D = locationService.beach2D();
+        var beachBuilder = locationService.beachBuilder(booking);
 
         mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
