@@ -18,15 +18,35 @@
 
 <main>
 
-    <section>
+    <section class="my-5">
+        <div class="row">
+            <h5>Booking</h5>
+            <span th:text="${booking.id}"></span>
+            <span th:text="${booking.line.label}"></span>
+<!--            <span th:text="${booking.location.toString()}"></span>-->
+        </div>
         <div class="container-fluid">
-            <table>
-                <tbody>
-                <tr th:each="row : ${beach2D}">
-                    <td class="border" th:each="cell : ${row}" th:text="${cell}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="row bg-bluesky text-center py-3">
+                <h4 class="text-light m-0 p-0">Sea side</h4>
+            </div>
+            <div class="row justify-content-center bg-carte-light p-2">
+                <table class="">
+                    <tbody>
+                    <tr th:each="line : ${parasols}">
+                        <td th:each="parasol : ${line}">
+                            <a th:class="'btn fs-7 rounded-pill p-1 ' + (${parasol.bookingId > 0 ? (parasol.isSelected ? 'btn-primary' : 'btn-success') : 'btn-warning'})"
+                               th:text="${parasol.toString()}"
+                               class="btn btn-success fs-7 rounded-pill p-1">
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row bg-secondary text-center py-3">
+                <h4 class="text-light m-0 p-0">City side</h4>
+            </div>
+
         </div>
     </section>
 
