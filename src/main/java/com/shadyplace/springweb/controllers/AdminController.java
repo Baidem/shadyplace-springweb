@@ -80,14 +80,10 @@ public class AdminController {
 
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
-//        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
-//        var beach2D = locationService.beach2D();
         Parasol[][] parasols = locationService.beachBuilder(booking);
 
-//        mv.addObject("beach2D", beach2D);
         mv.addObject("booking", booking);
         mv.addObject("parasols", parasols);
-//        mv.addObject("map", planningLocatiolnMap);
 
         return mv;
     }
@@ -102,17 +98,14 @@ public class AdminController {
             return mv;
         }
 
-        Map<String, String> planningLocatiolnMap = locationService.getPlanningMap(booking.getBookingDate());
-
         ModelAndView mv = new ModelAndView("admin/location/manually");
 
         // TODO Service d'assignation de la position
-        var beach2D = locationService.beach2D();
-        var beachBuilder = locationService.beachBuilder(booking);
+        Parasol[][] parasols = locationService.beachBuilder(booking);
 
-        mv.addObject("beach2D", beach2D);
+
         mv.addObject("booking", booking);
-        mv.addObject("map", planningLocatiolnMap);
+        mv.addObject("parasols", parasols);
 
         return mv;
     }
