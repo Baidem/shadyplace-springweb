@@ -85,12 +85,15 @@ public class BookingService {
     }
 
     public Map<String, Integer> getAvailablePlaceCounts(Calendar dateOfStart, Calendar dateOfEnd) {
-        var resMap = new HashMap<String, Integer>();
+
+        // For each "line" we associate the maximum number of places //
+        Map<String, Integer> availablePlaceMap = new HashMap<String, Integer>();
         List<Line> lines = lineRepository.findAll();
         for (Line line : lines) {
-            resMap.put(line.getLabel(), line.getMaxPlace());
+            availablePlaceMap.put(line.getLabel(), line.getMaxPlace());
         }
-        
+
+        // List of dates in the order range //
         List<Calendar> datesInRange = new ArrayList<>();
 
         Calendar currentDate = Calendar.getInstance();
@@ -99,31 +102,30 @@ public class BookingService {
         currentDate.setTime(dateOfStart.getTime());
         endDate.setTime(dateOfEnd.getTime());
 
-        // List all dates in the range
         while (!currentDate.after(endDate)) {
             datesInRange.add((Calendar) currentDate.clone());
             currentDate.add(Calendar.DATE, 1);
         }
 
-        // For each date, get bookings
+        // For each date, get bookings //
         List<Map<String, Integer>> listOfMap = new ArrayList<Map<String, Integer>>();
         for (Calendar date : datesInRange){
             var map = new HashMap<String, Integer>();
-            map.putAll(resMap);
+            map.putAll(availablePlaceMap);
             List<Booking> bookings = bookingRepository.getAllByBookingDate(date);
             for (Booking booking : bookings) {
-                map.put(booking.getLine().getLabel(), resMap.get(booking.getLine().getLabel()) - 1);
+                map.put(booking.getLine().getLabel(), map.get(booking.getLine().getLabel()) - 1);
             }
             listOfMap.add(map);
         }
         for (Map<String, Integer> map : listOfMap) {
             for (Map.Entry<String, Integer> mapentry : map.entrySet()) {
-                if (mapentry.getValue() < resMap.getOrDefault(mapentry.getKey(), Integer.MAX_VALUE)) {
-                    resMap.put(mapentry.getKey(), mapentry.getValue());
+                if (mapentry.getValue() < availablePlaceMap.getOrDefault(mapentry.getKey(), Integer.MAX_VALUE)) {
+                    availablePlaceMap.put(mapentry.getKey(), mapentry.getValue());
                 }
             }
         }
-        return resMap;
+        return availablePlaceMap;
     }
 }
 
