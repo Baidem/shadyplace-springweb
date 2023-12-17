@@ -33,31 +33,31 @@
                                 <th:block sec:authorize="isAuthenticated()">
                                     <!-- /* LINK Reserve a shady place ! */-->
                                     <li class="nav-item">
-                                        <a th:href="@{/booking/new}" class="nav-link">Reserve a shady place !</a>
+                                        <a th:href="@{/booking/new}" class="nav-link">Reservation</a>
                                     </li>
                                     <!-- /* LINK See my bookings */-->
                                     <li class="nav-item">
-                                        <a th:href="@{/booking/mybookinglist}" class="nav-link">See my bookings</a>
+                                        <a th:href="@{/booking/mybookinglist}" class="nav-link">My bookings</a>
                                     </li>
                                     <!-- /* LINK See my account */-->
                                     <li class="nav-item">
-                                        <a th:href="@{/myaccount}" class="nav-link">See my account</a>
+                                        <a th:href="@{/myaccount}" class="nav-link">My account</a>
                                     </li>
                                 </th:block>
 
                                 <th:block sec:authorize="isAnonymous()">
                                     <!-- /* LINK Create an account */-->
                                     <li class="nav-item">
-                                        <a href="http://localhost:8043/jee/user-register" class="nav-link my-auto">Create an account</a>
+                                        <a href="http://localhost:8043/jee/user-register" class="nav-link">Create account</a>
                                     </li>
                                 </th:block>
                             </ul>
                         </div>
-                        <div class="col-auto align-self-center text-end">
+                        <div class="col text-end ">
                             <!--/* USER CONNECTED */-->
-                            <span sec:authorize="isAuthenticated()" class="container">
-                                <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2"></i>
-                                <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2"></i>
+                            <span sec:authorize="isAuthenticated()" class="my-1 ">
+                                <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear mx-2 "></i>
+                                <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user mx-2 "></i>
                                 <th:block th:text="${#authentication.getPrincipal().username}"></th:block>
                             </span>
 
@@ -71,8 +71,6 @@
                             <th:block sec:authorize="isAuthenticated()">
                                 <!-- /* BTN Logout */-->
                                 <a  th:href="@{/logout}" class="btn btn-outline-dark btn-sm my-0">
-                                    <i sec:authorize="hasAnyAuthority('ADMIN')" class="fa-solid fa-user-gear me-1"></i>
-                                    <i sec:authorize="hasAnyAuthority('USER')" class="fa-solid fa-user me-1"></i>
                                     Log out
                                 </a>
                             </th:block>
@@ -84,21 +82,31 @@
                         <th:block sec:authorize="hasAnyAuthority('ADMIN')">
                             <div class="col-auto">
                                 <ul class="navbar-nav">
-                                    <!-- /* ICON GEAR */-->
-                                    <li class="nav-item p-0">
-                                        <i class="fa-solid fa-gear me-1"></i>
-                                    </li>
-                                    <!-- /* LINK Manage commands */-->
-                                    <li class="nav-item p-0">
-                                        <a th:href="@{/admin/commands-manager}" class=" btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage commands</a>
+                                    <li class="nav-item">
+                                        <a th:href="@{/admin/commands-manager}"
+                                           class="nav-link"
+                                        >
+                                            <i class="fa-solid fa-gear"></i>
+                                            Commands
+                                        </a>
                                     </li>
                                     <!-- /* LINK Manage customers */-->
-                                    <li class="nav-item p-0">
-                                        <a th:href="@{/admin/user/list}" class="btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage customers</a>
+                                    <li class="nav-item">
+                                        <a th:href="@{/admin/user/list}"
+                                           class="nav-link"
+                                        >
+                                            <i class="fa-solid fa-gear"></i>
+                                            Customers
+                                        </a>
                                     </li>
                                     <!-- /* LINK Manage articles */-->
-                                    <li class="nav-item p-0">
-                                        <a th:href="@{/admin/article/list}" class="btn btn-outline-success py-0 px-1 m-y ms-0 me-1">Manage articles</a>
+                                    <li class="nav-item">
+                                        <a th:href="@{/admin/article/list}"
+                                           class="nav-link"
+                                        >
+                                            <i class="fa-solid fa-gear"></i>
+                                            Articles
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
