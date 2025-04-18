@@ -1,6 +1,7 @@
 package com.shadyplace.springweb.models.enums;
 
 public enum FamilyLinkLabel {
+    OWNER("owner", "OWN"),
     PARENT("Parent", "PAR"),
     GRANDPARENT("Grandparent", "GRP"),
     CHILD("Child", "CHD"),

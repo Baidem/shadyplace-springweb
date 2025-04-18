@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment error</title>
+    <div th:replace="fragments/links-global">...</div>
+</head>
+<body>
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+
+    <!--/* Cancel alert */-->
+    <section>
+        <div class="container">
+            <div class="row justify-content-center">
+                <!--/* main */-->
+                <div class="col-lg-8 bg-light-subtle my-3">
+                    <div class="">
+                        <div class="row justify-content-center align-items-center">
+                            <h1 class="col card-title text-center py-2">An error occurred during payment</h1>
+                        </div>
+                        <div class="row border-top mx-2 py-2">
+                            <div class="col ms-3 py-3">
+                                <a th:href="@{/booking/new}" class="btn btn-success shadow-sm w-100">
+                                    Make a new booking
+                                </a>
+                            </div>
+
+                            <div class="col me-3 py-3">
+                                <a th:href="@{/}" class="btn btn-primary shadow-sm w-100">
+                                    Back to home page
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>
+
+

@@ -1,6 +1,6 @@
 package com.shadyplace.springweb.config;
 
-import com.shadyplace.springweb.services.SpringAuthService;
+import com.shadyplace.springweb.services.userAuth.SpringAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +25,12 @@ public class SecurityConfig {
                 (request) ->
                         request
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers("/not-found").permitAll()
                                 .requestMatchers("error/**","/css/**", "/js/**", "/images/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/upload/**").permitAll()
+                                .requestMatchers("/paypal/**").authenticated()
+                                .requestMatchers("/myaccount/**").authenticated()
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/bookings:**").hasAuthority("USER")
                                 .anyRequest().authenticated()

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>See my bookings</title>
+    <div th:replace="fragments/links-global">...</div>
+</head>
+
+<body class="">
+
+<header th:replace="fragments/header.html :: header">...</header>
+
+<header th:replace="fragments/navbar.html :: navbar">...</header>
+
+<main>
+
+    <!--/* Search Engine */-->
+    <section id="search-engine" class="mt-0 mb-5 py-2 bg-light-subtle shadow">
+        <div class="container">
+            <div class="row text-end">
+
+                <form th:object="${form}" method="post" class="">
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    <div class="row g-3 align-items-center justify-content-end">
+                        <!--/* Filters */-->
+                        <!-- Filters -->
+                        <div class="col-auto btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterAll" autocomplete="off" value="filterAll">
+                            <label class="btn btn-outline-secondary" for="filterAll">All</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterPending" autocomplete="off" value="filterPending">
+                            <label class="btn btn-outline-secondary" for="filterPending">Pending</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterValidated" autocomplete="off" value="filterValidated">
+                            <label class="btn btn-outline-secondary" for="filterValidated">Validated</label>
+
+                            <input type="radio" class="btn-check" name="filterStatus" id="filterRefused" autocomplete="off" value="filterRefused">
+                            <label class="btn btn-outline-secondary" for="filterRefused">Refused</label>
+                        </div>
+
+
+                    <!--/* Search bar */-->
+                        <div th:if="${commands.getTotalPages() == 0}"
+                             class="text-danger col-auto">No results</div>
+                        <div class="col-auto">
+                            <input type="text" th:field="*{searchContentBar}" placeholder="Search for comment"
+                                   class="form-control shadow-sm">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-secondary shadow-sm">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!--/* show command list */-->
+    <section id="admin-list" class=" mb-2">
+        <div class="container bg-light-subtle pb-2">
+            <div class="rounded-top bg-bluesky">
+                <h1 class="fs-3 text-light text-center pb-1 m-0">My bookings</h1>
+            </div>
+
+            <!--/* Table */-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="">
+                        <table class="table table-striped shadow m-0">
+                            <thead>
+                            <tr>
+                                <th>Created at</th>
+                                <th>Price</th>
+                                <th>Payment Status</th>
+                                <th>Validation Status</th>
+                                <th>Comment</th>
+                                <th>Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="command : ${commands}">
+                                <td th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${command.totalPrice} + ' €'"></td>
+                                <td th:text="${command.paymentStatus.label}"></td>
+                                <td th:text="${command.validationStatus.label}"></td>
+                                <td th:text="${command.comment}"></td>
+                                <td ><a class="alert-link" target="_blank" th:href="@{'/booking/details/' + ${command.id}}">See details</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Pagination */-->
+    <section class="mb-5" th:if="${commands.getTotalPages() > 1}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="">
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li th:if="${commands.hasPrevious()}" class="page-item">
+                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber()}__}" class="page-link ">Previous</a>
+                                    </li>
+                                    <li th:each="pageNumber : ${#numbers.sequence(1, commands.getTotalPages())}" th:classappend="${pageNumber == commands.getNumber() + 1} ? 'page-item active' : 'page-item'">
+                                        <a th:href="@{/booking/mybookinglist?page=__${pageNumber}__}" th:text="${pageNumber}" class="page-link "></a>
+                                    </li>
+                                    <li th:if="${commands.hasNext()}" class="page-item">
+                                        <a th:href="@{/booking/mybookinglist?page=__${commands.getNumber() + 2}__}" class="page-link ">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>

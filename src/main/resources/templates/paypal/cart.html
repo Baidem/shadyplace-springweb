@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>My cart</title>
+    <div th:replace="fragments/links-global">...</div>
+</head>
+<body>
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+
+    <!--/* Cart and paypal */-->
+    <section class="my-5">
+        <div class="container">
+            <div class="row gap-3">
+                <!--/* Left column cart */-->
+                <div class="col-lg-8 border bg-light-subtle my-3 shadow">
+                    <div class="">
+                        <div class="row justify-content-center align-items-center">
+                            <h1 class="col-lg-4 card-title text-center py-2">My cart</h1>
+                            <div class="col-lg-8 align-items-center">
+                                <div th:text="'You benefit from the ' + ${user.currentFidelityRank.label} + ' rank.'" class=""></div>
+                                <div th:if="${user.familyLink.label.label} != 'No Family Link'"
+                                     th:text="'You benefit from the ' + ${user.familyLink.label.label} + ' relationship.'" class="">
+                                </div>
+                            </div>
+                        </div>
+                        <div th:each="booking: ${command.bookings}" class="row border-top mx-2 py-1">
+                            <div class="col-2 text-center my-auto">
+                                <i class="fa-solid fa-umbrella-beach fs-2"></i>
+                            </div>
+                            <div class="col-10">
+                                <div>
+                                    <div th:text="${booking.bookingPrice +  ' €'}" class="fs-4"></div>
+                                </div>
+                                <div>
+                                    <div th:text="${booking.line.label + ' - ' + booking.equipment.option + ' - ' + #dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-top mx-2 py-2">
+                            <div>
+                                <div th:text="'Subtotal    ' + ${command.totalPrice +  ' €'}" class="fs-4 text-end"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--/* Right column paypal */-->
+                <div class="col-lg border bg-light-subtle my-3 shadow">
+                    <form  method="post" class="">
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <div class="row">
+                            <h2 class="col card-title ps-3 py-2">Total</h2>
+                        </div>
+
+                        <div class="row px-3">
+                            <div class="border-top py-3 ">
+                                <div th:text="'Subtotal ' + ${command.totalPrice +  ' €'}" class="fs-4 text-end"></div>
+                            </div>
+                        </div>
+
+                        <div class="row px-3">
+                            <div class="border-top py-3 text-center">
+                                <a href="https://www.entreprises.cci-paris-idf.fr/web/reglementation/contrats-modeles/commerciaux/conditions-generales-de-vente-entre-professionnels"
+                                   target=”_blank” class="alert-link text-primary">
+                                    Read the terms and conditions of sale
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row px-3">
+                            <div class="pb-3 text-center">
+                                <input id="conditions_of_sale" name="conditionsOfSale" type="checkbox"
+                                        class="form-check-input me-1"/>
+                                <label for="conditions_of_sale" class="form-check-label">Accept the terms and conditions of sale</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col ms-3 pb-3">
+                                <button type="submit" id="submitBtn" disabled
+                                        class="btn btn-success shadow-sm w-100">
+                                    Pay
+                                </button>
+                            </div>
+
+                            <div class="col me-3 pb-3">
+                                <a th:href="@{'/booking/cancel/'+${command.id}}" class="btn btn-danger shadow-sm w-100">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+<script>
+    const checkbox = document.getElementById("conditions_of_sale");
+    const submitBtn = document.getElementById("submitBtn");
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        checkDisableSubmit();
+    });
+
+    checkbox.addEventListener('click', (e) => {
+        e.stopPropagation();
+        checkDisableSubmit();
+    })
+
+    function checkDisableSubmit(){
+        if (checkbox.checked) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+</script>
+
+</body>
+</html>
+
+

@@ -1,47 +1,107 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org"
+<html
+    lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org"
 >
 
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <div th:replace="fragments/link-favicon.html">...</div>
-    <div th:replace="fragments/links-css.html">...</div>
+    <div th:replace="fragments/links-global">...</div>
 </head>
 
-<body class="bg-carte-light">
+<body>
+    <header th:replace="fragments/header.html :: header">...</header>
 
-<header th:replace="fragments/header.html :: header">...</header>
-
-<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+    <nav th:replace="fragments/navbar.html :: navbar">...</nav>
 
 <main>
 
     <!--/* Welcome and info com */-->
     <section class="mb-3">
+        <div class="container-fluid mb-3">
+            <div class="row position-relative">
+                <img src="/images/logo-banner.jpg" alt="banner image" class="img-fluid p-0">
+                <div class="col-auto text-center position-absolute bottom-0 start-50 translate-middle-x bg-light50">
+                    <h1 class="fs-2 text-secondary p-4 text-darkblue text-shadow">Welcome to Shady place!</h1>
+                </div>
+            </div>
+        </div>
         <div class="container">
-            <div class="row text-center"><h2 class="my-2">Welcome to ShadyPlace!</h2></div>
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-lg-8">
-                    <div class="">
-                        <div class="card shadow bg-carte px-0" >
-                            <img src="/images/logo-banner.jpg" alt="Image example" class="card-img-top">
-                            <div class="card-body ">
-                                <h5 class="card-title">Ici présentation du site</h5>
-                                <p class="card-text">Ici texte marketing + explication des actions pour les clients</p>
-                                <a href="#" class="nav-link">Ici lien vers action client</a>
-                            </div>
+                    <p class="text-muted">Established in 1920, La Dolce Spiaggia stands as an iconic destination along the Italian coast, representing one of the oldest private beaches in the region.</p>
+                    <p class="text-muted">This exclusive establishment seamlessly merges relaxation, entertainment, and culinary delights, providing top-notch service and local cuisine. Whether you seek to unwind on a sun lounger with a refreshing cocktail or indulge in delectable dishes at its renowned restaurant, La Dolce Spiaggia caters to all your desires within an authentic and privileged setting.</p>
+                    <h4>Explore the world of La Dolce Spiaggia</h4>
+                    <h5 class="text-info">The Atmosphere of La Dolce Spiaggia:</h5>
+                    <p class="text-muted">Immerse yourself in the enchanting universe of La Dolce Spiaggia, a gem along the Italian coast. Stepping in, you're instantly transported into a captivating Italian landscape, where shades of blue and white blend seamlessly with the azure hues of the sky and sea. The authentic setting exudes the timeless elegance and charm unique to the region.</p>
+                    <p class="text-muted">But it's not just the scenery that captivates; it's also the impeccable quality service. Every team member is devoted to ensuring your satisfaction, ready to anticipate your every desire. From warm smiles to meticulous attention to detail, every moment spent at La Dolce Spiaggia is a memorable experience.</p>
+                    <h5 class="text-info">Sun Loungers at La Dolce Spiaggia:</h5>
+                    <p class="text-muted">Indulge in ultimate comfort on our sun loungers at La Dolce Spiaggia. Immerse yourself in a haven of relaxation with our two types of loungers: for an individual experience, opt for our single loungers, or share a privileged moment for two on one of our "Double Beds".</p>
+                    <p class="text-muted">The blue and white mattresses, perfectly harmonizing with the historic backdrop of our beach, invite you to luxuriate in absolute comfort. Cherish every moment in an idyllic setting where style and relaxation converge for an unforgettable experience.</p>
+                </div>
+                <div class="col-lg-4 ">
+                    <div class="card shadow bg-secondary-subtle mb-3">
+                        <div class="card-body">
+                            <h2 class="card-subtitle text-start text-darkblue">Book Now</h2>
+                            <a th:href="@{/booking/new}" type="button" class="btn bg-bluesky text-light w-100 p-3 mt-3">Reserve your shady place here !</a>
+
                         </div>
                     </div>
+
+                    <div class="card shadow">
+                        <div class="card-header">
+                            Opening Hours
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Monday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Tuesday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Wednesday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Thursday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Friday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Saturday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Sunday </span>
+                                <span>9:00 AM - 12:00 AM</span>
+                            </li>
+                        </ul>
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </section>
 
+    <!--/* News Title */-->
+    <section id="news-title" class="bg-bluesky shadow">
+        <div class="container-fluid text-center">
+            <h2 class="text-light p-3 m-0">News from Shady place!</h2>
+        </div>
+    </section>
+
+
     <!--/* Search Engine */-->
-    <section id="search-engine" class="mt-5 py-2 bg-carte shadow">
+    <section id="search-engine" class="py-2 mt-0 mb-3 bg-secondary-subtle shadow">
         <div class="container">
             <div class="row text-end">
 
@@ -67,15 +127,15 @@
     <!--/* News feed */-->
     <section id="news-feed" class="mb-3">
         <div class="container">
-            <div class="row text-center"><h2 class="my-2">News from ShadyPlace!</h2></div>
             <div class="row justify-content-center">
-                <div th:each="article : ${articles.content}" class="col-lg-6 mb-3">
+                <div th:each="article : ${articles.content}" class="col-lg-4 mb-3">
                     <div class="">
-                        <div class="card shadow bg-carte px-0" >
+                        <div class="card shadow bg-secondary-subtle px-0" >
 
                             <img th:src="${article.image != null ? article.image.location : '/images/logo-banner.jpg'}"
-                                 th:alt="${article.image != null ? article.image.title : 'ShadyPlace banner'}"
+                                 th:alt="${article.image != null ? article.image.imageTitle : 'ShadyPlace banner'}"
                                  class="card-img-top">
+                            <div th:text="${article.image != null ? article.image.imageTitle : ''}" class="form-text text-center"></div>
 
                             <div class="card-body ">
                                 <h5 th:text="${article.title}" class="card-title"></h5>

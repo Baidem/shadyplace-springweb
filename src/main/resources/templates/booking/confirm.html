@@ -1,0 +1,217 @@
+<!--TODO page obsolete peut servir pour un modèle pdf de facture-->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Booking</title>
+    <div th:replace="fragments/links-global">...</div>
+</head>
+<body>
+<header th:replace="fragments/header.html :: header">...</header>
+
+<nav th:replace="fragments/navbar.html :: navbar">...</nav>
+
+<main>
+    <div class="container">
+        <h1 class="my-4">Confirm booking</h1>
+    </div>
+
+
+    <!--/* Command header */-->
+    <section class="my-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bg-light-subtle p-3"><!--/* Content */-->
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <img style="max-height:60px" alt="logo shady place"
+                                         th:src="@{/images/logo-main-dark.png}">
+                                    <h2>ShadyPlace</h2>
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
+                                    DATE:
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2"
+                                    th:text="${#dates.format(command.createdAt.time, 'dd-MM-yyyy')}">
+                                    <!--/* "la date de la commande" */-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"slogan ou rien"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
+                                    ORDER N°
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2"
+                                    th:text="${command.id}">
+                                    <!--/* "order number" */-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/* "nothing under the slogan" */-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2 text-end">
+                                    ORDER OF :
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2"
+                                    th:text="${user.lastname}">
+                                    <!--/*"Customer last name"*/-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"1st line of company address"*/-->
+                                    Spiaggia Privata Bella Vista
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2"
+                                    th:text="${user.firstname}">
+                                    <!--/*"Customer first name"*/-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"2nd line of address"*/-->
+                                    Via del Mare, 123
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2"
+                                    th:text="${user.email}">
+                                    <!--/*"customer email"*/-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"3rd line of address"*/-->
+                                    Spiaggia Paradiso
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"4th line of address"*/-->
+                                    Città di Sabbia, 54321
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 border-0 bg-transparent col-6">
+                                    <!--/*"5th line of address"*/-->
+                                    Italia
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                                <td class="p-0 border-0 bg-transparent col-2">
+                                    <!--/*"empty cell"*/-->
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Command Table */-->
+    <section class="my-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bg-light-subtle p-3"><!--/* Content */-->
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="booking : ${command.bookings}">
+                                <td th:text="${booking.id}"></td>
+                                <td th:text="${booking.line.label + ' - ' + booking.equipment.option + ' - ' + #dates.format(booking.bookingDate.time, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${booking.bookingPrice +  ' €'}"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-end "><strong>Total</strong></td>
+                                <td class="border" th:text="${command.totalPrice +  ' €'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="border p-3 shadow">
+                            <h5>Customer comments</h5>
+                            <p th:text="${command.comment}" class=""></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--/* Buttons */-->
+    <section class="my-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class=""><!--/* Content */-->
+
+                        <div class="d-flex justify-content-end gap-2 p-2">
+                            <div class="">
+                                <a th:href="@{'/paypal/payment/'+${command.id}}" class="btn btn-success shadow-sm">
+                                    Pay order
+                                </a>
+                            </div>
+                            <div class="">
+                                <a th:href="@{'/booking/cancel/'+${command.id}}" class="btn btn-danger shadow-sm">
+                                    Cancel order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:if="${#fields.hasErrors()}">
+        <div th:each="error : ${fields}">
+            <p th:text="${error.defaultMessage}" class="text-danger"></p>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="fragments/footer.html :: footer">...</footer>
+
+<div th:replace="fragments/scripts-js.html">...</div>
+
+</body>
+</html>
+
+
