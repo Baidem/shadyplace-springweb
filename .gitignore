@@ -33,3 +33,6 @@ build/
 .vscode/
 
 *.css.map
+
+/src/main/resources/static/css/lib
+/src/main/resources/static/js/lib
